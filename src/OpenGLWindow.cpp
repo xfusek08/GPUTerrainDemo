@@ -1,14 +1,10 @@
-//
-// Created by forry on 24.11.2017.
-//
+#include <iostream>
 
-#include < OpenGLWindow.h >
+#include <QtGui/QOpenGLContext>
+#include <geGL/geGL.h>
+#include <geCore/Text.h>
 
-#include < QtGui/QOpenGLContext >
-#include < geGL/geGL.h >
-#include < geCore/Text.h >
-
-#include < iostream >
+#include <OpenGLWindow.h>
 
 std::vector<float> TerrainDemo::OpenGLWindow::trianglePos = {
     -1.0f,
@@ -37,9 +33,10 @@ std::vector<float> TerrainDemo::OpenGLWindow::triangleCol = {
 std::vector<int> TerrainDemo::OpenGLWindow::indices = {0, 1, 2};
 
 //! [ctor]
-TerrainDemo::OpenGLWindow::OpenGLWindow(QWindow *parent) : QWindow(parent),
-                                                            initialized(false),
-                                                            context(nullptr)
+TerrainDemo::OpenGLWindow::OpenGLWindow(QWindow *parent) :
+    QWindow(parent),
+    initialized(false),
+    context(nullptr)
 {
   setSurfaceType(QWindow::OpenGLSurface); //this needs to be set otherwise makeCurrent and other gl context related functions will fail
   surfaceFormat.setVersion(4, 5);

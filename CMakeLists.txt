@@ -28,7 +28,6 @@ find_file(fragmentShader fragmentShader.glsl
   HINTS ${${APP_NAME}_RESOURCES}/shaders
 )
 
-
 add_executable(${APP_NAME} ${SOURCE_FILES})
 target_link_libraries(${APP_NAME} Qt5::Gui geGL)
 target_include_directories(${APP_NAME} PUBLIC PUBLIC "src/")
