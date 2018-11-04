@@ -8,7 +8,7 @@ int main(int argc, char **argv)
 {
   QGuiApplication app(argc, argv);
 
-  ge::examples::OpenGLWindow window;
+  TerrainDemo::OpenGLWindow window;
   window.resize(640, 480);
   window.show();
 
