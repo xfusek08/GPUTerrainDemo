@@ -3,34 +3,11 @@
 #include <QtGui/QOpenGLContext>
 #include <geGL/geGL.h>
 #include <geCore/Text.h>
+#include <GPUTerrain/GPUTerrain.h>
 
 #include <OpenGLWindow.h>
 
-std::vector<float> TerrainDemo::OpenGLWindow::trianglePos = {
-    -1.0f,
-    -1.0f,
-    0.0f,
-    1.0f,
-    -1.0f,
-    0.0f,
-    0.0f,
-    1.0f,
-    0.0f,
-};
-
-std::vector<float> TerrainDemo::OpenGLWindow::triangleCol = {
-    1.0f,
-    0.0f,
-    0.0f,
-    0.0f,
-    1.0f,
-    0.0f,
-    0.0f,
-    0.0f,
-    1.0f,
-};
-
-std::vector<int> TerrainDemo::OpenGLWindow::indices = {0, 1, 2};
+using namespace gpuTerrain;
 
 //! [ctor]
 TerrainDemo::OpenGLWindow::OpenGLWindow(QWindow *parent) :
@@ -79,6 +56,7 @@ void TerrainDemo::OpenGLWindow::initialize()
   /*GPUEngine Init*/
   ge::gl::init();
   gl = std::make_shared<ge::gl::Context>();
+
   //! [geGL_init]
 
   //! [shaders]
@@ -89,11 +67,27 @@ void TerrainDemo::OpenGLWindow::initialize()
 
   //! [shaders]
 
+  // craete terrain instance
+  std::shared_ptr<GPUTerrain> terrain = std::make_shared<GPUTerrain>();
+
+  terrain->generate();
+
   //! [buffer_ctor]
 
-  positions = std::make_shared<ge::gl::Buffer>(trianglePos.size() * sizeof(float), trianglePos.data() /*, GL_STATIC_DRAW */);
-  colors = std::make_shared<ge::gl::Buffer>(triangleCol.size() * sizeof(float), triangleCol.data() /*, GL_STATIC_DRAW */);
-  elementBuffer = std::make_shared<ge::gl::Buffer>(indices.size() * sizeof(int), indices.data() /*, GL_STATIC_DRAW */);
+  positions = std::make_shared<ge::gl::Buffer>(
+    terrain->getTriangles().size() * sizeof(float),
+    terrain->getTriangles().data()
+  );
+
+  colors = std::make_shared<ge::gl::Buffer>(
+    terrain->getColors().size() * sizeof(float),
+    terrain->getColors().data()
+  );
+
+  elementBuffer = std::make_shared<ge::gl::Buffer>(
+    terrain->getIndeces().size() * sizeof(int),
+    terrain->getIndeces().data()
+  );
 
   //! [buffer_ctor]
 

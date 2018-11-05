@@ -1,15 +1,18 @@
 
 cmake_minimum_required(VERSION 3.7)
 
-set(PROJECT_NAME "GPUTerrainDemo")
 set(APP_NAME "TerrainDemo")
 
-project(${PROJECT_NAME})
+project(
+  GPUTerrainDemo
+  VERSION 0.0.0
+  )
 
 set(CMAKE_AUTOMOC ON)
 
 find_package(GPUEngine COMPONENTS REQUIRED geGL)
 find_package(Qt5 COMPONENTS REQUIRED Gui)
+find_package(GPUTerrain CONFIG REQUIRED)
 
 set(DEFAULT_RESOERCES_PATH "${CMAKE_CURRENT_LIST_DIR}/resources")
 set(${APP_NAME}_RESOURCES "${DEFAULT_RESOERCES_PATH}" CACHE PATH "Relative or absolute path to Application resources.")
@@ -29,7 +32,7 @@ find_file(fragmentShader fragmentShader.glsl
 )
 
 add_executable(${APP_NAME} ${SOURCES})
-target_link_libraries(${APP_NAME} Qt5::Gui geGL)
+target_link_libraries(${APP_NAME} Qt5::Gui geGL GPUTerrain::GPUTerrain)
 target_include_directories(${APP_NAME} PUBLIC PUBLIC "src/")
 
 target_compile_definitions(${APP_NAME} PUBLIC
