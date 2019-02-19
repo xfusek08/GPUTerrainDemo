@@ -3,6 +3,7 @@
 #include <QtGui/QOpenGLContext>
 #include <geGL/geGL.h>
 #include <geCore/Text.h>
+#include <geUtil/PerspectiveCamera.h>
 #include <GPUTerrain/GPUTerrain.h>
 
 #include <OpenGLWindow.h>
@@ -131,7 +132,6 @@ void TerrainDemo::OpenGLWindow::printError() const
   auto err = this->gl->glGetError();
   if (err != GL_NO_ERROR)
   {
-
     std::cout << err << std::endl;
   }
 }
@@ -158,11 +158,11 @@ bool TerrainDemo::OpenGLWindow::event(QEvent *event)
 {
   switch (event->type())
   {
-  case QEvent::UpdateRequest:
-    renderNow();
-    return true;
-  default:
-    return QWindow::event(event);
+    case QEvent::UpdateRequest:
+      renderNow();
+      return true;
+    default:
+      return QWindow::event(event);
   }
 }
 //! [eventFilter]
