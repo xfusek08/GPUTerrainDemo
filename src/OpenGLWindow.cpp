@@ -3,8 +3,7 @@
 #include <QtGui/QOpenGLContext>
 #include <geGL/geGL.h>
 #include <geCore/Text.h>
-#include <geUtil/PerspectiveCamera.h>
-#include <GPUTerrain/GPUTerrain.h>
+#include <GPUTerrain.h>
 
 #include <OpenGLWindow.h>
 
@@ -76,8 +75,8 @@ void TerrainDemo::OpenGLWindow::initialize()
   //! [buffer_ctor]
 
   positions = std::make_shared<ge::gl::Buffer>(
-    terrain->getTriangles().size() * sizeof(float),
-    terrain->getTriangles().data()
+    terrain->getVertices().size() * sizeof(float),
+    terrain->getVertices().data()
   );
 
   colors = std::make_shared<ge::gl::Buffer>(

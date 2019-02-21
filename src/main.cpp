@@ -1,8 +1,9 @@
-#include <QtGui/QGuiApplication>
-#include <OpenGLWindow.h>
-#include <QtGui/QOpenGLContext>
 
-//! [main]
+#include <QtGui/QGuiApplication>
+#include <QtGui/QOpenGLContext>
+#include <OpenGLWindow.h>
+
+using namespace std;
 
 int main(int argc, char **argv)
 {
@@ -14,5 +15,3 @@ int main(int argc, char **argv)
 
   return app.exec();
 }
-
-//! [main]
