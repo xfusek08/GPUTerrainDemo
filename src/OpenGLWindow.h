@@ -31,8 +31,9 @@ namespace TerrainDemo
 
     ~OpenGLWindow();
 
-    virtual void render();
     virtual void initialize();
+
+    virtual void render();
 
     static const std::string fragmentShaderSrc;
 
@@ -50,7 +51,7 @@ namespace TerrainDemo
 
     static std::vector<float> trianglePos;
     static std::vector<float> triangleCol;
-    static std::vector<int> indices;
+    static std::vector<int>   indices;
 
     std::shared_ptr<ge::gl::Buffer> positions;
     std::shared_ptr<ge::gl::Buffer> colors;
