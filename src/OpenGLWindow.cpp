@@ -85,8 +85,8 @@ void TerrainDemo::OpenGLWindow::initialize()
   );
 
   elementBuffer = std::make_shared<ge::gl::Buffer>(
-    terrain->getIndeces().size() * sizeof(int),
-    terrain->getIndeces().data()
+    terrain->getIndicies().size() * sizeof(int),
+    terrain->getIndicies().data()
   );
 
   //! [buffer_ctor]
