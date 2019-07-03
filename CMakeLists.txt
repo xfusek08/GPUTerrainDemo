@@ -8,37 +8,53 @@ project(
 
 set(APP_NAME "TerrainDemo")
 
-set(SDL2_BUILDING_LIBRARY ON)
-find_package(SDL2 CONFIG QUIET)
+set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
-if(NOT SDL2_FOUND)
-   return()
-endif()
-
+# find GPUengine library
 if(NOT TARGET GPUEngine)
-    find_package(GPUEngine  COMPONENTS  REQUIRED geCore geGL geUtil SDLWindow)
+    find_package(GPUEngine COMPONENTS REQUIRED
+        geCore
+        geGL
+        geUtil
+    )
 endif()
 
+# find SDL2CPP library
+if(NOT TARGET SDL2CPP)
+    find_package(SDL2CPP REQUIRED)
+endif()
+
+# find GPUTerrain library
 if(NOT TARGET GPUTerrain)
-    find_package(GPUTerrain CONFIG REQUIRED)
-endif()
-
-if(NOT TARGET glfw)
-    find_package(glfw CONFIG REQUIRED)
+    find_package(GPUTerrain REQUIRED)
 endif()
 
 set(DEFAULT_RESOERCES_PATH "${CMAKE_CURRENT_LIST_DIR}/resources")
 set(${APP_NAME}_RESOURCES  "${DEFAULT_RESOERCES_PATH}" CACHE PATH "Relative or absolute path to Application resources.")
 
-file(GLOB TERRAIN_DEMO_HEADERS    src/${APP_NAME}/*.h)
-file(GLOB TERRAIN_DEMO_SOURCES    src/${APP_NAME}/*.cpp)
-file(GLOB TERRAIN_DEMO_INTERFACES src/${APP_NAME}/Interfaces/*.h)
+set(TERRAIN_DEMO_HEADERS
+    src/${APP_NAME}/Application.h
+    src/${APP_NAME}/Log.h
+    src/${APP_NAME}/BasicLogger.h
+    src/${APP_NAME}/SDLRenderer.h
+    src/${APP_NAME}/utils.h
+)
+
+set(TERRAIN_DEMO_SOURCES
+    src/${APP_NAME}/Application.cpp
+    src/${APP_NAME}/Log.cpp
+    src/${APP_NAME}/SDLRenderer.cpp
+)
+
+set(TERRAIN_DEMO_INTERFACES
+    src/${APP_NAME}/Interfaces/ILogger.h
+)
 
 source_group("Interfaces" FILES ${TERRAIN_DEMO_INTERFACES})
 
-message(${TERRAIN_DEMO_HEADERS})
-message(${TERRAIN_DEMO_SOURCES})
-message(${TERRAIN_DEMO_INTERFACES})
+# message(${TERRAIN_DEMO_HEADERS})
+# message(${TERRAIN_DEMO_SOURCES})
+# message(${TERRAIN_DEMO_INTERFACES})
 
 # find shader files
 find_file(vertexShader vertexShader.glsl
@@ -59,7 +75,7 @@ add_executable(${APP_NAME}
 target_link_libraries(${APP_NAME}
     geGL
     geUtil
-    SDLWindow
+    SDL2CPP::SDL2CPP
     GPUTerrain
 )
 
@@ -75,29 +91,5 @@ target_compile_definitions(${APP_NAME} PUBLIC
 )
 
 if(WIN32)
-    # GPUEngine *.dll
-    get_target_property(GPUEngine_geCore_Location    geCore    LOCATION)
-    get_target_property(GPUEngine_geGL_Location      geGL      LOCATION)
-    get_target_property(GPUEngine_geUtil_Location    geUtil    LOCATION)
-    # get_target_property(GPUEngine_SDLWindow_Location SDLWindow LOCATION)
-    # GPUEngine *d.dll
-    get_target_property(GPUEngine_geCore_LocationDebug    geCore    IMPORTED_LOCATION_DEBUG)
-    get_target_property(GPUEngine_geGL_LocationDebug      geGL      IMPORTED_LOCATION_DEBUG)
-    get_target_property(GPUEngine_geUtil_LocationDebug    geUtil    IMPORTED_LOCATION_DEBUG)
-    # get_target_property(GPUEngine_SDLWindow_LocationDebug SDLWindow IMPORTED_LOCATION_DEBUG)
-
-    # # GPUTerrain *.dll
-    # get_target_property(GPUTerrain_Location GPUTerrain LOCATION)
-    # # GPUTerrain *d.dll
-    # get_target_property(GPUTerrain_LocationDebug GPUTerrain IMPORTED_LOCATION_DEBUG)
-
-    add_custom_command(TARGET ${APP_NAME} POST_BUILD
-        # GPUEngine
-        COMMAND ${CMAKE_COMMAND} -E copy_if_different $<$<CONFIG:Debug>:${GPUEngine_geCore_LocationDebug}> $<$<NOT:$<CONFIG:Debug>>:${GPUEngine_geCore_Location}> $<TARGET_FILE_DIR:${APP_NAME}>
-        COMMAND ${CMAKE_COMMAND} -E copy_if_different $<$<CONFIG:Debug>:${GPUEngine_geGL_LocationDebug}> $<$<NOT:$<CONFIG:Debug>>:${GPUEngine_geGL_Location}> $<TARGET_FILE_DIR:${APP_NAME}>
-        COMMAND ${CMAKE_COMMAND} -E copy_if_different $<$<CONFIG:Debug>:${GPUEngine_geUtil_LocationDebug}> $<$<NOT:$<CONFIG:Debug>>:${GPUEngine_geUtil_Location}> $<TARGET_FILE_DIR:${APP_NAME}>
-        # COMMAND ${CMAKE_COMMAND} -E copy_if_different $<$<CONFIG:Debug>:${GPUEngine_SDLWindow_LocationDebug}> $<$<NOT:$<CONFIG:Debug>>:${GPUEngine_SDLWindow_Location}> $<TARGET_FILE_DIR:${APP_NAME}>
-        # # GPUTerrain
-        # COMMAND ${CMAKE_COMMAND} -E copy_if_different $<$<TARGET_FILE>:GPUTErrain> $<$<NOT:$<CONFIG:Debug>>:${GPUTerrain_Location}> $<TARGET_FILE_DIR:${APP_NAME}>
-    )
+    set(LIBS_DLLS geCore geGL geUtil )
 endif()

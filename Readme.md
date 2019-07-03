@@ -1,2 +1,2 @@
 
-# Apllication demonstraiting the GPUTerrain library
+# Application demonstrating the GPUTerrain library
