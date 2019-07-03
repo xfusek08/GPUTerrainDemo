@@ -1,17 +1,12 @@
 
-#include <QtGui/QGuiApplication>
-#include <QtGui/QOpenGLContext>
-#include <OpenGLWindow.h>
-
-using namespace std;
+#include <TerrainDemo/Application.h>
 
 int main(int argc, char **argv)
 {
-  QGuiApplication app(argc, argv);
-
-  TerrainDemo::OpenGLWindow window;
-  window.resize(640, 480);
-  window.show();
-
-  return app.exec();
+  // more complex entry point ?
+  auto app = TerrainDemo::Application();
+  int init = app.init();
+  if (init != 1)
+    return init;
+  return app.run();
 }
