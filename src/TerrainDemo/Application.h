@@ -1,9 +1,8 @@
-
 #pragma once
 
 #include <memory>
 
-#include <TerrainDemo/SDLRenderer.h>
+#include <TerrainDemo/core/SDLRenderer.h>
 
 namespace TerrainDemo
 {
@@ -16,6 +15,6 @@ namespace TerrainDemo
         virtual int init();
         virtual int run();
     private:
-        std::shared_ptr<TerrainDemo::SDLRenderer> _renderer = nullptr;
+        std::shared_ptr<core::SDLRenderer> _renderer = nullptr;
     };
 }

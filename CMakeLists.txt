@@ -29,32 +29,50 @@ if(NOT TARGET GPUTerrain)
     find_package(GPUTerrain REQUIRED)
 endif()
 
+if(NOT TARGET glm)
+  find_package(glm REQUIRED)
+endif()
+
+
 set(DEFAULT_RESOERCES_PATH "${CMAKE_CURRENT_LIST_DIR}/resources")
 set(${APP_NAME}_RESOURCES  "${DEFAULT_RESOERCES_PATH}" CACHE PATH "Relative or absolute path to Application resources.")
 
 set(TERRAIN_DEMO_HEADERS
     src/${APP_NAME}/Application.h
-    src/${APP_NAME}/Log.h
-    src/${APP_NAME}/BasicLogger.h
-    src/${APP_NAME}/SDLRenderer.h
-    src/${APP_NAME}/utils.h
+    src/${APP_NAME}/TDCamera.h
+    src/${APP_NAME}/TDScene.h
+    src/${APP_NAME}/TerrainDemoVT.h
 )
 
 set(TERRAIN_DEMO_SOURCES
     src/${APP_NAME}/Application.cpp
-    src/${APP_NAME}/Log.cpp
-    src/${APP_NAME}/SDLRenderer.cpp
+    src/${APP_NAME}/TDCamera.cpp
+    src/${APP_NAME}/TerrainDemoVT.cpp
+)
+
+set(TERRAIN_DEMO_CORE_HEADERS
+    src/${APP_NAME}/core/Log.h
+    src/${APP_NAME}/core/SDLRenderer.h
+    src/${APP_NAME}/core/SDLControls.h
+    src/${APP_NAME}/core/Utils.h
+)
+
+set(TERRAIN_DEMO_CORE_SOURCES
+    src/${APP_NAME}/core/Log.cpp
+    src/${APP_NAME}/core/SDLRenderer.cpp
+    src/${APP_NAME}/core/SDLControls.cpp
 )
 
 set(TERRAIN_DEMO_INTERFACES
     src/${APP_NAME}/Interfaces/ILogger.h
+    src/${APP_NAME}/Interfaces/IControls.h
+    src/${APP_NAME}/Interfaces/IScene.h
+    src/${APP_NAME}/Interfaces/IVisualizationTechnique.h
 )
 
-source_group("Interfaces" FILES ${TERRAIN_DEMO_INTERFACES})
-
-# message(${TERRAIN_DEMO_HEADERS})
-# message(${TERRAIN_DEMO_SOURCES})
-# message(${TERRAIN_DEMO_INTERFACES})
+source_group("TerrainDemo" FILES ${TERRAIN_DEMO_HEADERS} ${TERRAIN_DEMO_SOURCES})
+source_group("TerrainDemo\\core" FILES ${TERRAIN_DEMO_CORE_HEADERS} ${TERRAIN_DEMO_CORE_SOURCES})
+source_group("TerrainDemo\\interfaces" FILES ${TERRAIN_DEMO_INTERFACES})
 
 # find shader files
 find_file(vertexShader vertexShader.glsl
@@ -69,6 +87,8 @@ add_executable(${APP_NAME}
     src/main.cpp
     ${TERRAIN_DEMO_HEADERS}
     ${TERRAIN_DEMO_SOURCES}
+    ${TERRAIN_DEMO_CORE_HEADERS}
+    ${TERRAIN_DEMO_CORE_SOURCES}
     ${TERRAIN_DEMO_INTERFACES}
 )
 
@@ -77,6 +97,7 @@ target_link_libraries(${APP_NAME}
     geUtil
     SDL2CPP::SDL2CPP
     GPUTerrain
+    glm
 )
 
 target_include_directories(${APP_NAME}
@@ -89,6 +110,9 @@ target_compile_definitions(${APP_NAME} PUBLIC
     "FRAGMENT_SHADER=\"${fragmentShader}\""
     $<$<CONFIG:DEBUG>: "GT_DEBUG" "GPTR_ENABLE_ASSERTS" >
 )
+
+message("VERTEX_SHADER=\"${vertexShader}\"")
+message("FRAGMENT_SHADER=\"${fragmentShader}\"")
 
 if(WIN32)
     set(LIBS_DLLS geCore geGL geUtil )

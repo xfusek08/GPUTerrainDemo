@@ -1,7 +1,7 @@
 
 #pragma once
 
-#include <TerrainDemo/Log.h>
+#include <TerrainDemo/core/Log.h>
 #include <sstream>
 
 #define STREAM_TO_STR(S) static_cast<std::ostringstream&>(ostringstream() << S).str()
