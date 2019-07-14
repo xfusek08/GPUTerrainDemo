@@ -14,7 +14,7 @@
 
 #include <iostream>
 #include <memory>
-#include <TerrainDemo/Interfaces/ILogger.h>
+#include <TerrainDemo/interfaces/ILogger.h>
 #include <TerrainDemo/core/Utils.h>
 
 namespace TerrainDemo
@@ -24,7 +24,7 @@ namespace TerrainDemo
         /**
          * @brief Basic default logger for writing on standard error output
          */
-        class BasicLogger : public TerrainDemo::Interfaces::ILogger
+        class BasicLogger : public TerrainDemo::interfaces::ILogger
         {
         public:
             inline void writeError(std::string message) const override { std::cerr << "Error: " << message << std::endl; }
@@ -39,12 +39,12 @@ namespace TerrainDemo
         class Log
         {
         public:
-            static void setLogger(std::shared_ptr<TerrainDemo::Interfaces::ILogger> logger);
+            static void setLogger(std::shared_ptr<TerrainDemo::interfaces::ILogger> logger);
 
-            static std::shared_ptr<TerrainDemo::Interfaces::ILogger> &getLogger();
+            static std::shared_ptr<TerrainDemo::interfaces::ILogger> &getLogger();
 
         private:
-            static std::shared_ptr<TerrainDemo::Interfaces::ILogger> _logger;
+            static std::shared_ptr<TerrainDemo::interfaces::ILogger> _logger;
         };
     } // namespace core
 } // namespace TerrainDemo

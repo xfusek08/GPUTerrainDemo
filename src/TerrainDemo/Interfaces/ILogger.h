@@ -5,7 +5,7 @@
 
 namespace TerrainDemo
 {
-    namespace Interfaces
+    namespace interfaces
     {
         /**
          * @brief Logger interface

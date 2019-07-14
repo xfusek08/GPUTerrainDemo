@@ -1,19 +1,19 @@
 
-#include <TerrainDemo/core/SDLRenderer.h>
-
 #include <geGL/geGL.h>
-#include <geUtil/Text.h>
+
+#include <TerrainDemo/tdsdl/SDLRenderer.h>
 #include <TerrainDemo/core/Utils.h>
 
 using namespace std;
-using namespace TerrainDemo::core;
-using namespace TerrainDemo::Interfaces;
+using namespace TerrainDemo::tdsdl;
+using namespace TerrainDemo::interfaces;
 
 SDLRenderer::SDLRenderer(
     std::shared_ptr<sdl2cpp::Window> window,
     std::shared_ptr<sdl2cpp::MainLoop> mainLoop,
     std::shared_ptr<IVisualizationTechnique> vt
-) : _window(window),
+) :
+    _window(window),
     _mainLoop(mainLoop),
     _vt(vt),
     _gl(nullptr)
@@ -36,18 +36,7 @@ void SDLRenderer::init()
     _window->makeCurrent("rendering");
 
     ge::gl::init();
-
     _gl = make_shared<ge::gl::Context>();
-    _gl->glEnable(GL_DEPTH_TEST);
-    _gl->glDepthFunc(GL_LEQUAL);
-    _gl->glDisable(GL_CULL_FACE);
-    _gl->glClearColor(0, 0, 0, 0);
-
-    _program = make_shared<ge::gl::Program>(
-        make_shared<ge::gl::Shader>(GL_VERTEX_SHADER, ge::util::loadTextFile(VERTEX_SHADER)),
-        make_shared<ge::gl::Shader>(GL_FRAGMENT_SHADER, ge::util::loadTextFile(FRAGMENT_SHADER))
-    );
-
     setVT(_vt);
 
     _initialized = true;
@@ -70,23 +59,15 @@ void SDLRenderer::run()
     GPTR_LOG_Debug("Renderer ended.");
 }
 
-void SDLRenderer::setControls(shared_ptr<SDLControls> controls)
+void SDLRenderer::addEventRecever(std::shared_ptr<ISDLEventReceiver> receiver)
 {
-    _controls = controls;
+    _eventReceivers.push_back(receiver);
 }
 
 void SDLRenderer::setVT (shared_ptr<IVisualizationTechnique> vt)
 {
     _vt = vt;
     _vt->gl = _gl;
-    _vt->program = _program;
-    _vt->setScene(_scene);
-}
-
-void SDLRenderer::setScene (shared_ptr<IScene> scene)
-{
-    _scene = scene;
-    _vt->setScene(_scene);
 }
 
 bool SDLRenderer::update(SDL_Event const& event)
@@ -95,8 +76,10 @@ bool SDLRenderer::update(SDL_Event const& event)
         if (event.window.event == SDL_WINDOWEVENT_CLOSE)
             _mainLoop->stop();
 
-    if (_controls != nullptr)
-        _controls->processSDLEvent(event);
+    for (auto eventReceiver : _eventReceivers)
+        if (eventReceiver->processSDLEvent(event))
+            break;
+
     return true;
 }
 

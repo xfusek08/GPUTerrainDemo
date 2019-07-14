@@ -3,7 +3,7 @@
 
 #include <memory>
 
-#include <TerrainDemo/Interfaces/IScene.h>
+#include <TerrainDemo/interfaces/IScene.h>
 
 namespace ge
 {
@@ -16,12 +16,12 @@ namespace ge
 
 namespace TerrainDemo
 {
-    namespace Interfaces
+    namespace interfaces
     {
         class IVisualizationTechnique
         {
         public:
-            virtual void draw() const = 0;
+            virtual void draw() = 0;
             virtual void drawSetUp() = 0;
             virtual void setScene(std::shared_ptr<IScene> scene) = 0;
 

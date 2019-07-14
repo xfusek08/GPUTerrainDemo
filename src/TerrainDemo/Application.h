@@ -2,7 +2,7 @@
 
 #include <memory>
 
-#include <TerrainDemo/core/SDLRenderer.h>
+#include <TerrainDemo/tdsdl/SDLRenderer.h>
 
 namespace TerrainDemo
 {
@@ -15,6 +15,6 @@ namespace TerrainDemo
         virtual int init();
         virtual int run();
     private:
-        std::shared_ptr<core::SDLRenderer> _renderer = nullptr;
+        std::shared_ptr<tdsdl::SDLRenderer> _renderer = nullptr;
     };
 }

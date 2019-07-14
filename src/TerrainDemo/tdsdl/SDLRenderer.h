@@ -7,15 +7,15 @@
  * @File        SDLRenderer.h
  */
 
+#include <vector>
+
 #include <SDL.h>
 #include <SDL2CPP/Window.h>
 #include <SDL2CPP/MainLoop.h>
 
-#include <TerrainDemo/core/SDLControls.h>
-
-#include <TerrainDemo/Interfaces/IControls.h>
-#include <TerrainDemo/Interfaces/IScene.h>
-#include <TerrainDemo/Interfaces/IVisualizationTechnique.h>
+#include <TerrainDemo/interfaces/ISDLEventReceiver.h>
+#include <TerrainDemo/interfaces/IScene.h>
+#include <TerrainDemo/interfaces/IVisualizationTechnique.h>
 
 namespace ge
 {
@@ -28,7 +28,7 @@ namespace ge
 
 namespace TerrainDemo
 {
-    namespace core
+    namespace tdsdl
     {
         class SDLRenderer
         {
@@ -36,15 +36,15 @@ namespace TerrainDemo
             SDLRenderer(
                 std::shared_ptr<sdl2cpp::Window> window,
                 std::shared_ptr<sdl2cpp::MainLoop> mainLoop,
-                std::shared_ptr<Interfaces::IVisualizationTechnique> vt
+                std::shared_ptr<interfaces::IVisualizationTechnique> vt
             );
             ~SDLRenderer();
 
             virtual void init();
             virtual void run();
-            virtual void setControls(std::shared_ptr<SDLControls> controls); // for SDL renderer we need SDLControls
-            virtual void setVT      (std::shared_ptr<Interfaces::IVisualizationTechnique> vt);
-            virtual void setScene   (std::shared_ptr<Interfaces::IScene> scene);
+            virtual void addEventRecever(std::shared_ptr<interfaces::ISDLEventReceiver>);
+            virtual void setVT(std::shared_ptr<interfaces::IVisualizationTechnique> vt);
+
         protected:
             virtual bool update(SDL_Event const& event);
             virtual void draw();
@@ -52,16 +52,14 @@ namespace TerrainDemo
             std::shared_ptr<sdl2cpp::Window> _window = nullptr;
             std::shared_ptr<sdl2cpp::MainLoop> _mainLoop = nullptr;
 
-            std::shared_ptr<SDLControls> _controls = nullptr;
-            std::shared_ptr<Interfaces::IVisualizationTechnique> _vt = nullptr;
-            std::shared_ptr<Interfaces::IScene> _scene = nullptr;
+            std::vector<std::shared_ptr<interfaces::ISDLEventReceiver>> _eventReceivers;
+            std::shared_ptr<interfaces::IVisualizationTechnique> _vt = nullptr;
 
             std::shared_ptr<ge::gl::Context> _gl;
-            std::shared_ptr<ge::gl::Program> _program;
 
         private:
             bool _initialized = false;
         };
 
-    } // namespace core
+    } // namespace tdesdl
 } // namespace TerrainDemo

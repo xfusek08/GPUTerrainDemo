@@ -5,13 +5,13 @@
  * @File        Logger.h
  */
 
-#include <TerrainDemo/Interfaces/ILogger.h>
+#include <TerrainDemo/interfaces/ILogger.h>
 #include <TerrainDemo/core/Log.h>
 #include <assert.h>
 
 using namespace std;
 using namespace TerrainDemo::core;
-using namespace TerrainDemo::Interfaces;
+using namespace TerrainDemo::interfaces;
 
 shared_ptr<ILogger> Log::_logger;
 

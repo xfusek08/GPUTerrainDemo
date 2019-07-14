@@ -37,42 +37,34 @@ endif()
 set(DEFAULT_RESOERCES_PATH "${CMAKE_CURRENT_LIST_DIR}/resources")
 set(${APP_NAME}_RESOURCES  "${DEFAULT_RESOERCES_PATH}" CACHE PATH "Relative or absolute path to Application resources.")
 
-set(TERRAIN_DEMO_HEADERS
-    src/${APP_NAME}/Application.h
-    src/${APP_NAME}/TDCamera.h
+set(SRC_TERRAIN_DEMO
+    src/${APP_NAME}/Application.h   src/${APP_NAME}/Application.cpp
+    src/${APP_NAME}/TerrainDemoVT.h src/${APP_NAME}/TerrainDemoVT.cpp
     src/${APP_NAME}/TDScene.h
-    src/${APP_NAME}/TerrainDemoVT.h
 )
 
-set(TERRAIN_DEMO_SOURCES
-    src/${APP_NAME}/Application.cpp
-    src/${APP_NAME}/TDCamera.cpp
-    src/${APP_NAME}/TerrainDemoVT.cpp
-)
-
-set(TERRAIN_DEMO_CORE_HEADERS
-    src/${APP_NAME}/core/Log.h
-    src/${APP_NAME}/core/SDLRenderer.h
-    src/${APP_NAME}/core/SDLControls.h
+set(SRC_TERRAIN_DEMO_CORE
+    src/${APP_NAME}/core/Log.h      src/${APP_NAME}/core/Log.cpp
+    src/${APP_NAME}/core/Camera.h   src/${APP_NAME}/core/Camera.cpp
     src/${APP_NAME}/core/Utils.h
 )
 
-set(TERRAIN_DEMO_CORE_SOURCES
-    src/${APP_NAME}/core/Log.cpp
-    src/${APP_NAME}/core/SDLRenderer.cpp
-    src/${APP_NAME}/core/SDLControls.cpp
+set(SRC_ERRAIN_DEMO_TDSDL
+    src/${APP_NAME}/tdsdl/SDLRenderer.h         src/${APP_NAME}/tdsdl/SDLRenderer.cpp
+    src/${APP_NAME}/tdsdl/SDLCameraController.h src/${APP_NAME}/tdsdl/SDLCameraController.cpp
 )
 
-set(TERRAIN_DEMO_INTERFACES
-    src/${APP_NAME}/Interfaces/ILogger.h
-    src/${APP_NAME}/Interfaces/IControls.h
-    src/${APP_NAME}/Interfaces/IScene.h
-    src/${APP_NAME}/Interfaces/IVisualizationTechnique.h
+set(SRC_TERRAIN_DEMO_INTERFACES
+    src/${APP_NAME}/interfaces/ILogger.h
+    src/${APP_NAME}/interfaces/IScene.h
+    src/${APP_NAME}/interfaces/ISDLEventReceiver.h
+    src/${APP_NAME}/interfaces/IVisualizationTechnique.h
 )
 
-source_group("TerrainDemo" FILES ${TERRAIN_DEMO_HEADERS} ${TERRAIN_DEMO_SOURCES})
-source_group("TerrainDemo\\core" FILES ${TERRAIN_DEMO_CORE_HEADERS} ${TERRAIN_DEMO_CORE_SOURCES})
-source_group("TerrainDemo\\interfaces" FILES ${TERRAIN_DEMO_INTERFACES})
+source_group("TerrainDemo" FILES ${SRC_TERRAIN_DEMO})
+source_group("TerrainDemo\\core" FILES ${SRC_TERRAIN_DEMO_CORE})
+source_group("TerrainDemo\\tdsdl" FILES ${SRC_ERRAIN_DEMO_TDSDL})
+source_group("TerrainDemo\\interfaces" FILES ${SRC_TERRAIN_DEMO_INTERFACES})
 
 # find shader files
 find_file(vertexShader vertexShader.glsl
@@ -85,11 +77,10 @@ find_file(fragmentShader fragmentShader.glsl
 
 add_executable(${APP_NAME}
     src/main.cpp
-    ${TERRAIN_DEMO_HEADERS}
-    ${TERRAIN_DEMO_SOURCES}
-    ${TERRAIN_DEMO_CORE_HEADERS}
-    ${TERRAIN_DEMO_CORE_SOURCES}
-    ${TERRAIN_DEMO_INTERFACES}
+    ${SRC_TERRAIN_DEMO}
+    ${SRC_TERRAIN_DEMO_CORE}
+    ${SRC_ERRAIN_DEMO_TDSDL}
+    ${SRC_TERRAIN_DEMO_INTERFACES}
 )
 
 target_link_libraries(${APP_NAME}
