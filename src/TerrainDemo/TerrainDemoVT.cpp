@@ -10,11 +10,6 @@
 #include <TerrainDemo/TDScene.h>
 #include <TerrainDemo/core/Utils.h>
 
-#ifdef GT_DEBUG
-#define GLM_ENABLE_EXPERIMENTAL
-#include <glm/gtx/string_cast.hpp>
-#endif
-
 using namespace std;
 using namespace ge::gl;
 using namespace TerrainDemo;
@@ -42,24 +37,32 @@ void TerrainDemoVT::drawSetUp()
     program->setMatrix4fv("projectionMatrix", glm::value_ptr(_camera->getProjectionMatrix()));
 
     // BEGIN temporal test delete when proper model/terrain is loaded -------------------------------
-        std::vector<float> trianglePos = {
-            0.0f, -1.0f, 0.0f,
-            -1.0f, 0.0f, 0.0f,
-            1.0f, 0.0f, 0.0f
+        std::vector<float> vertices = {
+            -1.f,  0.f,  0.f,
+             1.f,  0.f,  0.f,
+             0.f, -1.f,  0.f,
+             0.f,  1.f,  0.f,
+             0.f,  0.f, -1.f,
+             0.f,  0.f,  1.f,
         };
 
-        std::vector<float> triangleCol = {
-            1.0f, 0.0f, 0.0f,
-            0.0f, 1.0f, 0.0f,
-            0.0f, 0.0f, 1.0f,
+        std::vector<float> vertColors = {
+            1.f, 0.f, 0.f,
+            1.f, 0.f, 0.f,
+            0.f, 1.f, 0.f,
+            0.f, 1.f, 0.f,
+            0.f, 0.f, 1.f,
+            0.f, 0.f, 1.f,
         };
 
         std::vector<unsigned> indices = {
-            0,1,2
+            0,1,
+            2,3,
+            4,5
         };
 
-        positions = std::make_shared<ge::gl::Buffer>(trianglePos.size() * sizeof(float), trianglePos.data());
-        // colors = std::make_shared<ge::gl::Buffer>(triangleCol.size() * sizeof(float), triangleCol.data());
+        positions = std::make_shared<ge::gl::Buffer>(vertices.size() * sizeof(float), vertices.data());
+        colors = std::make_shared<ge::gl::Buffer>(vertColors.size() * sizeof(float), vertColors.data());
         elementBuffer = std::make_shared<ge::gl::Buffer>(indices.size() * sizeof(int), indices.data());
 
         VAO = std::make_shared<ge::gl::VertexArray>();
@@ -67,11 +70,10 @@ void TerrainDemoVT::drawSetUp()
         VAO->bind();
         VAO->addElementBuffer(elementBuffer);
         VAO->addAttrib(positions, 0, 3, GL_FLOAT);
-        // VAO->addAttrib(colors, 1,3,GL_FLOAT);
+        VAO->addAttrib(colors, 1, 3, GL_FLOAT);
         VAO->unbind();
 
-        _camera->setCameraPosition(glm::vec3{0.f, 0.f, 5.f});
-
+        //_camera->setCameraPosition(glm::vec3{0.f, 1.f, 5.f});
     // END temporal test delete when proper model/terrain is loaded -------------------------------
 }
 
@@ -88,7 +90,7 @@ void TerrainDemoVT::draw()
     program->use();
 
     VAO->bind();
-    gl->glDrawElements(GL_TRIANGLES,3,GL_UNSIGNED_INT, nullptr);
+    gl->glDrawElements(GL_LINES, elementBuffer->getSize(), GL_UNSIGNED_INT, nullptr);
 }
 
 void TerrainDemoVT::setScene(shared_ptr<IScene> scene)

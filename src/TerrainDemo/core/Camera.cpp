@@ -24,8 +24,6 @@ Camera::Camera(
     _fov(fov),
     _nearPlane(nearPlaneDistance),
     _farPlane(farPlaneDistace),
-    _mouseSensitivity(1.0f),
-    _moveSpeed(0.010f),
     _target(glm::vec3{ 0.f, 0.f, 0.f }),
     _up(glm::vec3 { 0.f, 1.f, 0.f })
 {

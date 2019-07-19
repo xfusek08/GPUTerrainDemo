@@ -42,7 +42,7 @@ namespace TerrainDemo
 
             virtual void init();
             virtual void run();
-            virtual void addEventRecever(std::shared_ptr<interfaces::ISDLEventReceiver>);
+            virtual void addEventReceiver(std::shared_ptr<interfaces::ISDLEventReceiver>);
             virtual void setVT(std::shared_ptr<interfaces::IVisualizationTechnique> vt);
 
         protected:

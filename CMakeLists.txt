@@ -50,8 +50,8 @@ set(SRC_TERRAIN_DEMO_CORE
 )
 
 set(SRC_ERRAIN_DEMO_TDSDL
-    src/${APP_NAME}/tdsdl/SDLRenderer.h         src/${APP_NAME}/tdsdl/SDLRenderer.cpp
-    src/${APP_NAME}/tdsdl/SDLCameraController.h src/${APP_NAME}/tdsdl/SDLCameraController.cpp
+    src/${APP_NAME}/tdsdl/SDLRenderer.h              src/${APP_NAME}/tdsdl/SDLRenderer.cpp
+    src/${APP_NAME}/tdsdl/SDLOrbitCameraController.h src/${APP_NAME}/tdsdl/SDLOrbitCameraController.cpp
 )
 
 set(SRC_TERRAIN_DEMO_INTERFACES

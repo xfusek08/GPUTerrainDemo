@@ -7,7 +7,7 @@
 #include <TerrainDemo/core/Camera.h>
 
 #include <TerrainDemo/tdsdl/SDLRenderer.h>
-#include <TerrainDemo/tdsdl/SDLCameraController.h>
+#include <TerrainDemo/tdsdl/SDLOrbitCameraController.h>
 
 #include <TerrainDemo/Application.h>
 #include <TerrainDemo/TDScene.h>
@@ -32,12 +32,11 @@ int Application::init()
     auto mainLoop = make_shared<MainLoop>();
 
     // init terrain demo scene
-    auto scene = make_shared<TDScene>();
-    auto cameraController = make_shared<SDLCameraController>();
-    auto camera   = make_shared<Camera>(window->getWidth(), window->getHeight());
-    auto vt       = make_shared<TerrainDemoVT>();
+    auto scene            = make_shared<TDScene>();
+    auto camera           = make_shared<Camera>(window->getWidth(), window->getHeight());
+    auto cameraController = make_shared<SDLOrbitCameraController>(camera);
+    auto vt               = make_shared<TerrainDemoVT>();
 
-    cameraController->setCamera(camera);
     vt->setCamera(camera);
     vt->setScene(scene);
 
@@ -47,7 +46,7 @@ int Application::init()
         vt
     );
     _renderer->init();
-    _renderer->addEventRecever(cameraController);
+    _renderer->addEventReceiver(cameraController);
 
     GPTR_LOG_INFO("Application initialized.");
     return true;

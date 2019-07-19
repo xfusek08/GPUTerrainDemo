@@ -59,7 +59,7 @@ void SDLRenderer::run()
     GPTR_LOG_Debug("Renderer ended.");
 }
 
-void SDLRenderer::addEventRecever(std::shared_ptr<ISDLEventReceiver> receiver)
+void SDLRenderer::addEventReceiver(std::shared_ptr<ISDLEventReceiver> receiver)
 {
     _eventReceivers.push_back(receiver);
 }
@@ -85,6 +85,8 @@ bool SDLRenderer::update(SDL_Event const& event)
 
 void SDLRenderer::draw()
 {
+    for (auto eventReceiver : _eventReceivers)
+        eventReceiver->onFrameUpdate();
     _vt->draw();
     _window->swap();
 }

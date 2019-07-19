@@ -36,9 +36,10 @@ namespace TerrainDemo
             inline glm::mat4 getProjectionMatrix() const { return _projectionMatrix; }
 
             // vectors
-            inline glm::vec3 getCameraPosition() const { return _position; }
-            inline glm::vec3 getTargetPosition() const { return _target; }
-            inline glm::vec3 getUpVector()       const { return _up; }
+            inline glm::vec3 getCameraPosition()  const { return _position; }
+            inline glm::vec3 getTargetPosition()  const { return _target; }
+            inline glm::vec3 getUpVector()        const { return _up; }
+            inline glm::vec3 getCameraDirection() const { return _position - _target;  }
 
             inline void setCameraPosition(glm::vec3 position) { _position = position; _hasViewChanged = true; }
             inline void setTargetPosition(glm::vec3 target)   { _target   = target;   _hasViewChanged = true; }
@@ -48,16 +49,6 @@ namespace TerrainDemo
             inline float getFov() const { return _fov; }
             inline float getNearPlaneDistance() const { return _nearPlane; }
             inline float getFarPlaneDistance() const { return _farPlane; }
-
-            // TODO: setters - not needed for now
-
-            // controls
-            inline float getMoveSpeed() const { return _moveSpeed; }
-            inline float getMouseSensitivity() const  { return _mouseSensitivity; }
-
-            inline void setMoveSpeed(float speed) { _moveSpeed = speed; }
-            inline void setMouseSensitivity(float sensitivity) { _mouseSensitivity = sensitivity; }
-
         protected:
             void updateViewMatrix();
             void updateProjectionMatrix();
@@ -79,10 +70,6 @@ namespace TerrainDemo
             glm::vec3 _position;
             glm::vec3 _target;
             glm::vec3 _up;
-
-            // controls
-            float _moveSpeed;
-            float _mouseSensitivity;
         };
 
     }; // namespace core
