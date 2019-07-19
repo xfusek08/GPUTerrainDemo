@@ -44,8 +44,9 @@ set(SRC_TERRAIN_DEMO
 )
 
 set(SRC_TERRAIN_DEMO_CORE
-    src/${APP_NAME}/core/Log.h      src/${APP_NAME}/core/Log.cpp
-    src/${APP_NAME}/core/Camera.h   src/${APP_NAME}/core/Camera.cpp
+    src/${APP_NAME}/core/Log.h                      src/${APP_NAME}/core/Log.cpp
+    src/${APP_NAME}/core/Camera.h                   src/${APP_NAME}/core/Camera.cpp
+    src/${APP_NAME}/core/OrbitCameraController.h    src/${APP_NAME}/core/OrbitCameraController.cpp
     src/${APP_NAME}/core/Utils.h
 )
 
