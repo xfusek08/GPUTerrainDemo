@@ -85,8 +85,17 @@ bool SDLRenderer::update(SDL_Event const& event)
 
 void SDLRenderer::draw()
 {
+    _performance.frame();
+
     for (auto eventReceiver : _eventReceivers)
         eventReceiver->onFrameUpdate();
+
     _vt->draw();
+
+    if (_performance.framesCounted()) 
+        GPTR_LOG_Debug("FPS: " << _performance.getFrames());
+
+    _performance.capFps();
+
     _window->swap();
 }

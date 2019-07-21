@@ -3,7 +3,7 @@
 
 #include <memory>
 
-#include <TerrainDemo/interfaces/IScene.h>
+#include <TerrainDemo/core/Scene.h>
 
 namespace ge
 {
@@ -23,7 +23,7 @@ namespace TerrainDemo
         public:
             virtual void draw() = 0;
             virtual void drawSetUp() = 0;
-            virtual void setScene(std::shared_ptr<IScene> scene) = 0;
+            virtual void setScene(std::shared_ptr<core::Scene> scene) = 0;
 
             std::shared_ptr<ge::gl::Context> gl;
             std::shared_ptr<ge::gl::Program> program;

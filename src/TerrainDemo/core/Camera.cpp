@@ -42,7 +42,6 @@ glm::mat4 Camera::getViewMatrix()
 
 void Camera::updateViewMatrix()
 {
-    GPTR_LOG_Debug("Update view matrix.");
     _viewMatrix = glm::lookAt(_position, _target, _up);
     _hasViewChanged = false;
 }

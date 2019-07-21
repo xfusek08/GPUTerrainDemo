@@ -7,7 +7,7 @@
  *              argument for log initiation.
  *              Also a wrapping macros for logging are defined.
  * @Author      Petr Fusek
- * @Project     GPUTerrainDemo
+ * @Project     TerrainLibDemo
  * @File        Logger.h
  */
 

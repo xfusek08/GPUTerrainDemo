@@ -10,8 +10,8 @@
 #include <TerrainDemo/tdsdl/SDLOrbitCameraController.h>
 
 #include <TerrainDemo/Application.h>
-#include <TerrainDemo/TDScene.h>
-#include <TerrainDemo/TerrainDemoVT.h>
+#include <TerrainDemo/TerrainScene.h>
+#include <TerrainDemo/TerrainVT.h>
 
 using namespace std;
 using namespace TerrainDemo;
@@ -32,10 +32,10 @@ int Application::init()
     auto mainLoop = make_shared<MainLoop>();
 
     // init terrain demo scene
-    auto scene            = make_shared<TDScene>();
+    auto scene            = make_shared<TerrainScene>();
     auto camera           = make_shared<Camera>(window->getWidth(), window->getHeight());
     auto cameraController = make_shared<SDLOrbitCameraController>(camera);
-    auto vt               = make_shared<TerrainDemoVT>();
+    auto vt               = make_shared<TerrainVT>();
 
     vt->setCamera(camera);
     vt->setScene(scene);

@@ -1,2 +1,2 @@
 
-# Application demonstrating the GPUTerrain library
+# Application demonstrating the TerrainLib library

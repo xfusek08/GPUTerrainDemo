@@ -1,25 +1,27 @@
 #pragma once
 
-#include <TerrainDemo/TDScene.h>
-#include <TerrainDemo/core/Camera.h>
-#include <TerrainDemo/interfaces/IVisualizationTechnique.h>
-#include <TerrainDemo/interfaces/IScene.h>
-
 #include <memory>
+
+#include <geGL/geGL.h>
+
+#include <TerrainDemo/interfaces/IVisualizationTechnique.h>
+#include <TerrainDemo/core/Camera.h>
+#include <TerrainDemo/core/Scene.h>
+#include <TerrainDemo/TerrainScene.h>
 
 namespace TerrainDemo
 {
-    class TerrainDemoVT : public interfaces::IVisualizationTechnique
+    class TerrainVT : public interfaces::IVisualizationTechnique
     {
     public:
-        TerrainDemoVT();
+        TerrainVT();
         void draw() override;
         void drawSetUp() override;
-        void setScene(std::shared_ptr<interfaces::IScene> scene) override;
+        void setScene(std::shared_ptr<core::Scene> scene) override;
         inline void setCamera(std::shared_ptr<core::Camera> camera) { _camera = camera; }
 
     protected:
-        std::shared_ptr<TDScene> _scene = nullptr;
+        std::shared_ptr<TerrainScene> _scene = nullptr;
         std::shared_ptr<core::Camera> _camera = nullptr;
 
         // BEGIN temporal test delete when proper model/terrain is loaded -------------------------------

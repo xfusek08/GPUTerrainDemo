@@ -1,26 +1,24 @@
 
-#include <geGL/geGL.h>
+#include <TerrainDemo/TerrainVT.h>
+#include <TerrainDemo/core/Utils.h>
+
 #include <geUtil/Text.h>
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
-#include <TerrainDemo/TerrainDemoVT.h>
-#include <TerrainDemo/TDScene.h>
-#include <TerrainDemo/core/Utils.h>
-
 using namespace std;
 using namespace ge::gl;
 using namespace TerrainDemo;
+using namespace TerrainDemo::core;
 using namespace TerrainDemo::interfaces;
 
-
-TerrainDemoVT::TerrainDemoVT()
+TerrainVT::TerrainVT()
 {
 }
 
-void TerrainDemoVT::drawSetUp()
+void TerrainVT::drawSetUp()
 {
     // initiation of gl
     gl->glEnable(GL_DEPTH_TEST);
@@ -77,7 +75,7 @@ void TerrainDemoVT::drawSetUp()
     // END temporal test delete when proper model/terrain is loaded -------------------------------
 }
 
-void TerrainDemoVT::draw()
+void TerrainVT::draw()
 {
     gl->glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -93,8 +91,9 @@ void TerrainDemoVT::draw()
     gl->glDrawElements(GL_LINES, elementBuffer->getSize(), GL_UNSIGNED_INT, nullptr);
 }
 
-void TerrainDemoVT::setScene(shared_ptr<IScene> scene)
+void TerrainVT::setScene(shared_ptr<Scene> scene)
 {
-    _scene = static_pointer_cast<TDScene>(scene);
+    _scene = static_pointer_cast<TerrainScene>(scene);
+
     // maybe analyze scene and convert to VAOS ...
 }

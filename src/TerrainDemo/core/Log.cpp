@@ -1,7 +1,7 @@
 /**
  * @Brief       Logging mechanism body
  * @Author      Petr Fusek
- * @Project     GPUTerrainDemo
+ * @Project     TerrainLibDemo
  * @File        Logger.h
  */
 

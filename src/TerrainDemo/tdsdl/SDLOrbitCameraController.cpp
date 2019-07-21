@@ -8,7 +8,7 @@ using namespace TerrainDemo::core;
 SDLOrbitCameraController::SDLOrbitCameraController(shared_ptr<Camera> camera) :
     OrbitCameraController::OrbitCameraController(camera)
 {
-    _speed = 0.0005f;
+    _speed = 0.005f;
     _radius = 5.f;
     _camera->setCameraPosition(glm::vec3{ 0,0,1 });
     performRotation();
