@@ -7,7 +7,7 @@
 
 #include <TerrainDemo/core/OrbitCameraController.h>
 
-#ifdef GT_DEBUG
+#ifdef TDDEBUG
 #define GLM_ENABLE_EXPERIMENTAL
 #include <glm/gtx/string_cast.hpp>
 #include <TerrainDemo/core/Utils.h>

@@ -49,12 +49,12 @@ namespace TerrainDemo
     } // namespace core
 } // namespace TerrainDemo
 
-#define GPTR_LOG_ERROR(...) TerrainDemo::core::Log::getLogger()->writeError(STREAM_TO_STR(__VA_ARGS__))
-#define GPTR_LOG_WARNING(...) TerrainDemo::core::Log::getLogger()->writeWarning(STREAM_TO_STR(__VA_ARGS__))
-#define GPTR_LOG_INFO(...) TerrainDemo::core::Log::getLogger()->writeInfo(STREAM_TO_STR(__VA_ARGS__))
+#define TD_LOG_ERROR(...) TerrainDemo::core::Log::getLogger()->writeError(STREAM_TO_STR(__VA_ARGS__))
+#define TD_LOG_WARNING(...) TerrainDemo::core::Log::getLogger()->writeWarning(STREAM_TO_STR(__VA_ARGS__))
+#define TD_LOG_INFO(...) TerrainDemo::core::Log::getLogger()->writeInfo(STREAM_TO_STR(__VA_ARGS__))
 
-#ifdef GT_DEBUG
-#define GPTR_LOG_Debug(...) TerrainDemo::core::Log::getLogger()->writeDebug(STREAM_TO_STR(__VA_ARGS__))
+#ifdef TDDEBUG
+#define TD_LOG_Debug(...) TerrainDemo::core::Log::getLogger()->writeDebug(STREAM_TO_STR(__VA_ARGS__))
 #else
-#define GPTR_LOG_Debug(...)
+#define TD_LOG_Debug(...)
 #endif

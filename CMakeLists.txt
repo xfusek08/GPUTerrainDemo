@@ -42,13 +42,14 @@ set(SRC_TERRAIN_DEMO
     src/${APP_NAME}/TerrainVT.h                     src/${APP_NAME}/TerrainVT.cpp
     src/${APP_NAME}/TerrainScene.h                  src/${APP_NAME}/TerrainScene.cpp
     src/${APP_NAME}/TerrainEntity.h                 src/${APP_NAME}/TerrainEntity.cpp
+    src/${APP_NAME}/AxisEntity.h                    src/${APP_NAME}/AxisEntity.cpp
 )
 
 set(SRC_TERRAIN_DEMO_CORE
     src/${APP_NAME}/core/Log.h                      src/${APP_NAME}/core/Log.cpp
     src/${APP_NAME}/core/Camera.h                   src/${APP_NAME}/core/Camera.cpp
     src/${APP_NAME}/core/OrbitCameraController.h    src/${APP_NAME}/core/OrbitCameraController.cpp
-    src/${APP_NAME}/core/Entity.h
+    src/${APP_NAME}/core/Entity.h                   src/${APP_NAME}/core/Entity.cpp
     src/${APP_NAME}/core/Scene.h
     src/${APP_NAME}/core/Utils.h
 )
@@ -103,7 +104,7 @@ target_include_directories(${APP_NAME}
 target_compile_definitions(${APP_NAME} PUBLIC
     "VERTEX_SHADER=\"${vertexShader}\""
     "FRAGMENT_SHADER=\"${fragmentShader}\""
-    $<$<CONFIG:DEBUG>: "GT_DEBUG" "GPTR_ENABLE_ASSERTS" >
+    $<$<CONFIG:DEBUG>: "TDDEBUG" "TD_ENABLE_ASSERTS" >
 )
 
 message("VERTEX_SHADER=\"${vertexShader}\"")

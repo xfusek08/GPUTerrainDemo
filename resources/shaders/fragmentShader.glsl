@@ -7,5 +7,8 @@ out vec4 fragColor;
 
 void main()
 {
-    fragColor = vec4(vertColor,1.0f);
+    vec3 finalColor = vertColor;
+    if ((finalColor.x + finalColor.y + finalColor.z) == 0.0f)
+        finalColor = vec3(0.5f, 0.5f, 0.5f);
+    fragColor = vec4(finalColor,1.0f);
 }

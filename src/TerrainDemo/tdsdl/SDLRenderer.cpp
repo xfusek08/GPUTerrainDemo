@@ -24,7 +24,7 @@ SDLRenderer::~SDLRenderer() {}
 
 void SDLRenderer::init()
 {
-    GPTR_LOG_Debug("SDLRenderer::init()");
+    TD_LOG_Debug("SDLRenderer::init()");
 
     // bind callbacks
     _mainLoop->setEventHandler(bind(&SDLRenderer::update, this, placeholders::_1));
@@ -45,18 +45,18 @@ void SDLRenderer::init()
 void SDLRenderer::run()
 {
     if (!_initialized) {
-        GPTR_ASSERT(_initialized, "Calling Run on SDLRenderer befor its initiation");
+        TD_ASSERT(_initialized, "Calling Run on SDLRenderer befor its initiation");
         return;
     }
     if (_vt == nullptr) {
-        GPTR_ASSERT(_initialized, "Cannot run SDLRenderer without visualization technique");
+        TD_ASSERT(_initialized, "Cannot run SDLRenderer without visualization technique");
         return;
     }
 
-    GPTR_LOG_Debug("Starting renderer.");
+    TD_LOG_Debug("Starting renderer.");
     _vt->drawSetUp();
     (*_mainLoop)();
-    GPTR_LOG_Debug("Renderer ended.");
+    TD_LOG_Debug("Renderer ended.");
 }
 
 void SDLRenderer::addEventReceiver(std::shared_ptr<ISDLEventReceiver> receiver)
@@ -92,8 +92,8 @@ void SDLRenderer::draw()
 
     _vt->draw();
 
-    if (_performance.framesCounted()) 
-        GPTR_LOG_Debug("FPS: " << _performance.getFrames());
+    if (_performance.framesCounted())
+        TD_LOG_Debug("FPS: " << _performance.getFrames());
 
     _performance.capFps();
 

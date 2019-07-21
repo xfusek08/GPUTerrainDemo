@@ -25,7 +25,7 @@ Application::~Application() {}
 
 int Application::init()
 {
-    GPTR_LOG_INFO("Application initiating ...");
+    TD_LOG_INFO("Application initiating ...");
 
     // init SDL window
     auto window = make_shared<Window>();
@@ -48,14 +48,14 @@ int Application::init()
     _renderer->init();
     _renderer->addEventReceiver(cameraController);
 
-    GPTR_LOG_INFO("Application initialized.");
+    TD_LOG_INFO("Application initialized.");
     return true;
 }
 
 int Application::run()
 {
-    GPTR_LOG_INFO("Application running ...");
+    TD_LOG_INFO("Application running ...");
     this->_renderer->run();
-    GPTR_LOG_INFO("Application end.");
+    TD_LOG_INFO("Application end.");
     return 0;
 }

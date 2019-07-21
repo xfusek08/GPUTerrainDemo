@@ -1,19 +1,15 @@
 
-#include <TerrainDemo/entities/TDTerrainEntity.h>
+#include <TerrainDemo/TerrainEntity.h>
 
-using namespace TerrainDemo::entities;
+using namespace std;
+using namespace tl;
+using namespace TerrainDemo;
+using namespace TerrainDemo::core;
 
-TerrainEntity::TerrainEntity()
+TerrainEntity::TerrainEntity() : Entity()
 {
-
-}
-
-std::vector<float> TerrainEntity::getVerticies() const
-{
-
-}
-
-std::vector<float> TerrainEntity::getIndieces() const
-{
-
+    _terrain = make_shared<Terrain>();
+    _terrain->generate();
+    _verticies = _terrain->getVertices();
+    _indicies = _terrain->getIndicies();
 }

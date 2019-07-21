@@ -34,45 +34,11 @@ void TerrainVT::drawSetUp()
 
     program->setMatrix4fv("projectionMatrix", glm::value_ptr(_camera->getProjectionMatrix()));
 
-    // BEGIN temporal test delete when proper model/terrain is loaded -------------------------------
-        std::vector<float> vertices = {
-            -1.f,  0.f,  0.f,
-             1.f,  0.f,  0.f,
-             0.f, -1.f,  0.f,
-             0.f,  1.f,  0.f,
-             0.f,  0.f, -1.f,
-             0.f,  0.f,  1.f,
-        };
-
-        std::vector<float> vertColors = {
-            1.f, 0.f, 0.f,
-            1.f, 0.f, 0.f,
-            0.f, 1.f, 0.f,
-            0.f, 1.f, 0.f,
-            0.f, 0.f, 1.f,
-            0.f, 0.f, 1.f,
-        };
-
-        std::vector<unsigned> indices = {
-            0,1,
-            2,3,
-            4,5
-        };
-
-        positions = std::make_shared<ge::gl::Buffer>(vertices.size() * sizeof(float), vertices.data());
-        colors = std::make_shared<ge::gl::Buffer>(vertColors.size() * sizeof(float), vertColors.data());
-        elementBuffer = std::make_shared<ge::gl::Buffer>(indices.size() * sizeof(int), indices.data());
-
-        VAO = std::make_shared<ge::gl::VertexArray>();
-
-        VAO->bind();
-        VAO->addElementBuffer(elementBuffer);
-        VAO->addAttrib(positions, 0, 3, GL_FLOAT);
-        VAO->addAttrib(colors, 1, 3, GL_FLOAT);
-        VAO->unbind();
-
-        //_camera->setCameraPosition(glm::vec3{0.f, 1.f, 5.f});
-    // END temporal test delete when proper model/terrain is loaded -------------------------------
+    if (_scene != nullptr) {
+        for (shared_ptr<Entity> entity : _scene->getEntities()) {
+            entity->initVao(gl);
+        }
+    }
 }
 
 void TerrainVT::draw()
@@ -87,13 +53,13 @@ void TerrainVT::draw()
 
     program->use();
 
-    VAO->bind();
-    gl->glDrawElements(GL_LINES, elementBuffer->getSize(), GL_UNSIGNED_INT, nullptr);
+    for (shared_ptr<Entity> entity : _scene->getEntities()) {
+        entity->vao->bind();
+        gl->glDrawElements(entity->drawMode, entity->getIndieces().size(), entity->drawType, nullptr);
+    }
 }
 
 void TerrainVT::setScene(shared_ptr<Scene> scene)
 {
     _scene = static_pointer_cast<TerrainScene>(scene);
-
-    // maybe analyze scene and convert to VAOS ...
 }
