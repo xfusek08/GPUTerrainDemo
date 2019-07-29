@@ -53,7 +53,7 @@ namespace TerrainDemo
 #define TD_LOG_WARNING(...) TerrainDemo::core::Log::getLogger()->writeWarning(STREAM_TO_STR(__VA_ARGS__))
 #define TD_LOG_INFO(...) TerrainDemo::core::Log::getLogger()->writeInfo(STREAM_TO_STR(__VA_ARGS__))
 
-#ifdef TDDEBUG
+#ifdef TD_DEBUG
 #define TD_LOG_Debug(...) TerrainDemo::core::Log::getLogger()->writeDebug(STREAM_TO_STR(__VA_ARGS__))
 #else
 #define TD_LOG_Debug(...)

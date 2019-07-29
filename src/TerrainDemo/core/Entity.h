@@ -14,6 +14,10 @@ namespace TerrainDemo
         {
         public:
             Entity();
+            Entity(
+                std::vector<float>    verticies,
+                std::vector<unsigned> indicies
+            );
 
             GLenum drawMode = GL_TRIANGLES;
             GLenum drawType = GL_UNSIGNED_INT;

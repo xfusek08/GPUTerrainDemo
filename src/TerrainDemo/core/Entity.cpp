@@ -9,17 +9,23 @@ using namespace TerrainDemo::core;
 Entity::Entity()
 {
     // simple exemplar triangle
-
-    _verticies = {
-        -1.0f, -1.0f, 0.0f,
-         1.0f, -1.0f, 0.0f,
-         0.0f,  1.0f, 0.0f,
-    };
-
-    _indicies = {
-        0, 1, 2
-    };
+    Entity(
+        {
+            -1.0f, -1.0f, 0.0f,
+            1.0f, -1.0f, 0.0f,
+            0.0f,  1.0f, 0.0f,
+        },
+        {
+            0, 1, 2
+        }
+    );
 }
+
+Entity::Entity(std::vector<float> verticies, std::vector<unsigned> indicies) :
+    _verticies(verticies),
+    _indicies(indicies)
+{}
+
 
 
 void Entity::initVao(shared_ptr<Context> gl)

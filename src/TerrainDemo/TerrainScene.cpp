@@ -1,13 +1,27 @@
 
+#include <TerrainLib/Terrain.h>
 #include <TerrainDemo/TerrainScene.h>
-#include <TerrainDemo/TerrainEntity.h>
 #include <TerrainDemo/AxisEntity.h>
 
+#ifdef TD_DEBUG
+#define GLM_ENABLE_EXPERIMENTAL
+#include <TerrainDemo/core/Utils.h>
+#include <glm/gtx/string_cast.hpp>
+#endif
+
+using namespace tl;
 using namespace std;
 using namespace TerrainDemo;
 
 TerrainScene::TerrainScene() : Scene()
 {
-    _entities.push_back(make_shared<TerrainEntity>());
     _entities.push_back(make_shared<AxisEntity>());
+
+    auto terrain = make_shared<Terrain>(20);   
+    for (auto face : terrain->getFaces()) {
+        _entities.push_back(make_shared<core::Entity>(
+            face->getMesh()->vertices,
+            face->getMesh()->indicies
+        ));
+    }
 }

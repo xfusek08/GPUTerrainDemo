@@ -41,7 +41,6 @@ set(SRC_TERRAIN_DEMO
     src/${APP_NAME}/Application.h                   src/${APP_NAME}/Application.cpp
     src/${APP_NAME}/TerrainVT.h                     src/${APP_NAME}/TerrainVT.cpp
     src/${APP_NAME}/TerrainScene.h                  src/${APP_NAME}/TerrainScene.cpp
-    src/${APP_NAME}/TerrainEntity.h                 src/${APP_NAME}/TerrainEntity.cpp
     src/${APP_NAME}/AxisEntity.h                    src/${APP_NAME}/AxisEntity.cpp
 )
 
@@ -104,7 +103,7 @@ target_include_directories(${APP_NAME}
 target_compile_definitions(${APP_NAME} PUBLIC
     "VERTEX_SHADER=\"${vertexShader}\""
     "FRAGMENT_SHADER=\"${fragmentShader}\""
-    $<$<CONFIG:DEBUG>: "TDDEBUG" "TD_ENABLE_ASSERTS" >
+    $<$<CONFIG:DEBUG>: "TD_DEBUG" "TD_ENABLE_ASSERTS" >
 )
 
 message("VERTEX_SHADER=\"${vertexShader}\"")
