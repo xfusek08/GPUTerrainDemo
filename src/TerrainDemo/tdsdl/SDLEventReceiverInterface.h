@@ -4,9 +4,9 @@
 
 namespace TerrainDemo
 {
-    namespace interfaces
+    namespace tdsdl
     {
-        class ISDLEventReceiver
+        class SDLEventReceiverInterface
         {
         public:
             virtual bool processSDLEvent(SDL_Event const&) = 0;

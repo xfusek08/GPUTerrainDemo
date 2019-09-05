@@ -1,5 +1,7 @@
 #pragma once
 
+#include <SDL.h>
+
 namespace TerrainDemo
 {
     namespace tdsdl
@@ -21,7 +23,7 @@ namespace TerrainDemo
                 _frameCnt = 0,
                 _frameCountingTimeMs = 0,
                 _msPerFrame = 0,
-                _beginTimeMs = 0 ,
+                _beginTimeMs = 0,
                 _endTimeMs = 0,
                 _previousBeginTime = 0;
         };

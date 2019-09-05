@@ -1,14 +1,15 @@
 #pragma once
+
 #include <SDL.h>
 
-#include <TerrainDemo/interfaces/ISDLEventReceiver.h>
+#include <TerrainDemo/tdsdl/SDLEventReceiverInterface.h>
 #include <TerrainDemo/core/OrbitCameraController.h>
 
 namespace TerrainDemo
 {
     namespace tdsdl
     {
-        class SDLOrbitCameraController : public core::OrbitCameraController, public interfaces::ISDLEventReceiver
+        class SDLOrbitCameraController : public core::OrbitCameraController, public SDLEventReceiverInterface
         {
         public:
             SDLOrbitCameraController(std::shared_ptr<core::Camera>);

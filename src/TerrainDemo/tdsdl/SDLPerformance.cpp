@@ -1,5 +1,4 @@
 
-#include <SDL.h>
 #include <TerrainDemo/tdsdl/SDLPerformance.h>
 
 using namespace TerrainDemo::tdsdl;

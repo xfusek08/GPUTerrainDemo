@@ -10,7 +10,7 @@ namespace TerrainDemo
         /**
          * @brief Logger interface
          */
-        class ILogger
+        class LoggerInterface
         {
         public:
             virtual void writeError(std::string message) const = 0;

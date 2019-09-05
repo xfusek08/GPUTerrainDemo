@@ -4,9 +4,9 @@
 
 namespace TerrainDemo
 {
-    class TerrainScene : public core::Scene
+    class TDScene : public core::Scene
     {
     public:
-        TerrainScene();
+        TDScene();
     };
 }

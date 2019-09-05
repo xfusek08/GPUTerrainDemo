@@ -14,6 +14,7 @@ namespace TerrainDemo
         public:
             Scene() {}
             inline std::vector<std::shared_ptr<Entity>> getEntities() const { return _entities; }
+            inline void addEntity(std::shared_ptr<Entity> entity) { _entities.push_back(entity); }
         protected:
             std::vector<std::shared_ptr<Entity>> _entities;
         };

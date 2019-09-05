@@ -5,7 +5,7 @@
  * @File        Logger.h
  */
 
-#include <TerrainDemo/interfaces/ILogger.h>
+#include <TerrainDemo/interfaces/LoggerInterface.h>
 #include <TerrainDemo/core/Log.h>
 #include <assert.h>
 
@@ -13,9 +13,9 @@ using namespace std;
 using namespace TerrainDemo::core;
 using namespace TerrainDemo::interfaces;
 
-shared_ptr<ILogger> Log::_logger;
+shared_ptr<LoggerInterface> Log::_logger;
 
-void Log::setLogger(shared_ptr<ILogger> logger = nullptr)
+void Log::setLogger(shared_ptr<LoggerInterface> logger = nullptr)
 {
     if (logger != nullptr)
         _logger = logger;
@@ -23,7 +23,7 @@ void Log::setLogger(shared_ptr<ILogger> logger = nullptr)
         _logger = make_shared<BasicLogger>();
 }
 
-std::shared_ptr<ILogger>& Log::getLogger()
+std::shared_ptr<LoggerInterface>& Log::getLogger()
 {
     if (_logger == nullptr)
         setLogger();

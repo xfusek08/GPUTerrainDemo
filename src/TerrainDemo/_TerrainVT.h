@@ -7,7 +7,7 @@
 #include <TerrainDemo/core/Camera.h>
 #include <TerrainDemo/core/Scene.h>
 #include <TerrainDemo/core/Entity.h>
-#include <TerrainDemo/TerrainScene.h>
+#include <TerrainDemo/TDScene.h>
 
 namespace TerrainDemo
 {
@@ -20,7 +20,7 @@ namespace TerrainDemo
         void setScene(std::shared_ptr<core::Scene> scene) override;
         inline void setCamera(std::shared_ptr<core::Camera> camera) { _camera = camera; }
     protected:
-        std::shared_ptr<TerrainScene> _scene = nullptr;
+        std::shared_ptr<TDScene> _scene = nullptr;
         std::shared_ptr<core::Camera> _camera = nullptr;
     };
 } // namespace TerrainDemo

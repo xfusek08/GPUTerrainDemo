@@ -1,22 +1,22 @@
 
 #include <memory>
-#include <string>
 
 #include <TerrainDemo/core/Log.h>
 #include <TerrainDemo/core/Utils.h>
 #include <TerrainDemo/core/Camera.h>
+#include <TerrainDemo/core/SceneRenderer.h>
 
-#include <TerrainDemo/tdsdl/SDLRenderer.h>
+#include <TerrainDemo/tdsdl/SDLGlMainLoop.h>
 #include <TerrainDemo/tdsdl/SDLOrbitCameraController.h>
 
+#include <TerrainDemo/entities/AxisEntity.h>
+
+#include <TerrainDemo/vt/types.h>
+
 #include <TerrainDemo/Application.h>
-#include <TerrainDemo/TerrainScene.h>
-#include <TerrainDemo/TerrainVT.h>
 
 using namespace std;
 using namespace TerrainDemo;
-using namespace TerrainDemo::tdsdl;
-using namespace TerrainDemo::core;
 using namespace sdl2cpp;
 
 Application::Application() {}
@@ -25,37 +25,36 @@ Application::~Application() {}
 
 int Application::init()
 {
-    TD_LOG_INFO("Application initiating ...");
+    TD_LOG_DEBUG("Application initiating ...");
 
-    // init SDL window
-    auto window = make_shared<Window>();
-    auto mainLoop = make_shared<MainLoop>();
+    _mainLoop = make_shared<tdsdl::SDLGlMainLoop>();
+    _scene    = make_shared<core::Scene>();
+    _renderer = make_shared<core::SceneRenderer>(_mainLoop->getGlContext(), _scene);
+    _camera   = make_shared<core::Camera>(100, 100);
 
-    // init terrain demo scene
-    auto scene            = make_shared<TerrainScene>();
-    auto camera           = make_shared<Camera>(window->getWidth(), window->getHeight());
-    auto cameraController = make_shared<SDLOrbitCameraController>(camera);
-    auto vt               = make_shared<TerrainVT>();
+    auto cameraController = make_shared<tdsdl::SDLOrbitCameraController>(_camera);
+    _mainLoop->addEventReceiver(cameraController);
+    _mainLoop->setDrawCallback(bind(&Application::draw, this)); // TODO: maybe bind renderer draw directly
 
-    vt->setCamera(camera);
-    vt->setScene(scene);
+    // TODO: set up scene with entities
+    _scene->addEntity(make_shared<entities::AxisEntity>(vt::VTType::ColorLinesVT));
 
-    _renderer = make_shared<SDLRenderer>(
-        window,
-        mainLoop,
-        vt
-    );
-    _renderer->init();
-    _renderer->addEventReceiver(cameraController);
+    _renderer->updateScene();
 
-    TD_LOG_INFO("Application initialized.");
+    TD_LOG_DEBUG("Application initialized.");
     return true;
 }
 
 int Application::run()
 {
-    TD_LOG_INFO("Application running ...");
-    this->_renderer->run();
-    TD_LOG_INFO("Application end.");
+    TD_LOG_DEBUG("Application running ...");
+    _mainLoop->run();
+    TD_LOG_DEBUG("Application end.");
     return 0;
+}
+
+void Application::draw()
+{
+    // camera is moved with _mainLoop with help of manipulator as event reciever
+    _renderer->draw(_camera);
 }

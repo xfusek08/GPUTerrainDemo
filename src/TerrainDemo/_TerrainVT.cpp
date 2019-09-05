@@ -82,5 +82,5 @@ void TerrainVT::draw()
 
 void TerrainVT::setScene(shared_ptr<Scene> scene)
 {
-    _scene = static_pointer_cast<TerrainScene>(scene);
+    _scene = static_pointer_cast<TDScene>(scene);
 }

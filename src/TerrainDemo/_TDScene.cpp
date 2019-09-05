@@ -1,6 +1,6 @@
 
 #include <TerrainLib/Terrain.h>
-#include <TerrainDemo/TerrainScene.h>
+#include <TerrainDemo/TDScene.h>
 #include <TerrainDemo/AxisEntity.h>
 
 #ifdef TD_DEBUG
@@ -13,11 +13,11 @@ using namespace tl;
 using namespace std;
 using namespace TerrainDemo;
 
-TerrainScene::TerrainScene() : Scene()
+TDScene::TDScene() : Scene()
 {
     _entities.push_back(make_shared<AxisEntity>());
 
-    auto terrain = make_shared<Terrain>(20);   
+    auto terrain = make_shared<Terrain>(20);
     for (auto face : terrain->getFaces()) {
         _entities.push_back(make_shared<core::Entity>(
             face->getMesh()->vertices,
