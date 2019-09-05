@@ -31,8 +31,8 @@ void TerrainVT::drawSetUp()
 
     // create and conpile program
     program = make_shared<ge::gl::Program>(
-        make_shared<ge::gl::Shader>(GL_VERTEX_SHADER, ge::util::loadTextFile(VERTEX_SHADER)),
-        make_shared<ge::gl::Shader>(GL_FRAGMENT_SHADER, ge::util::loadTextFile(FRAGMENT_SHADER))
+        make_shared<ge::gl::Shader>(GL_VERTEX_SHADER, ge::util::loadTextFile(SHADER_VERTEXSHADER)),
+        make_shared<ge::gl::Shader>(GL_FRAGMENT_SHADER, ge::util::loadTextFile(SHADER_FRAGMENTSHADER))
     );
 
     program->setMatrix4fv("projectionMatrix", glm::value_ptr(_camera->getProjectionMatrix()));
@@ -57,15 +57,16 @@ void TerrainVT::draw()
     if (_camera->hasViewChanged()) {
         program->setMatrix4fv("viewMatrix", glm::value_ptr(_camera->getViewMatrix()));
         program->set3fv("cameraPosition", glm::value_ptr(_camera->getCameraPosition()));
-        program->set3fv("lightPosition", glm::value_ptr(glm::vec3{5.f,5.f,5.f}
-            // glm::normalize(_camera->getCameraPosition()) * 2.f
+        program->set3fv("lightPosition", glm::value_ptr(
+            // glm::vec3{5.f,5.f,5.f}
+            glm::normalize(_camera->getCameraPosition()) * 2.f
             /*
             +
             glm::normalize(
                 (
                     cameraLeft * 3.f +
                     cameraUp * 4.f
-                ) 
+                )
             ) * 4.f
             */
         ));

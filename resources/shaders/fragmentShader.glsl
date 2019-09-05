@@ -12,7 +12,7 @@ uniform vec3 cameraPosition; // position of camera
 uniform vec3 lightColor         = vec3(1.f, 1.f, 1.f); // lightColor = white
 uniform vec3 lightPosition      = vec3(2.f,2.f,2.f);
 
-// specualrColor = white
+// specularColor = white
 uniform vec3 specularColor      = vec3(1.0f, 1.0f, 1.0f);
 uniform float shininessFactor   = 40.f; // shininess factor
 
@@ -25,8 +25,8 @@ void main()
 
     vec3 diffuseColor = vec3(
         1.f,
-        0.5f,
-        1.0f
+        1.f,
+        1.f
     );
 
     float nY = vertNormal.y;

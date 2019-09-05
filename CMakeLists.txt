@@ -33,9 +33,45 @@ if(NOT TARGET glm)
   find_package(glm REQUIRED)
 endif()
 
+# resources
 
 set(DEFAULT_RESOERCES_PATH "${CMAKE_CURRENT_LIST_DIR}/resources")
 set(${APP_NAME}_RESOURCES  "${DEFAULT_RESOERCES_PATH}" CACHE PATH "Relative or absolute path to Application resources.")
+
+set(SHADER_FILES
+    basic/vertex.glsl basic/fragment.glsl
+    fragmentShader.glsl
+    vertexShader.glsl
+)
+
+# generate shader definitions from SHADER_FILES based on their location
+set(SHADER_COMPILE_DEFINITIONS )
+foreach(FILE_RELATIVE_NAME ${SHADER_FILES})
+
+    unset(shader_file CACHE)
+
+    # find full name of shader
+    find_file(shader_file
+        ${FILE_RELATIVE_NAME}
+        HINTS ${${APP_NAME}_RESOURCES}/shaders
+    )
+
+    # create shader definition string
+    string(REPLACE "/" "_" definition_name ${FILE_RELATIVE_NAME})
+    string(REPLACE "\\" "_" definition_name ${definition_name})
+    string(REGEX REPLACE "\\..*" "" definition_name ${definition_name})
+    string(TOUPPER ${definition_name} definition_name)
+    string(CONCAT shader_definition
+        "SHADER_" ${definition_name} "=\"" ${shader_file} "\""
+    )
+
+    message(${shader_definition})
+
+    # add shader_definition to SHADER_COMPILE_DEFINITIONS list
+    list(APPEND SHADER_COMPILE_DEFINITIONS ${shader_definition})
+endforeach()
+
+# source files
 
 set(SRC_TERRAIN_DEMO
     src/${APP_NAME}/Application.h                   src/${APP_NAME}/Application.cpp
@@ -70,15 +106,6 @@ source_group("TerrainDemo\\core" FILES ${SRC_TERRAIN_DEMO_CORE})
 source_group("TerrainDemo\\tdsdl" FILES ${SRC_ERRAIN_DEMO_TDSDL})
 source_group("TerrainDemo\\interfaces" FILES ${SRC_TERRAIN_DEMO_INTERFACES})
 
-# find shader files
-find_file(vertexShader vertexShader.glsl
-    HINTS ${${APP_NAME}_RESOURCES}/shaders
-)
-
-find_file(fragmentShader fragmentShader.glsl
-    HINTS ${${APP_NAME}_RESOURCES}/shaders
-)
-
 add_executable(${APP_NAME}
     src/main.cpp
     ${SRC_TERRAIN_DEMO}
@@ -101,13 +128,9 @@ target_include_directories(${APP_NAME}
 
 # add macra to code
 target_compile_definitions(${APP_NAME} PUBLIC
-    "VERTEX_SHADER=\"${vertexShader}\""
-    "FRAGMENT_SHADER=\"${fragmentShader}\""
+    ${SHADER_COMPILE_DEFINITIONS}
     $<$<CONFIG:DEBUG>: "TD_DEBUG" "TD_ENABLE_ASSERTS" >
 )
-
-message("VERTEX_SHADER=\"${vertexShader}\"")
-message("FRAGMENT_SHADER=\"${fragmentShader}\"")
 
 if(WIN32)
     set(LIBS_DLLS geCore geGL geUtil )
