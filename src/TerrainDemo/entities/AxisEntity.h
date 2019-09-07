@@ -11,8 +11,10 @@ namespace TerrainDemo
         public:
             AxisEntity(vt::VTType vtType);
 
+			inline std::vector<float> getColors() const { return _colors; }
+
         protected:
-            std::vector<float> _colors;
+			std::vector<float> _colors = { 0.f };
         };
     } // namespace entities
 } // namespace TerrainDemo

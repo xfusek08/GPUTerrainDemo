@@ -35,7 +35,7 @@ namespace TerrainDemo
         class SDLGlMainLoop
         {
         public:
-            SDLGlMainLoop();
+            SDLGlMainLoop(int width, int height);
             ~SDLGlMainLoop();
 
             inline std::shared_ptr<ge::gl::Context> getGlContext() { return _gl; }
@@ -52,6 +52,8 @@ namespace TerrainDemo
             virtual void draw();
 
             bool _initialized           = false;
+            int _windowWidth            = 0;
+            int _windowHeight           = 0;
             SDLPerformance _performance = SDLPerformance();
 
             std::vector<std::shared_ptr<tdsdl::SDLEventReceiverInterface>> _eventReceivers;

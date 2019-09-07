@@ -1,9 +1,10 @@
 #pragma once
 
 #include <memory>
+#include <unordered_map>
 
-#include <TerrainDemo/core/Scene.h>
 #include <TerrainDemo/interfaces/RendererInterface.h>
+#include <TerrainDemo/vt/types.h>
 
 namespace ge
 {
@@ -15,9 +16,15 @@ namespace ge
 
 namespace TerrainDemo
 {
+	namespace vt
+	{
+		class BaseVisualizationTechnique;
+	}
+
     namespace core
     {
 		class Camera;
+		class Scene;
 
         class SceneRenderer : public interfaces::RendererInterface
         {
@@ -30,6 +37,7 @@ namespace TerrainDemo
         protected:
             std::shared_ptr<Scene> _scene;
 			std::shared_ptr<ge::gl::Context> _gl;
+			std::unordered_map<vt::VTType, std::shared_ptr<vt::BaseVisualizationTechnique>> _vts;
         };
     } // core
 } // namespace TerrainDemo

@@ -20,11 +20,14 @@ namespace TerrainDemo
     {
         class VTFactory
         {
+		public:
             static std::shared_ptr<BaseVisualizationTechnique> createVTFromType(std::shared_ptr<ge::gl::Context> context, VTType type)
             {
                 switch(type) {
-					case VTType::BaseVisualizationTechnique : return std::make_shared<BaseVisualizationTechnique>(context);
-					case VTType::ColorLinesVT               : return std::make_shared<ColorLinesVT>(context);
+					case VTType::BaseVisualizationTechnique : 
+						return std::make_shared<BaseVisualizationTechnique>(context);
+					case VTType::ColorLinesVT               : 
+						return std::make_shared<ColorLinesVT>(context);
 					default: 
 						return nullptr;
                 };

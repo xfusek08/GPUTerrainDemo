@@ -11,7 +11,9 @@ using namespace std;
 using namespace TerrainDemo::tdsdl;
 using namespace TerrainDemo::interfaces;
 
-SDLGlMainLoop::SDLGlMainLoop()
+SDLGlMainLoop::SDLGlMainLoop(int width, int height) :
+    _windowWidth(width),
+    _windowHeight(height)
 {
     init();
 }
@@ -28,7 +30,7 @@ void SDLGlMainLoop::init()
     TD_LOG_DEBUG("SDLGlMainLoop::init()");
 
     // init SDL window
-    _window = make_shared<sdl2cpp::Window>();
+    _window = make_shared<sdl2cpp::Window>(_windowWidth, _windowHeight);
     _mainLoop = make_shared<sdl2cpp::MainLoop>();
 
     // bind callbacks

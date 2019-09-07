@@ -3,6 +3,7 @@
 
 #include <TerrainDemo/core/Log.h>
 #include <TerrainDemo/core/Utils.h>
+#include <TerrainDemo/core/Scene.h>
 #include <TerrainDemo/core/Camera.h>
 #include <TerrainDemo/core/SceneRenderer.h>
 
@@ -27,17 +28,18 @@ int Application::init()
 {
     TD_LOG_DEBUG("Application initiating ...");
 
-    _mainLoop = make_shared<tdsdl::SDLGlMainLoop>();
+    _mainLoop = make_shared<tdsdl::SDLGlMainLoop>(Application::WINDOW_WIDTH, Application::WINDOW_HEIGHT);
     _scene    = make_shared<core::Scene>();
     _renderer = make_shared<core::SceneRenderer>(_mainLoop->getGlContext(), _scene);
-    _camera   = make_shared<core::Camera>(100, 100);
+    _camera   = make_shared<core::Camera>(Application::WINDOW_WIDTH, Application::WINDOW_HEIGHT);
 
     auto cameraController = make_shared<tdsdl::SDLOrbitCameraController>(_camera);
     _mainLoop->addEventReceiver(cameraController);
     _mainLoop->setDrawCallback(bind(&Application::draw, this)); // TODO: maybe bind renderer draw directly
 
     // TODO: set up scene with entities
-    _scene->addEntity(make_shared<entities::AxisEntity>(vt::VTType::ColorLinesVT));
+	_scene->addEntity(make_shared<core::Entity>());
+	_scene->addEntity(make_shared<entities::AxisEntity>(vt::VTType::ColorLinesVT));
 
     _renderer->updateScene();
 

@@ -20,10 +20,12 @@ namespace TerrainDemo
                 std::vector<float>    verticies,
                 std::vector<unsigned> indicies
             );
+			virtual ~Entity() {}
 
-            inline std::vector<float>    getVerticies()         { return _verticies; }
-            inline std::vector<unsigned> getIndieces()          { return _indicies; }
-            inline glm::mat4             getTransformMatrix()   { return _transform; }
+			inline vt::VTType			 getVtType()			const { return _vtType; }
+			inline std::vector<float>    getVerticies()         const { return _verticies; }
+            inline std::vector<unsigned> getIndieces()          const { return _indicies; }
+            inline glm::mat4             getTransformMatrix()   const { return _transform; }
         protected:
             std::vector<float>      _verticies;
             std::vector<unsigned>   _indicies;

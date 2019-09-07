@@ -4,7 +4,7 @@
 #include <TerrainDemo/core/Log.h>
 #include <sstream>
 
-#define STREAM_TO_STR(S) static_cast<std::ostringstream&>(ostringstream() << S).str()
+#define STREAM_TO_STR(S) static_cast<std::ostringstream&>(std::ostringstream() << S).str()
 
 #define TD_LOG_ERROR(...)   TerrainDemo::core::Log::getLogger()->writeError(STREAM_TO_STR(__VA_ARGS__))
 #define TD_LOG_WARNING(...) TerrainDemo::core::Log::getLogger()->writeWarning(STREAM_TO_STR(__VA_ARGS__))

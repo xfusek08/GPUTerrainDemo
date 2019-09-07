@@ -33,7 +33,7 @@ Camera::Camera(
 
 glm::mat4 Camera::getViewMatrix()
 {
-    if (hasViewChanged())
+    if (_hasViewChanged)
         updateViewMatrix();
     return _viewMatrix;
 }

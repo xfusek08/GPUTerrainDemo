@@ -29,7 +29,9 @@ namespace TerrainDemo
             );
 
             // flags
-            inline bool hasViewChanged() const { return _hasViewChanged; }
+            inline bool hasViewChanged() const { return _hasViewChanged || !_changeAccepted; }
+			inline void setViewChanged() { _hasViewChanged = true; _changeAccepted = false; }
+			inline void acceptChange() { _changeAccepted = true; }
 
             // matrices
             glm::mat4 getViewMatrix();
@@ -41,20 +43,22 @@ namespace TerrainDemo
             inline glm::vec3 getUpVector()        const { return _up; }
             inline glm::vec3 getCameraDirection() const { return _position - _target;  }
 
-            inline void setCameraPosition(glm::vec3 position) { _position = position; _hasViewChanged = true; }
-            inline void setTargetPosition(glm::vec3 target)   { _target   = target;   _hasViewChanged = true; }
-            inline void setUpVector(glm::vec3 up)             { _up       = up;       _hasViewChanged = true; }
+			inline void setCameraPosition(glm::vec3 position) { _position = position; setViewChanged(); }
+            inline void setTargetPosition(glm::vec3 target)   { _target   = target;   setViewChanged(); }
+            inline void setUpVector(glm::vec3 up)             { _up       = up;       setViewChanged(); }
 
             // projection scalars
             inline float getFov() const { return _fov; }
             inline float getNearPlaneDistance() const { return _nearPlane; }
             inline float getFarPlaneDistance() const { return _farPlane; }
         protected:
-            void updateViewMatrix();
+
+			void updateViewMatrix();
             void updateProjectionMatrix();
 
             // flags
-            bool _hasViewChanged  = true;
+            bool _hasViewChanged = true;
+			bool _changeAccepted = false;
 
             glm::mat4 _viewMatrix;
             glm::mat4 _projectionMatrix;

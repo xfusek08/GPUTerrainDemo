@@ -10,8 +10,13 @@ namespace TerrainDemo
         {
 		public:				
 			ColorLinesVT(std::shared_ptr<ge::gl::Context> gl) : BaseVisualizationTechnique(gl) {}
-        protected:
+		
+			inline VTType getType() const override { return VTType::ColorLinesVT; }
+
+		protected:
             void initGlProgram() override;
+			VAOContainerElement processEntityToVao(std::shared_ptr<core::Entity> entity) override;
+			void drawInternal(std::shared_ptr<core::Camera> camera) override;
         };
     } // namespace vt
 } // namespace TerrainDemo
