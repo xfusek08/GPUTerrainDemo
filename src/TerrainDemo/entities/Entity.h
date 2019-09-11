@@ -9,7 +9,7 @@
 
 namespace TerrainDemo
 {
-    namespace core
+    namespace entities
     {
         class Entity
         {
@@ -35,4 +35,3 @@ namespace TerrainDemo
         };
     } // core
 } // namespace TerrainDemo
-

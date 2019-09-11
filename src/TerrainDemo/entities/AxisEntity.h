@@ -1,12 +1,12 @@
 #pragma once
 
-#include <TerrainDemo/core/Entity.h>
+#include <TerrainDemo/entities/Entity.h>
 
 namespace TerrainDemo
 {
     namespace entities
     {
-        class AxisEntity : public core::Entity
+        class AxisEntity : public entities::Entity
         {
         public:
             AxisEntity(vt::VTType vtType);

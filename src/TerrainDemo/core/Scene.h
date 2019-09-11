@@ -3,7 +3,7 @@
 #include <memory>
 #include <vector>
 
-#include <TerrainDemo/core/Entity.h>
+#include <TerrainDemo/entities/Entity.h>
 
 namespace TerrainDemo
 {
@@ -13,10 +13,10 @@ namespace TerrainDemo
         {
         public:
             Scene() {}
-            inline std::vector<std::shared_ptr<Entity>> getEntities() const { return _entities; }
-            inline void addEntity(std::shared_ptr<Entity> entity) { _entities.push_back(entity); }
+            inline std::vector<std::shared_ptr<entities::Entity>> getEntities() const { return _entities; }
+            inline void addEntity(std::shared_ptr<entities::Entity> entity) { _entities.push_back(entity); }
         protected:
-            std::vector<std::shared_ptr<Entity>> _entities;
+            std::vector<std::shared_ptr<entities::Entity>> _entities;
         };
     } // core
 } // namespace TerrainDemo

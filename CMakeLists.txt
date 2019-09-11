@@ -53,7 +53,6 @@ set(SRC_TERRAIN_DEMO_CORE
     src/${APP_NAME}/core/Log.h                        src/${APP_NAME}/core/Log.cpp
     src/${APP_NAME}/core/Camera.h                     src/${APP_NAME}/core/Camera.cpp
     src/${APP_NAME}/core/OrbitCameraController.h      src/${APP_NAME}/core/OrbitCameraController.cpp
-    src/${APP_NAME}/core/Entity.h                     src/${APP_NAME}/core/Entity.cpp
     src/${APP_NAME}/core/SceneRenderer.h              src/${APP_NAME}/core/SceneRenderer.cpp
     src/${APP_NAME}/core/Scene.h
     src/${APP_NAME}/core/Utils.h
@@ -61,6 +60,7 @@ set(SRC_TERRAIN_DEMO_CORE
 
 set(SRC_TERRAIN_DEMO_ENTITIES
     src/${APP_NAME}/entities/AxisEntity.h             src/${APP_NAME}/entities/AxisEntity.cpp
+    src/${APP_NAME}/entities/Entity.h                 src/${APP_NAME}/entities/Entity.cpp
 )
 
 set(SRC_ERRAIN_DEMO_TDSDL
@@ -111,8 +111,6 @@ foreach(FILE_RELATIVE_NAME ${SHADER_FILES})
         "SHADER_" ${definition_name} "=\"" ${shader_file} "\""
     )
 
-    message(${shader_definition})
-
     # add shader_definition to SHADER_COMPILE_DEFINITIONS list
     list(APPEND SHADER_COMPILE_DEFINITIONS ${shader_definition})
 endforeach()
@@ -144,7 +142,3 @@ target_compile_definitions(${APP_NAME} PUBLIC
     ${SHADER_COMPILE_DEFINITIONS}
     $<$<CONFIG:DEBUG>: "TD_DEBUG" "TD_ENABLE_ASSERTS" >
 )
-
-if(WIN32)
-    set(LIBS_DLLS geCore geGL geUtil )
-endif()

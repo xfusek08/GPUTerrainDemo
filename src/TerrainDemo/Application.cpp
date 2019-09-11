@@ -38,7 +38,7 @@ int Application::init()
     _mainLoop->setDrawCallback(bind(&Application::draw, this)); // TODO: maybe bind renderer draw directly
 
     // TODO: set up scene with entities
-	_scene->addEntity(make_shared<core::Entity>());
+	_scene->addEntity(make_shared<entities::Entity>());
 	_scene->addEntity(make_shared<entities::AxisEntity>(vt::VTType::ColorLinesVT));
 
     _renderer->updateScene();

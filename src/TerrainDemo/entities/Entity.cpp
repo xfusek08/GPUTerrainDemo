@@ -1,13 +1,13 @@
 #pragma once
 
-#include <TerrainDemo/core/Entity.h>
+#include <TerrainDemo/entities/Entity.h>
 
 #include <geGL/geGL.h>
 
 using namespace std;
 using namespace ge::gl;
 using namespace TerrainDemo;
-using namespace TerrainDemo::core;
+using namespace TerrainDemo::entities;
 
 Entity::Entity(vt::VTType vtType) :
     // simple exemplar triangle

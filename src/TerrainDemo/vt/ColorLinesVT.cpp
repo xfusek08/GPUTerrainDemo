@@ -1,5 +1,5 @@
 
-#include <TerrainDemo/core/Entity.h>
+#include <TerrainDemo/entities/Entity.h>
 #include <TerrainDemo/entities/AxisEntity.h>
 #include <TerrainDemo/vt/ColorLinesVT.h>
 #include <geGL/geGL.h>
@@ -8,7 +8,6 @@
 using namespace std;
 using namespace TerrainDemo;
 using namespace TerrainDemo::vt;
-using namespace TerrainDemo::core;
 
 void ColorLinesVT::initGlProgram()
 {
@@ -18,14 +17,14 @@ void ColorLinesVT::initGlProgram()
     );
 }
 
-VAOContainerElement ColorLinesVT::processEntityToVao(shared_ptr<Entity> entity)
+VAOContainerElement ColorLinesVT::processEntityToVao(shared_ptr<entities::Entity> entity)
 {
 	auto vao = make_shared<ge::gl::VertexArray>(_gl->getFunctionTable());
-	auto colorLineEnity = dynamic_pointer_cast<entities::AxisEntity>(entity);
+	auto colorLineEntity = dynamic_pointer_cast<entities::AxisEntity>(entity);
     vao->bind();
-    vao->addElementBuffer(newVaoBuffer(colorLineEnity->getIndieces()));
-    vao->addAttrib(newVaoBuffer(colorLineEnity->getVerticies()), 0, 3, GL_FLOAT);
-	vao->addAttrib(newVaoBuffer(colorLineEnity->getColors()), 1, 3, GL_FLOAT);
+    vao->addElementBuffer(newVaoBuffer(colorLineEntity->getIndieces()));
+    vao->addAttrib(newVaoBuffer(colorLineEntity->getVerticies()), 0, 3, GL_FLOAT);
+	vao->addAttrib(newVaoBuffer(colorLineEntity->getColors()), 1, 3, GL_FLOAT);
 	vao->unbind();
 
 	VAOContainerElement result;
@@ -34,7 +33,7 @@ VAOContainerElement ColorLinesVT::processEntityToVao(shared_ptr<Entity> entity)
 	return result;
 }
 
-void ColorLinesVT::drawInternal(shared_ptr<Camera> camera)
+void ColorLinesVT::drawInternal(shared_ptr<core::Camera> camera)
 {
     for (auto pair: _vaoContainer) {
 		VAOContainerElement elem = pair.second;

@@ -57,12 +57,12 @@ namespace TerrainDemo
 			std::vector<std::shared_ptr<ge::gl::Buffer>> _bufferContainer;
 
 			// _vaoContainer = { entity: (vao, indexSize), ... }
-			std::unordered_map<core::Entity*, VAOContainerElement> _vaoContainer;
+			std::unordered_map<entities::Entity*, VAOContainerElement> _vaoContainer;
 
             virtual void initGl();
             virtual void initGlProgram();
 
-			virtual VAOContainerElement processEntityToVao(std::shared_ptr<core::Entity> entity);
+			virtual VAOContainerElement processEntityToVao(std::shared_ptr<entities::Entity> entity);
 
 			virtual void beforeDraw(std::shared_ptr<core::Camera> camera);
             virtual void drawInternal(std::shared_ptr<core::Camera> camera);

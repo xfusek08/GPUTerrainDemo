@@ -4,7 +4,6 @@
 using namespace std;
 using namespace TerrainDemo;
 using namespace TerrainDemo::entities;
-using namespace TerrainDemo::core;
 
 AxisEntity::AxisEntity(vt::VTType vtType) : Entity(vtType)
 {

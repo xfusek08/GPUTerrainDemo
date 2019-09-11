@@ -1,7 +1,7 @@
 
 #include <TerrainDemo/core/Camera.h>
 #include <TerrainDemo/core/Scene.h>
-#include <TerrainDemo/core/Entity.h>
+#include <TerrainDemo/entities/Entity.h>
 
 #include <TerrainDemo/vt/BaseVisualizationTechnique.h>
 
@@ -14,7 +14,6 @@
 using namespace std;
 using namespace TerrainDemo;
 using namespace TerrainDemo::vt;
-using namespace TerrainDemo::core;
 
 BaseVisualizationTechnique::BaseVisualizationTechnique(shared_ptr<ge::gl::Context> gl) :
 	_gl(gl)
@@ -41,7 +40,7 @@ void BaseVisualizationTechnique::initGl()
     _gl->glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 }
 
-void BaseVisualizationTechnique::draw(shared_ptr<Camera> camera)
+void BaseVisualizationTechnique::draw(shared_ptr<core::Camera> camera)
 {
 	beforeDraw(camera);
 	drawInternal(camera);
@@ -62,7 +61,7 @@ void BaseVisualizationTechnique::clean()
 	_vaoContainer.clear();
 }
 
-void BaseVisualizationTechnique::processScene(shared_ptr<Scene> scene)
+void BaseVisualizationTechnique::processScene(shared_ptr<core::Scene> scene)
 {
     if (!isInitialized())
         init();
@@ -74,7 +73,7 @@ void BaseVisualizationTechnique::processScene(shared_ptr<Scene> scene)
 	}
 }
 
-VAOContainerElement BaseVisualizationTechnique::processEntityToVao(shared_ptr<Entity> entity)
+VAOContainerElement BaseVisualizationTechnique::processEntityToVao(shared_ptr<entities::Entity> entity)
 {
 	auto vao = make_shared<ge::gl::VertexArray>(_gl->getFunctionTable());
     vao->bind();
@@ -88,7 +87,7 @@ VAOContainerElement BaseVisualizationTechnique::processEntityToVao(shared_ptr<En
 	return result;
 }
 
-void BaseVisualizationTechnique::beforeDraw(shared_ptr<Camera> camera)
+void BaseVisualizationTechnique::beforeDraw(shared_ptr<core::Camera> camera)
 {
 	if (camera->hasViewChanged()) {
 		_program->setMatrix4fv("projectionMatrix", glm::value_ptr(camera->getProjectionMatrix()));
@@ -97,7 +96,7 @@ void BaseVisualizationTechnique::beforeDraw(shared_ptr<Camera> camera)
     _program->use();
 }
 
-void BaseVisualizationTechnique::drawInternal(shared_ptr<Camera> camera)
+void BaseVisualizationTechnique::drawInternal(shared_ptr<core::Camera> camera)
 {
     for (auto pair: _vaoContainer) {
 		VAOContainerElement elem = pair.second;
@@ -106,6 +105,6 @@ void BaseVisualizationTechnique::drawInternal(shared_ptr<Camera> camera)
     }
 }
 
-void BaseVisualizationTechnique::afterDraw(shared_ptr<Camera> camera)
+void BaseVisualizationTechnique::afterDraw(shared_ptr<core::Camera> camera)
 {
 }
