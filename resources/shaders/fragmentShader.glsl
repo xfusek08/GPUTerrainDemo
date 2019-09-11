@@ -1,5 +1,5 @@
 
-#version 450
+#version 430
 
 in vec3 vertPosition;
 in vec3 vertColor;

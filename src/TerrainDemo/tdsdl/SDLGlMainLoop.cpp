@@ -38,7 +38,7 @@ void SDLGlMainLoop::init()
     _mainLoop->setIdleCallback(bind(&SDLGlMainLoop::draw, this));
 
     // create window and make current context
-    _window->createContext("rendering");
+    _window->createContext("rendering", 430u); // 450 by default
     _mainLoop->addWindow("primaryWindow", _window);
     _window->makeCurrent("rendering");
 
