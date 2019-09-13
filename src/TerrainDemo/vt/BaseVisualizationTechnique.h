@@ -3,8 +3,8 @@
 #include <memory>
 #include <unordered_map>
 #include <TerrainDemo/vt/types.h>
-
 #include <geGL/Generated/OpenGLTypes.h>
+#include <geGL/Generated/OpenGLConstants.h>
 
 namespace ge
 {
@@ -12,8 +12,6 @@ namespace ge
     {
         class Context;
         class Program;
-		class VertexArray;
-		class Buffer;
     }
 }
 
@@ -28,10 +26,7 @@ namespace TerrainDemo
 
     namespace vt
     {
-		struct VAOContainerElement {
-			std::shared_ptr<ge::gl::VertexArray> vao;
-			GLsizei indexSize;
-		};
+        class VAOContainer;
 
         class BaseVisualizationTechnique
         {
@@ -39,6 +34,7 @@ namespace TerrainDemo
             BaseVisualizationTechnique(std::shared_ptr<ge::gl::Context> gl);
 
 			virtual inline VTType getType() const { return VTType::BaseVisualizationTechnique; }
+			virtual inline GLenum getDrawMode() const { return GL_TRIANGLES; }
 
 			inline bool isInitialized() const { return _isInitialized; }
 			inline std::shared_ptr<ge::gl::Context> getGlContext() const { return _gl; }
@@ -54,26 +50,16 @@ namespace TerrainDemo
             bool _isInitialized = false;
 			std::shared_ptr<ge::gl::Context> _gl;
             std::shared_ptr<ge::gl::Program> _program;
-			std::vector<std::shared_ptr<ge::gl::Buffer>> _bufferContainer;
-
-			// _vaoContainer = { entity: (vao, indexSize), ... }
-			std::unordered_map<entities::Entity*, VAOContainerElement> _vaoContainer;
+			std::unordered_map<entities::Entity*, std::shared_ptr<VAOContainer>> _vaoContainer;
 
             virtual void initGl();
             virtual void initGlProgram();
 
-			virtual VAOContainerElement processEntityToVao(std::shared_ptr<entities::Entity> entity);
+			virtual std::shared_ptr<VAOContainer> processEntityToVaoContainer(std::shared_ptr<entities::Entity> entity);
 
 			virtual void beforeDraw(std::shared_ptr<core::Camera> camera);
             virtual void drawInternal(std::shared_ptr<core::Camera> camera);
             virtual void afterDraw(std::shared_ptr<core::Camera> camera);
-
-			template<typename T> std::shared_ptr<ge::gl::Buffer> newVaoBuffer(std::vector<T> values)
-            {
-                auto buffer = std::make_shared<ge::gl::Buffer>(values.size() * sizeof(T), values.data());
-                _bufferContainer.push_back(buffer);
-                return buffer;
-            }
         };
     } // namespace vt
 } // namespace TerrainDemo

@@ -8,7 +8,7 @@ namespace TerrainDemo
     {
         class SDLPerformance
         {
-            const unsigned FPS_CAP = 60;
+            const unsigned FPS_CAP = 60; // TODO: on older PC gives lesser value 60 -> 55 or 100 -> 83
 
         public:
             SDLPerformance();

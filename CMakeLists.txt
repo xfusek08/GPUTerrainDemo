@@ -46,7 +46,7 @@ set(SHADER_FILES
 # source files
 
 set(SRC_TERRAIN_DEMO
-    src/${APP_NAME}/Application.h                   src/${APP_NAME}/Application.cpp
+    src/${APP_NAME}/Application.h                     src/${APP_NAME}/Application.cpp
 )
 
 set(SRC_TERRAIN_DEMO_CORE
@@ -73,6 +73,7 @@ set(SRC_ERRAIN_DEMO_TDSDL
 set(SRC_ERRAIN_DEMO_VT
     src/${APP_NAME}/vt/BaseVisualizationTechnique.h   src/${APP_NAME}/vt/BaseVisualizationTechnique.cpp
     src/${APP_NAME}/vt/ColorLinesVT.h                 src/${APP_NAME}/vt/ColorLinesVT.cpp
+    src/${APP_NAME}/vt/VAOContainer.h          src/${APP_NAME}/vt/VAOContainer.cpp
     src/${APP_NAME}/vt/types.h
     src/${APP_NAME}/vt/VTFactory.h
 )

@@ -1,5 +1,7 @@
 
 #include <TerrainDemo/entities/AxisEntity.h>
+#include <TerrainDemo/vt/VAOContainer.h>
+#include <geGL/geGL.h>
 
 using namespace std;
 using namespace TerrainDemo;
@@ -30,4 +32,12 @@ AxisEntity::AxisEntity(vt::VTType vtType) : Entity(vtType)
         2,3,
         4,5
     };
+}
+
+void AxisEntity::loadToVaoElement(shared_ptr<vt::VAOContainer> vaoElem)
+{
+    vaoElem->vao->addElementBuffer(vaoElem->newBuffer(getIndieces()));
+    vaoElem->vao->addAttrib(vaoElem->newBuffer(getVerticies()), 0, 3, GL_FLOAT);
+	vaoElem->vao->addAttrib(vaoElem->newBuffer(getColors()), 1, 3, GL_FLOAT);
+	vaoElem->indexSize = getIndieces().size();
 }

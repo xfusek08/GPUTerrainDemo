@@ -4,6 +4,7 @@
 #include <TerrainDemo/entities/Entity.h>
 
 #include <TerrainDemo/vt/BaseVisualizationTechnique.h>
+#include <TerrainDemo/vt/VAOContainer.h>
 
 #include <geGL/geGL.h>
 #include <geUtil/Text.h>
@@ -56,8 +57,7 @@ void BaseVisualizationTechnique::initGlProgram()
 }
 
 void BaseVisualizationTechnique::clean()
-{
-	_bufferContainer.clear();
+{	
 	_vaoContainer.clear();
 }
 
@@ -68,23 +68,18 @@ void BaseVisualizationTechnique::processScene(shared_ptr<core::Scene> scene)
 
 	for (auto entity : scene->getEntities()) {
 		if (entity->getVtType() == getType()) {
-			_vaoContainer[entity.get()] = processEntityToVao(entity);
+			_vaoContainer[entity.get()] = processEntityToVaoContainer(entity);
 		}
 	}
 }
 
-VAOContainerElement BaseVisualizationTechnique::processEntityToVao(shared_ptr<entities::Entity> entity)
+shared_ptr<VAOContainer> BaseVisualizationTechnique::processEntityToVaoContainer(shared_ptr<entities::Entity> entity)
 {
-	auto vao = make_shared<ge::gl::VertexArray>(_gl->getFunctionTable());
-    vao->bind();
-    vao->addElementBuffer(newVaoBuffer(entity->getIndieces()));
-    vao->addAttrib(newVaoBuffer(entity->getVerticies()), 0, 3, GL_FLOAT);
-    vao->unbind();
-
-	VAOContainerElement result;
-	result.vao = vao;
-	result.indexSize = entity->getIndieces().size();
-	return result;
+	auto vaoElement = make_shared<VAOContainer>(_gl);
+    vaoElement->vao->bind();
+    entity->loadToVaoElement(vaoElement);
+    vaoElement->vao->unbind();
+	return vaoElement;
 }
 
 void BaseVisualizationTechnique::beforeDraw(shared_ptr<core::Camera> camera)
@@ -99,9 +94,9 @@ void BaseVisualizationTechnique::beforeDraw(shared_ptr<core::Camera> camera)
 void BaseVisualizationTechnique::drawInternal(shared_ptr<core::Camera> camera)
 {
     for (auto pair: _vaoContainer) {
-		VAOContainerElement elem = pair.second;
-		elem.vao->bind();
-        _gl->glDrawElements(GL_TRIANGLES, elem.indexSize, GL_UNSIGNED_INT, nullptr);
+		auto elem = pair.second;
+		elem->vao->bind();
+        _gl->glDrawElements(getDrawMode(), elem->indexSize, GL_UNSIGNED_INT, nullptr);
     }
 }
 

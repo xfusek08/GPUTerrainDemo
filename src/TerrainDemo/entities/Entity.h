@@ -9,6 +9,11 @@
 
 namespace TerrainDemo
 {
+    namespace vt
+    {
+        class VAOContainer;
+    }
+
     namespace entities
     {
         class Entity
@@ -22,10 +27,14 @@ namespace TerrainDemo
             );
 			virtual ~Entity() {}
 
+            virtual void loadToVaoElement(std::shared_ptr<vt::VAOContainer> vaoElem);
+
 			inline vt::VTType			 getVtType()			const { return _vtType; }
 			inline std::vector<float>    getVerticies()         const { return _verticies; }
             inline std::vector<unsigned> getIndieces()          const { return _indicies; }
             inline glm::mat4             getTransformMatrix()   const { return _transform; }
+
+
         protected:
             std::vector<float>      _verticies;
             std::vector<unsigned>   _indicies;
