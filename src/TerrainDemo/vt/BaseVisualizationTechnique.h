@@ -21,7 +21,10 @@ namespace TerrainDemo
 	{
 		class Camera;
 		class Scene;
-        class Entity;
+	}
+
+	namespace entities {
+		class Entity;
 	}
 
     namespace vt

@@ -11,6 +11,7 @@
 #include <TerrainDemo/tdsdl/SDLOrbitCameraController.h>
 
 #include <TerrainDemo/entities/AxisEntity.h>
+#include <TerrainDemo/entities/PlanetEntity.h>
 
 #include <TerrainDemo/vt/types.h>
 
@@ -38,8 +39,9 @@ int Application::init()
     _mainLoop->setDrawCallback(bind(&Application::draw, this)); // TODO: maybe bind renderer draw directly
 
     // TODO: set up scene with entities
-	_scene->addEntity(make_shared<entities::Entity>());
+	// _scene->addEntity(make_shared<entities::Entity>());
 	_scene->addEntity(make_shared<entities::AxisEntity>(vt::VTType::ColorLinesVT));
+    _scene->addEntity(make_shared<entities::PlanetEntity>(vt::VTType::PlanetVT));
 
     _renderer->updateScene();
 

@@ -41,6 +41,7 @@ set(${APP_NAME}_RESOURCES  "${DEFAULT_RESOERCES_PATH}" CACHE PATH "Relative or a
 set(SHADER_FILES
     basic/vertex.glsl       basic/fragment.glsl
     vert_color/vertex.glsl  vert_color/fragment.glsl
+    planet/vertex.glsl      planet/fragment.glsl        planet/geometry.glsl
 )
 
 # source files
@@ -59,8 +60,9 @@ set(SRC_TERRAIN_DEMO_CORE
 )
 
 set(SRC_TERRAIN_DEMO_ENTITIES
-    src/${APP_NAME}/entities/AxisEntity.h             src/${APP_NAME}/entities/AxisEntity.cpp
     src/${APP_NAME}/entities/Entity.h                 src/${APP_NAME}/entities/Entity.cpp
+    src/${APP_NAME}/entities/AxisEntity.h             src/${APP_NAME}/entities/AxisEntity.cpp
+    src/${APP_NAME}/entities/PlanetEntity.h           src/${APP_NAME}/entities/PlanetEntity.cpp
 )
 
 set(SRC_ERRAIN_DEMO_TDSDL
@@ -71,11 +73,12 @@ set(SRC_ERRAIN_DEMO_TDSDL
 )
 
 set(SRC_ERRAIN_DEMO_VT
-    src/${APP_NAME}/vt/BaseVisualizationTechnique.h   src/${APP_NAME}/vt/BaseVisualizationTechnique.cpp
-    src/${APP_NAME}/vt/ColorLinesVT.h                 src/${APP_NAME}/vt/ColorLinesVT.cpp
-    src/${APP_NAME}/vt/VAOContainer.h          src/${APP_NAME}/vt/VAOContainer.cpp
     src/${APP_NAME}/vt/types.h
     src/${APP_NAME}/vt/VTFactory.h
+    src/${APP_NAME}/vt/VAOContainer.h                 src/${APP_NAME}/vt/VAOContainer.cpp
+    src/${APP_NAME}/vt/BaseVisualizationTechnique.h   src/${APP_NAME}/vt/BaseVisualizationTechnique.cpp
+    src/${APP_NAME}/vt/ColorLinesVT.h                 src/${APP_NAME}/vt/ColorLinesVT.cpp
+    src/${APP_NAME}/vt/PlanetVT.h                     src/${APP_NAME}/vt/PlanetVT.cpp
 )
 
 set(SRC_TERRAIN_DEMO_INTERFACES

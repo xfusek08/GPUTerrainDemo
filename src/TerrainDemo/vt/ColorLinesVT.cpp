@@ -1,6 +1,4 @@
 
-#include <TerrainDemo/entities/Entity.h>
-#include <TerrainDemo/entities/AxisEntity.h>
 #include <TerrainDemo/vt/ColorLinesVT.h>
 #include <geGL/geGL.h>
 #include <geUtil/Text.h>

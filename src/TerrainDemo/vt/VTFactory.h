@@ -5,6 +5,7 @@
 #include <TerrainDemo/vt/types.h>
 #include <TerrainDemo/vt/BaseVisualizationTechnique.h>
 #include <TerrainDemo/vt/ColorLinesVT.h>
+#include <TerrainDemo/vt/PlanetVT.h>
 
 namespace ge
 {
@@ -24,11 +25,10 @@ namespace TerrainDemo
             static std::shared_ptr<BaseVisualizationTechnique> createVTFromType(std::shared_ptr<ge::gl::Context> context, VTType type)
             {
                 switch(type) {
-					case VTType::BaseVisualizationTechnique : 
-						return std::make_shared<BaseVisualizationTechnique>(context);
-					case VTType::ColorLinesVT               : 
-						return std::make_shared<ColorLinesVT>(context);
-					default: 
+					case VTType::BaseVisualizationTechnique : return std::make_shared<BaseVisualizationTechnique>(context);
+					case VTType::ColorLinesVT               : return std::make_shared<ColorLinesVT>(context);
+					case VTType::PlanetVT                   : return std::make_shared<PlanetVT>(context);
+					default:
 						return nullptr;
                 };
             }

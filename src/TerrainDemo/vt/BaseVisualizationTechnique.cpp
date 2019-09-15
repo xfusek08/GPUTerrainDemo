@@ -38,7 +38,7 @@ void BaseVisualizationTechnique::initGl()
     _gl->glDepthFunc(GL_LEQUAL);
     _gl->glEnable(GL_CULL_FACE);
     _gl->glCullFace(GL_BACK);
-    _gl->glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+    // _gl->glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 }
 
 void BaseVisualizationTechnique::draw(shared_ptr<core::Camera> camera)
@@ -57,7 +57,7 @@ void BaseVisualizationTechnique::initGlProgram()
 }
 
 void BaseVisualizationTechnique::clean()
-{	
+{
 	_vaoContainer.clear();
 }
 

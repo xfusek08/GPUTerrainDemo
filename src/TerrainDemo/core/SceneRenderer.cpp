@@ -28,7 +28,10 @@ void SceneRenderer::updateScene()
 		// vt type is not present
 		if (_vts.find(entity->getVtType()) == _vts.end()) {
 			auto vt = VTFactory::createVTFromType(_gl, entity->getVtType());
-			_vts.emplace(entity->getVtType(), vt);
+            TD_ASSERT(vt != nullptr, "vt was not successfully created");
+            if (vt != nullptr) {
+			    _vts.emplace(entity->getVtType(), vt);
+            }
 		}
 	}
 
