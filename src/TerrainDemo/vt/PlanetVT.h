@@ -19,7 +19,7 @@ namespace TerrainDemo
 			PlanetVT(std::shared_ptr<ge::gl::Context> gl) : BaseVisualizationTechnique(gl) {}
 
 			inline VTType getType() const override { return VTType::PlanetVT; }
-			inline GLenum getDrawMode() const { return GL_POINTS; }
+			inline GLenum getDrawMode() const { return GL_TRIANGLES; }
 
 		protected:
             void initGlProgram() override;
