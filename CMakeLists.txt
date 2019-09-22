@@ -41,7 +41,7 @@ set(${APP_NAME}_RESOURCES  "${DEFAULT_RESOERCES_PATH}" CACHE PATH "Relative or a
 set(SHADER_FILES
     basic/vertex.glsl       basic/fragment.glsl
     vert_color/vertex.glsl  vert_color/fragment.glsl
-    planet/vertex.glsl      planet/fragment.glsl        planet/geometry.glsl
+    planet/vertex.glsl      planet/fragment.glsl        planet/fragment_lines.glsl
 )
 
 # source files

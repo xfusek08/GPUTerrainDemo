@@ -22,8 +22,11 @@ namespace TerrainDemo
 			inline GLenum getDrawMode() const { return GL_TRIANGLES; }
 
 		protected:
+            std::shared_ptr<ge::gl::Program> _program_faces;
+            std::shared_ptr<ge::gl::Program> _program_lines;
             void initGlProgram() override;
 
+            virtual void draw(std::shared_ptr<core::Camera> camera) override;
             virtual void drawInternal(std::shared_ptr<core::Camera> camera) override;
         };
     } // namespace vt

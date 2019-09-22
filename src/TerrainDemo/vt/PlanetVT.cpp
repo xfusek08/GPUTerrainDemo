@@ -15,13 +15,31 @@ using namespace TerrainDemo::vt;
 
 void PlanetVT::initGlProgram()
 {
-    _program = make_shared<ge::gl::Program>(
+    _program_faces = make_shared<ge::gl::Program>(
         make_shared<ge::gl::Shader>(GL_VERTEX_SHADER, ge::util::loadTextFile(SHADER_PLANET_VERTEX)),
-        // make_shared<ge::gl::Shader>(GL_GEOMETRY_SHADER, ge::util::loadTextFile(SHADER_PLANET_GEOMETRY)),
         make_shared<ge::gl::Shader>(GL_FRAGMENT_SHADER, ge::util::loadTextFile(SHADER_PLANET_FRAGMENT))
     );
+    _program_lines = make_shared<ge::gl::Program>(
+        make_shared<ge::gl::Shader>(GL_VERTEX_SHADER, ge::util::loadTextFile(SHADER_PLANET_VERTEX)),
+        make_shared<ge::gl::Shader>(GL_FRAGMENT_SHADER, ge::util::loadTextFile(SHADER_PLANET_FRAGMENT_LINES))
+    );
+    _program = _program_faces;
 }
 
+void PlanetVT::draw(shared_ptr<core::Camera> camera)
+{
+    _program = _program_faces;
+    _gl->glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+	beforeDraw(camera);
+	drawInternal(camera);
+	afterDraw(camera);
+
+    _program = _program_lines;
+	_gl->glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	beforeDraw(camera);
+	drawInternal(camera);
+	afterDraw(camera);
+}
 void PlanetVT::drawInternal(shared_ptr<core::Camera> camera)
 {
     uint32_t resolution = 10;

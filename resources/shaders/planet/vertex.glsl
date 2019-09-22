@@ -5,7 +5,7 @@ uniform mat4 projectionMatrix;  // Projection matrix
 uniform mat4 viewMatrix;        // View Matrix
 uniform uint resolution;
 
-out vec3 facePos;
+out vec2 uv;
 
 void main()
 {
@@ -35,7 +35,7 @@ void main()
         0.0
     );
 
-    facePos = pos;
+    uv = vec2(-pos.y + 0.5, pos.x + 0.5);
 
     switch(faceId) {
         // case 0 : front face
