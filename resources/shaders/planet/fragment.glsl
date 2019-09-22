@@ -3,11 +3,11 @@
 
 out vec4 fColor;
 
-in vec2 uv;
+in vec3 direction;
 
-uniform sampler2D tex;
+uniform samplerCube tex;
 
 void main()
 {
-    fColor = texture(tex, uv);
+    fColor = texture(tex, direction);
 }

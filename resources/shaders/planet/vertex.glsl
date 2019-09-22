@@ -5,7 +5,7 @@ uniform mat4 projectionMatrix;  // Projection matrix
 uniform mat4 viewMatrix;        // View Matrix
 uniform uint resolution;
 
-out vec2 uv;
+out vec3 direction;
 
 void main()
 {
@@ -35,8 +35,6 @@ void main()
         0.0
     );
 
-    uv = vec2(-pos.y + 0.5, pos.x + 0.5);
-
     switch(faceId) {
         // case 0 : front face
         case 1: pos = vec3(pos.xz, -pos.y); break; // top face
@@ -47,6 +45,8 @@ void main()
     }
 
     pos = normalize(pos);
+
+    direction = pos; //vec2(pos.x + 1, -pos.y + 1) / 2;
 
     gl_Position = projectionMatrix * viewMatrix * vec4(pos, 1.0f);
 }

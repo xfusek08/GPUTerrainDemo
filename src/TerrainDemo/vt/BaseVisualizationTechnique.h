@@ -53,7 +53,7 @@ namespace TerrainDemo
             bool _isInitialized = false;
 			std::shared_ptr<ge::gl::Context> _gl;
             std::shared_ptr<ge::gl::Program> _program;
-			std::unordered_map<entities::Entity*, std::shared_ptr<VAOContainer>> _vaoContainer;
+			std::unordered_map<entities::Entity*, std::shared_ptr<VAOContainer>> _vaoContainerMap;
 
             virtual void initGl();
             virtual void initGlProgram();

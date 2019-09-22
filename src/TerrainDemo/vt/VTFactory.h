@@ -6,6 +6,7 @@
 #include <TerrainDemo/vt/BaseVisualizationTechnique.h>
 #include <TerrainDemo/vt/ColorLinesVT.h>
 #include <TerrainDemo/vt/PlanetVT.h>
+#include <TerrainDemo/vt/PlanetDebugVT.h>
 
 namespace ge
 {
@@ -28,6 +29,7 @@ namespace TerrainDemo
 					case VTType::BaseVisualizationTechnique : return std::make_shared<BaseVisualizationTechnique>(context);
 					case VTType::ColorLinesVT               : return std::make_shared<ColorLinesVT>(context);
 					case VTType::PlanetVT                   : return std::make_shared<PlanetVT>(context);
+                    case VTType::PlanetDebugVT              : return std::make_shared<PlanetDebugVT>(context);
 					default:
 						return nullptr;
                 };

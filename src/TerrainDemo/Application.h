@@ -22,18 +22,17 @@ namespace TerrainDemo
 		const int WINDOW_WIDTH  = 800;
 		const int WINDOW_HEIGHT = 600;
 
-        Application();
+		std::shared_ptr<tdsdl::SDLGlMainLoop>           mainLoop = nullptr;
+		std::shared_ptr<interfaces::RendererInterface>  renderer = nullptr;
+		std::shared_ptr<core::Camera>                   camera = nullptr;
+		std::shared_ptr<core::Scene>                    scene = nullptr;
+		
+		Application();
         ~Application();
 
         virtual int init();
         virtual int run();
         virtual void draw();
 
-    private:
-        std::shared_ptr<tdsdl::SDLGlMainLoop> _mainLoop = nullptr; // TODO: use interfaces::MainLoopInterface to separate dependency on SDL
-        std::shared_ptr<interfaces::RendererInterface> _renderer = nullptr;
-
-        std::shared_ptr<core::Camera> _camera = nullptr;
-        std::shared_ptr<core::Scene> _scene = nullptr;
     };
 }

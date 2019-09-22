@@ -3,7 +3,8 @@
 #define VT_TYPE_LIST \
     BaseVisualizationTechnique, \
     ColorLinesVT, \
-    PlanetVT
+    PlanetVT, \
+    PlanetDebugVT
 
 namespace TerrainDemo
 {

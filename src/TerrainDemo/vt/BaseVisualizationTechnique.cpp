@@ -38,6 +38,7 @@ void BaseVisualizationTechnique::initGl()
     _gl->glDepthFunc(GL_LEQUAL);
     _gl->glEnable(GL_CULL_FACE);
     _gl->glCullFace(GL_BACK);
+	_gl->glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 }
 
 void BaseVisualizationTechnique::draw(shared_ptr<core::Camera> camera)
@@ -57,17 +58,18 @@ void BaseVisualizationTechnique::initGlProgram()
 
 void BaseVisualizationTechnique::clean()
 {
-	_vaoContainer.clear();
+	_vaoContainerMap.clear();
 }
 
 void BaseVisualizationTechnique::processScene(shared_ptr<core::Scene> scene)
 {
-    if (!isInitialized())
-        init();
+	if (!isInitialized()) {
+		init();
+	}
 
 	for (auto entity : scene->getEntities()) {
 		if (entity->getVtType() == getType()) {
-			_vaoContainer[entity.get()] = processEntityToVaoContainer(entity);
+			_vaoContainerMap[entity.get()] = processEntityToVaoContainer(entity);
 		}
 	}
 }
@@ -92,7 +94,7 @@ void BaseVisualizationTechnique::beforeDraw(shared_ptr<core::Camera> camera)
 
 void BaseVisualizationTechnique::drawInternal(shared_ptr<core::Camera> camera)
 {
-    for (auto pair: _vaoContainer) {
+    for (auto pair: _vaoContainerMap) {
 		auto elem = pair.second;
 		elem->bind();
         _gl->glDrawElements(getDrawMode(), elem->indexSize, GL_UNSIGNED_INT, nullptr);

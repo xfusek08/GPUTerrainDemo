@@ -2,6 +2,7 @@
 #include <TerrainDemo/entities/PlanetEntity.h>
 #include <TerrainDemo/vt/VAOContainer.h>
 #include <geGL/geGL.h>
+#include <TerrainLib/PlanetSurface.h>
 
 using namespace std;
 using namespace TerrainDemo;
@@ -15,26 +16,25 @@ PlanetEntity::PlanetEntity(vt::VTType vtType) : Entity(vtType)
 
 void PlanetEntity::loadToVaoElement(shared_ptr<vt::VAOContainer> vaoElem)
 {
-    auto gl = vaoElem->vao->getContext();
-	unsigned int texture;
-	gl.glGenTextures(1, &texture);
-	gl.glBindTexture(GL_TEXTURE_2D, texture);
-	gl.glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-	gl.glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-	gl.glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	gl.glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	unsigned int w = 2048 / 4;
+	unsigned int h = 1536 / 3;
 
-    unsigned char colors[10][10][4];
-    for (unsigned char y = 0; y < 10; ++y) {
-        for(unsigned char x = 0; x < 10; ++x) {
-			unsigned char c = ((x + (10 * y)) * 255) / (10 * 10);
-			colors[x][y][0] = c;
-			colors[x][y][1] = c;
-			colors[x][y][2] = c;
-			colors[x][y][3] = 0;
-        }
+	auto planetSurface = make_shared<tl::PlanetSurface>();
+    auto gl = vaoElem->vao->getContext();
+
+    // move to VAO container or get working texture object
+    unsigned int texture;
+	gl.glGenTextures(1, &texture);
+	gl.glBindTexture(GL_TEXTURE_CUBE_MAP, texture);
+
+    for (int i = 0; i < 6; ++i) {
+        unique_ptr<unsigned char[]> data = planetSurface->getTextureDataForFace(i, w, h);
+        gl.glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_RGBA, w, h, 0, GL_RGBA, GL_UNSIGNED_BYTE, data.get());
     }
 
-	gl.glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 10, 10, 0, GL_RGBA, GL_UNSIGNED_BYTE, &colors);
-	gl.glBindTexture(GL_TEXTURE_2D, texture);
+	gl.glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+	gl.glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+	gl.glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
+	gl.glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	gl.glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 }

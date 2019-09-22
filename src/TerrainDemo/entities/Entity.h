@@ -34,6 +34,8 @@ namespace TerrainDemo
             inline std::vector<unsigned> getIndieces()          const { return _indicies; }
             inline glm::mat4             getTransformMatrix()   const { return _transform; }
 
+			inline void setVtType(vt::VTType type) { _vtType = type; }
+
         protected:
             std::vector<float>      _verticies;
             std::vector<unsigned>   _indicies;

@@ -19,14 +19,10 @@ namespace TerrainDemo
 			PlanetVT(std::shared_ptr<ge::gl::Context> gl) : BaseVisualizationTechnique(gl) {}
 
 			inline VTType getType() const override { return VTType::PlanetVT; }
-			inline GLenum getDrawMode() const { return GL_TRIANGLES; }
+			inline GLenum getDrawMode() const override { return GL_TRIANGLES; }
 
 		protected:
-            std::shared_ptr<ge::gl::Program> _program_faces;
-            std::shared_ptr<ge::gl::Program> _program_lines;
-            void initGlProgram() override;
-
-            virtual void draw(std::shared_ptr<core::Camera> camera) override;
+			virtual void initGlProgram() override;
             virtual void drawInternal(std::shared_ptr<core::Camera> camera) override;
         };
     } // namespace vt

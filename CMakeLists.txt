@@ -36,7 +36,7 @@ endif()
 # resources
 
 set(DEFAULT_RESOERCES_PATH "${CMAKE_CURRENT_LIST_DIR}/resources")
-set(${APP_NAME}_RESOURCES  "${DEFAULT_RESOERCES_PATH}" CACHE PATH "Relative or absolute path to Application resources.")
+set(${PROJECT_NAME}_RESOURCES  "${DEFAULT_RESOERCES_PATH}" CACHE PATH "Relative or absolute path to Application resources.")
 
 set(SHADER_FILES
     basic/vertex.glsl       basic/fragment.glsl
@@ -48,6 +48,7 @@ set(SHADER_FILES
 
 set(SRC_TERRAIN_DEMO
     src/${APP_NAME}/Application.h                     src/${APP_NAME}/Application.cpp
+    src/${APP_NAME}/ApplicationEventReciever.h        src/${APP_NAME}/ApplicationEventReciever.cpp
 )
 
 set(SRC_TERRAIN_DEMO_CORE
@@ -55,7 +56,7 @@ set(SRC_TERRAIN_DEMO_CORE
     src/${APP_NAME}/core/Camera.h                     src/${APP_NAME}/core/Camera.cpp
     src/${APP_NAME}/core/OrbitCameraController.h      src/${APP_NAME}/core/OrbitCameraController.cpp
     src/${APP_NAME}/core/SceneRenderer.h              src/${APP_NAME}/core/SceneRenderer.cpp
-    src/${APP_NAME}/core/Scene.h
+    src/${APP_NAME}/core/Scene.h                      src/${APP_NAME}/core/Scene.cpp
     src/${APP_NAME}/core/Utils.h
 )
 
@@ -79,6 +80,7 @@ set(SRC_ERRAIN_DEMO_VT
     src/${APP_NAME}/vt/BaseVisualizationTechnique.h   src/${APP_NAME}/vt/BaseVisualizationTechnique.cpp
     src/${APP_NAME}/vt/ColorLinesVT.h                 src/${APP_NAME}/vt/ColorLinesVT.cpp
     src/${APP_NAME}/vt/PlanetVT.h                     src/${APP_NAME}/vt/PlanetVT.cpp
+    src/${APP_NAME}/vt/PlanetDebugVT.h                src/${APP_NAME}/vt/PlanetDebugVT.cpp
 )
 
 set(SRC_TERRAIN_DEMO_INTERFACES

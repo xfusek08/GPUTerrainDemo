@@ -16,6 +16,7 @@
 #include <TerrainDemo/vt/types.h>
 
 #include <TerrainDemo/Application.h>
+#include <TerrainDemo/ApplicationEventReciever.h>
 
 using namespace std;
 using namespace TerrainDemo;
@@ -29,21 +30,21 @@ int Application::init()
 {
     TD_LOG_DEBUG("Application initiating ...");
 
-    _mainLoop = make_shared<tdsdl::SDLGlMainLoop>(Application::WINDOW_WIDTH, Application::WINDOW_HEIGHT);
-    _scene    = make_shared<core::Scene>();
-    _renderer = make_shared<core::SceneRenderer>(_mainLoop->getGlContext(), _scene);
-    _camera   = make_shared<core::Camera>(Application::WINDOW_WIDTH, Application::WINDOW_HEIGHT);
+    mainLoop = make_shared<tdsdl::SDLGlMainLoop>(Application::WINDOW_WIDTH, Application::WINDOW_HEIGHT);
+    scene    = make_shared<core::Scene>();
+    renderer = make_shared<core::SceneRenderer>(mainLoop->getGlContext(), scene);
+    camera   = make_shared<core::Camera>(Application::WINDOW_WIDTH, Application::WINDOW_HEIGHT);
 
-    auto cameraController = make_shared<tdsdl::SDLOrbitCameraController>(_camera);
-    _mainLoop->addEventReceiver(cameraController);
-    _mainLoop->setDrawCallback(bind(&Application::draw, this)); // TODO: maybe bind renderer draw directly
+	scene->addEntity("axis", make_shared<entities::AxisEntity>(vt::VTType::ColorLinesVT));
+    scene->addEntity("planet", make_shared<entities::PlanetEntity>(vt::VTType::PlanetVT));
+    renderer->updateScene();
 
-    // TODO: set up scene with entities
-	// _scene->addEntity(make_shared<entities::Entity>());
-	_scene->addEntity(make_shared<entities::AxisEntity>(vt::VTType::ColorLinesVT));
-    _scene->addEntity(make_shared<entities::PlanetEntity>(vt::VTType::PlanetVT));
+    auto cameraController = make_shared<tdsdl::SDLOrbitCameraController>(camera);
+    auto applicationEventReciever = make_shared<ApplicationEventReciever>(this);
 
-    _renderer->updateScene();
+    mainLoop->addEventReceiver(cameraController);
+    mainLoop->addEventReceiver(applicationEventReciever);
+    mainLoop->setDrawCallback(bind(&Application::draw, this)); // TODO: maybe bind renderer draw directly
 
     TD_LOG_DEBUG("Application initialized.");
     return true;
@@ -52,13 +53,13 @@ int Application::init()
 int Application::run()
 {
     TD_LOG_DEBUG("Application running ...");
-    _mainLoop->run();
+    mainLoop->run();
     TD_LOG_DEBUG("Application end.");
     return 0;
 }
 
 void Application::draw()
 {
-    // camera is moved with _mainLoop with help of manipulator as event reciever
-    _renderer->draw(_camera);
+    // camera is moved with mainLoop with help of manipulator as event reciever
+    renderer->draw(camera);
 }

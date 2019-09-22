@@ -16,8 +16,7 @@ SDLOrbitCameraController::SDLOrbitCameraController(shared_ptr<Camera> camera) :
 
 bool SDLOrbitCameraController::processSDLEvent(SDL_Event const& event)
 {
-    // per event reaction ... for example change to default position on zero press
-    return true;
+    return false;
 }
 
 void SDLOrbitCameraController::onFrameUpdate()
