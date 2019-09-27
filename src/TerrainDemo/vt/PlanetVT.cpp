@@ -7,6 +7,8 @@
 #include <geGL/geGL.h>
 #include <geUtil/Text.h>
 
+#include <TerrainLib/PlanetSurface.h>
+
 using namespace std;
 using namespace TerrainDemo;
 using namespace TerrainDemo::vt;
@@ -17,6 +19,37 @@ void PlanetVT::initGlProgram()
         make_shared<ge::gl::Shader>(GL_VERTEX_SHADER, ge::util::loadTextFile(SHADER_PLANET_VERTEX)),
         make_shared<ge::gl::Shader>(GL_FRAGMENT_SHADER, ge::util::loadTextFile(SHADER_PLANET_FRAGMENT))
     );
+}
+
+shared_ptr<VAOContainer> PlanetVT::processEntityToVaoContainer(shared_ptr<entities::Entity> entity)
+{
+	auto vaoContainer = make_shared<VAOContainer>(_gl);
+    vaoContainer->vao->bind();
+
+    unsigned int w = 2048 / 4;
+	unsigned int h = 1536 / 3;
+
+	auto planetSurface = make_shared<tl::PlanetSurface>();
+    auto gl = vaoContainer->vao->getContext();
+
+    // move to VAO container or get working texture object
+    unsigned int texture;
+	gl.glGenTextures(1, &texture);
+	gl.glBindTexture(GL_TEXTURE_CUBE_MAP, texture);
+
+    for (int i = 0; i < 6; ++i) {
+        unique_ptr<unsigned char[]> data = planetSurface->getTextureDataForFace(i, w, h);
+        gl.glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_RGBA, w, h, 0, GL_RGBA, GL_UNSIGNED_BYTE, data.get());
+    }
+
+	gl.glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+	gl.glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+	gl.glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
+	gl.glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	gl.glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+	vaoContainer->vao->unbind();
+	return vaoContainer;
 }
 
 void PlanetVT::drawInternal(shared_ptr<core::Camera> camera)

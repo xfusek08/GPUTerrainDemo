@@ -9,12 +9,11 @@ namespace TerrainDemo
         class PlanetEntity : public entities::Entity
         {
         public:
-            PlanetEntity(vt::VTType vtType);
+            PlanetEntity(vt::VTType vtType) : Entity(vtType) {}
 
-            void loadToVaoElement(std::shared_ptr<vt::VAOContainer> vaoElem) override;
-
-        protected:
-			std::vector<float> _colors = { 0.f };
+            virtual std::vector<float>    getVerticies()  const override { return {}; }
+            virtual std::vector<unsigned> getIndieces()   const override { return {}; }
+            virtual std::vector<float>    getColors()     const override { return {}; }
         };
     } // namespace entities
 } // namespace TerrainDemo

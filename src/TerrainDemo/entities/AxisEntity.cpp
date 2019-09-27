@@ -7,9 +7,9 @@ using namespace std;
 using namespace TerrainDemo;
 using namespace TerrainDemo::entities;
 
-AxisEntity::AxisEntity(vt::VTType vtType) : Entity(vtType)
+vector<float> AxisEntity::getVerticies() const
 {
-    _verticies = {
+    return {
         -2.f,  0.f,  0.f,
          2.f,  0.f,  0.f,
          0.f, -2.f,  0.f,
@@ -17,27 +17,25 @@ AxisEntity::AxisEntity(vt::VTType vtType) : Entity(vtType)
          0.f,  0.f, -2.f,
          0.f,  0.f,  2.f,
     };
+}
 
-    _colors = {
-        2.f, 0.f, 0.f,
-        2.f, 0.f, 0.f,
-        0.f, 2.f, 0.f,
-        0.f, 2.f, 0.f,
-        0.f, 0.f, 2.f,
-        0.f, 0.f, 2.f,
-    };
-
-    _indicies = {
+vector<unsigned> AxisEntity::getIndieces() const
+{
+    return {
         0,1,
         2,3,
         4,5
     };
 }
 
-void AxisEntity::loadToVaoElement(shared_ptr<vt::VAOContainer> vaoElem)
+vector<float> AxisEntity::getColors() const
 {
-    vaoElem->vao->addElementBuffer(vaoElem->newBuffer(getIndieces()));
-    vaoElem->vao->addAttrib(vaoElem->newBuffer(getVerticies()), 0, 3, GL_FLOAT);
-	vaoElem->vao->addAttrib(vaoElem->newBuffer(getColors()), 1, 3, GL_FLOAT);
-	vaoElem->indexSize = getIndieces().size();
+    return {
+        2.f, 0.f, 0.f,
+        2.f, 0.f, 0.f,
+        0.f, 2.f, 0.f,
+        0.f, 2.f, 0.f,
+        0.f, 0.f, 2.f,
+        0.f, 0.f, 2.f,
+    };
 }

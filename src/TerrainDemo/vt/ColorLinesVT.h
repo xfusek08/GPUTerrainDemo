@@ -17,7 +17,8 @@ namespace TerrainDemo
 			inline GLenum getDrawMode() const { return GL_LINES; }
 
 		protected:
-            void initGlProgram() override;			
+            void initGlProgram() override;
+            virtual std::shared_ptr<VAOContainer> processEntityToVaoContainer(std::shared_ptr<entities::Entity> entity) override;
         };
     } // namespace vt
 } // namespace TerrainDemo

@@ -76,11 +76,13 @@ void BaseVisualizationTechnique::processScene(shared_ptr<core::Scene> scene)
 
 shared_ptr<VAOContainer> BaseVisualizationTechnique::processEntityToVaoContainer(shared_ptr<entities::Entity> entity)
 {
-	auto vaoElement = make_shared<VAOContainer>(_gl);
-    vaoElement->vao->bind();
-    entity->loadToVaoElement(vaoElement);
-    vaoElement->vao->unbind();
-	return vaoElement;
+	auto vaoContainer = make_shared<VAOContainer>(_gl);
+    vaoContainer->vao->bind();
+    vaoContainer->vao->addElementBuffer(vaoContainer->newBuffer(entity->getIndieces()));
+    vaoContainer->vao->addAttrib(vaoContainer->newBuffer(entity->getVerticies()), 0, 3, GL_FLOAT);
+	vaoContainer->indexSize = entity->getIndieces().size();
+    vaoContainer->vao->unbind();
+	return vaoContainer;
 }
 
 void BaseVisualizationTechnique::beforeDraw(shared_ptr<core::Camera> camera)

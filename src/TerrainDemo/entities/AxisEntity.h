@@ -9,14 +9,11 @@ namespace TerrainDemo
         class AxisEntity : public entities::Entity
         {
         public:
-            AxisEntity(vt::VTType vtType);
+            AxisEntity(vt::VTType vtType) : Entity(vtType) {}
 
-            void loadToVaoElement(std::shared_ptr<vt::VAOContainer> vaoElem) override;
-
-			inline std::vector<float> getColors() const { return _colors; }
-
-        protected:
-			std::vector<float> _colors = { 0.f };
+			virtual std::vector<float>    getVerticies()  const override;
+            virtual std::vector<unsigned> getIndieces()   const override;
+            virtual std::vector<float>    getColors()     const override;
         };
     } // namespace entities
 } // namespace TerrainDemo

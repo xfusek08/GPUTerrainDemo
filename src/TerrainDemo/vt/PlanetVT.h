@@ -23,6 +23,7 @@ namespace TerrainDemo
 
 		protected:
 			virtual void initGlProgram() override;
+            virtual std::shared_ptr<VAOContainer> processEntityToVaoContainer(std::shared_ptr<entities::Entity> entity) override;
             virtual void drawInternal(std::shared_ptr<core::Camera> camera) override;
         };
     } // namespace vt
