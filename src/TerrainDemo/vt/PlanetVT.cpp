@@ -8,6 +8,7 @@
 #include <geUtil/Text.h>
 
 #include <TerrainLib/PlanetSurface.h>
+#include <TerrainLib/PlanetTextureGenerator.h>
 
 using namespace std;
 using namespace TerrainDemo;
@@ -26,10 +27,11 @@ shared_ptr<VAOContainer> PlanetVT::processEntityToVaoContainer(shared_ptr<entiti
 	auto vaoContainer = make_shared<VAOContainer>(_gl);
     vaoContainer->vao->bind();
 
-    unsigned int w = 2048 / 4;
-	unsigned int h = 1536 / 3;
+    unsigned int w = 800;
+	unsigned int h = 800;
 
-	auto planetSurface = make_shared<tl::PlanetSurface>();
+    auto planetTextureGenerator = make_shared<tl::PlanetTextureGenerator>(make_shared<tl::PlanetSurface>());
+
     auto gl = vaoContainer->vao->getContext();
 
     // move to VAO container or get working texture object
@@ -38,7 +40,7 @@ shared_ptr<VAOContainer> PlanetVT::processEntityToVaoContainer(shared_ptr<entiti
 	gl.glBindTexture(GL_TEXTURE_CUBE_MAP, texture);
 
     for (int i = 0; i < 6; ++i) {
-        unique_ptr<unsigned char[]> data = planetSurface->getTextureDataForFace(i, w, h);
+        unique_ptr<unsigned char[]> data = planetTextureGenerator->getTextureDataForFace(i, w, h);
         gl.glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_RGBA, w, h, 0, GL_RGBA, GL_UNSIGNED_BYTE, data.get());
     }
 

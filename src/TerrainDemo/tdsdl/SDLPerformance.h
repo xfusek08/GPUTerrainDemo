@@ -8,12 +8,11 @@ namespace TerrainDemo
     {
         class SDLPerformance
         {
-            const unsigned FPS_CAP = 60; // TODO: on older PC gives lesser value 60 -> 55 or 100 -> 83
+            const unsigned FPS_CAP = 60;
 
         public:
             SDLPerformance();
             void frame();
-            void capFps();
 
             inline bool framesCounted() { return _framesCounted; }
             inline unsigned getFrames() { return _frameCnt; }
@@ -23,8 +22,7 @@ namespace TerrainDemo
                 _frameCnt = 0,
                 _frameCountingTimeMs = 0,
                 _msPerFrame = 0,
-                _beginTimeMs = 0,
-                _endTimeMs = 0,
+                _frameBeginTime = 0,
                 _previousBeginTime = 0;
         };
     }

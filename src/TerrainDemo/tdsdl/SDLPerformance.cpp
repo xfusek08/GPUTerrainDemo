@@ -15,20 +15,21 @@ void SDLPerformance::frame()
         _frameCnt = 0;
     }
 
-    _previousBeginTime = _beginTimeMs;
-    _beginTimeMs = SDL_GetTicks();
+    auto frameEndTime = SDL_GetTicks();
+
+    if (_msPerFrame > (frameEndTime - _frameBeginTime)) {
+        SDL_Delay(_msPerFrame - frameEndTime + _frameBeginTime);
+    }
+
+    _previousBeginTime = _frameBeginTime;
+    _frameBeginTime = SDL_GetTicks();
+
+    _frameCountingTimeMs += _frameBeginTime - _previousBeginTime;
+
     _frameCnt++;
 
-    _frameCountingTimeMs += _beginTimeMs - _previousBeginTime;
     if (_frameCountingTimeMs >= 1000) {
         _framesCounted = true;
         _frameCountingTimeMs = 0;
     }
-}
-
-void SDLPerformance::capFps()
-{
-    auto frameEnd = SDL_GetTicks();
-    if (_msPerFrame > (frameEnd - _beginTimeMs))
-        SDL_Delay(_msPerFrame - frameEnd + _beginTimeMs);
 }

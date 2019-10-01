@@ -106,7 +106,5 @@ void SDLGlMainLoop::draw()
         TD_LOG_INFO("FPS: " << _performance.getFrames());
 	#endif
 
-    _performance.capFps();
-
     _window->swap();
 }

@@ -36,7 +36,7 @@ endif()
 # resources
 
 set(DEFAULT_RESOERCES_PATH "${CMAKE_CURRENT_LIST_DIR}/resources")
-set(${PROJECT_NAME}_RESOURCES  "${DEFAULT_RESOERCES_PATH}" CACHE PATH "Relative or absolute path to Application resources.")
+set(${APP_NAME}_RESOURCES  "${DEFAULT_RESOERCES_PATH}" CACHE PATH "Relative or absolute path to Application resources.")
 
 set(SHADER_FILES
     basic/vertex.glsl       basic/fragment.glsl
@@ -100,7 +100,7 @@ source_group("TerrainDemo\\interfaces"  FILES ${SRC_TERRAIN_DEMO_INTERFACES})
 set(SHADER_COMPILE_DEFINITIONS )
 foreach(FILE_RELATIVE_NAME ${SHADER_FILES})
 
-    unset(shader_file CACHE)
+   unset(shader_file CACHE)
 
     # find full name of shader
     find_file(shader_file
@@ -116,6 +116,8 @@ foreach(FILE_RELATIVE_NAME ${SHADER_FILES})
     string(CONCAT shader_definition
         "SHADER_" ${definition_name} "=\"" ${shader_file} "\""
     )
+
+    messagE(${shader_definition})
 
     # add shader_definition to SHADER_COMPILE_DEFINITIONS list
     list(APPEND SHADER_COMPILE_DEFINITIONS ${shader_definition})
