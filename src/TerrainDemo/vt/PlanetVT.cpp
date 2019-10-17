@@ -7,6 +7,7 @@
 #include <geGL/geGL.h>
 #include <geUtil/Text.h>
 
+#include <TerrainLib/SurfaceConfig.h>
 #include <TerrainLib/PlanetSurface.h>
 #include <TerrainLib/PlanetTextureGenerator.h>
 
@@ -27,10 +28,13 @@ shared_ptr<VAOContainer> PlanetVT::processEntityToVaoContainer(shared_ptr<entiti
 	auto vaoContainer = make_shared<VAOContainer>(_gl);
     vaoContainer->vao->bind();
 
-    unsigned int w = 800;
-	unsigned int h = 800;
+    unsigned int w = 200;
+	unsigned int h = 200;
 
-    auto planetTextureGenerator = make_shared<tl::PlanetTextureGenerator>(make_shared<tl::PlanetSurface>());
+	tl::SurfaceConfig config;
+    config.resolution = 20;
+	auto planetSurface = make_shared<tl::PlanetSurface>(config);
+	auto planetTextureGenerator = make_shared<tl::PlanetTextureGenerator>(planetSurface);
 
     auto gl = vaoContainer->vao->getContext();
 
@@ -40,8 +44,9 @@ shared_ptr<VAOContainer> PlanetVT::processEntityToVaoContainer(shared_ptr<entiti
 	gl.glBindTexture(GL_TEXTURE_CUBE_MAP, texture);
 
     for (int i = 0; i < 6; ++i) {
-        unique_ptr<unsigned char[]> data = planetTextureGenerator->getTextureDataForFace(i, w, h);
-        gl.glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_RGBA, w, h, 0, GL_RGBA, GL_UNSIGNED_BYTE, data.get());
+        GLuint cubeMapConst = GL_TEXTURE_CUBE_MAP_POSITIVE_X + i;
+        unique_ptr<unsigned char[]> data = planetTextureGenerator->getTextureDataForFace(planetTextureGenerator->glCubemapFaceToFaceId(cubeMapConst), w, h);
+        gl.glTexImage2D(cubeMapConst, 0, GL_RGBA, w, h, 0, GL_RGBA, GL_UNSIGNED_BYTE, data.get());
     }
 
 	gl.glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
