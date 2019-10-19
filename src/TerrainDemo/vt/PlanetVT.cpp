@@ -9,7 +9,7 @@
 
 #include <TerrainLib/SurfaceConfig.h>
 #include <TerrainLib/PlanetSurface.h>
-#include <TerrainLib/PlanetTextureGenerator.h>
+#include <TerrainLib/SurfaceRegion.h>
 
 using namespace std;
 using namespace TerrainDemo;
@@ -23,51 +23,42 @@ void PlanetVT::initGlProgram()
     );
 }
 
-shared_ptr<VAOContainer> PlanetVT::processEntityToVaoContainer(shared_ptr<entities::Entity> entity)
+void PlanetVT::processScene(std::shared_ptr<core::Scene> scene)
 {
-	auto vaoContainer = make_shared<VAOContainer>(_gl);
-    vaoContainer->vao->bind();
+	BaseVisualizationTechnique::processScene(scene);
 
-    unsigned int w = 200;
-	unsigned int h = 200;
+}
 
+shared_ptr<VAOContainer> PlanetVT::processEntityToVaoContainer(std::shared_ptr<entities::Entity> entity)
+{
 	tl::SurfaceConfig config;
-    config.resolution = 20;
+	config.resolution = 15;
 	auto planetSurface = make_shared<tl::PlanetSurface>(config);
-	auto planetTextureGenerator = make_shared<tl::PlanetTextureGenerator>(planetSurface);
+	auto regions = planetSurface->getRegions();
+	vector<float> regionBuffer = {};
+	for (tl::SurfaceRegion region : regions) {
+		regionBuffer.push_back(region.get3dPosition().x);
+		regionBuffer.push_back(region.get3dPosition().y);
+		regionBuffer.push_back(region.get3dPosition().z);
+        regionBuffer.push_back(0);
+		regionBuffer.push_back(float(region.getColor().r) / 255.0);
+		regionBuffer.push_back(float(region.getColor().g) / 255.0);
+		regionBuffer.push_back(float(region.getColor().b) / 255.0);
+        regionBuffer.push_back(0);
+	}
 
-    auto gl = vaoContainer->vao->getContext();
-
-    // move to VAO container or get working texture object
-    unsigned int texture;
-	gl.glGenTextures(1, &texture);
-	gl.glBindTexture(GL_TEXTURE_CUBE_MAP, texture);
-
-    for (int i = 0; i < 6; ++i) {
-        GLuint cubeMapConst = GL_TEXTURE_CUBE_MAP_POSITIVE_X + i;
-        unique_ptr<unsigned char[]> data = planetTextureGenerator->getTextureDataForFace(planetTextureGenerator->glCubemapFaceToFaceId(cubeMapConst), w, h);
-        gl.glTexImage2D(cubeMapConst, 0, GL_RGBA, w, h, 0, GL_RGBA, GL_UNSIGNED_BYTE, data.get());
-    }
-
-	gl.glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-	gl.glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-	gl.glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
-	gl.glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	gl.glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-	vaoContainer->vao->unbind();
-	return vaoContainer;
+    auto vaoContainer = make_shared<VAOContainer>(_gl);
+	_program->set1ui("resolution", 10);
+	_program->set1ui("regionResolution", config.resolution);
+	_program->bindBuffer("regionBuffer", vaoContainer->newBuffer(regionBuffer));
+    return vaoContainer;
 }
 
 void PlanetVT::drawInternal(shared_ptr<core::Camera> camera)
 {
-    uint32_t resolution = 10;
-
-    _program->set1ui("resolution", resolution);
-
     for (auto pair: _vaoContainerMap) {
 		auto elem = pair.second;
 		elem->vao->bind();
-        _gl->glDrawArrays(GL_TRIANGLES, 0, 6 * 6 * resolution * resolution);
+        _gl->glDrawArrays(GL_TRIANGLES, 0, 6 * 6 * 10 * 10);
     }
 }

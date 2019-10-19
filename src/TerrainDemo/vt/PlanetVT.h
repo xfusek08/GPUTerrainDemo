@@ -21,6 +21,8 @@ namespace TerrainDemo
 			inline VTType getType() const override { return VTType::PlanetVT; }
 			inline GLenum getDrawMode() const override { return GL_TRIANGLES; }
 
+			void processScene(std::shared_ptr<core::Scene> scene) override;
+
 		protected:
 			virtual void initGlProgram() override;
             virtual std::shared_ptr<VAOContainer> processEntityToVaoContainer(std::shared_ptr<entities::Entity> entity) override;

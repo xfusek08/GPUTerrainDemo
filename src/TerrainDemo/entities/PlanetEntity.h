@@ -14,6 +14,8 @@ namespace TerrainDemo
             virtual std::vector<float>    getVerticies()  const override { return {}; }
             virtual std::vector<unsigned> getIndieces()   const override { return {}; }
             virtual std::vector<float>    getColors()     const override { return {}; }
+
+			
         };
     } // namespace entities
 } // namespace TerrainDemo
