@@ -24,6 +24,7 @@ namespace TerrainDemo
 
 			virtual void initGlProgram() override;
 			virtual void draw(std::shared_ptr<core::Camera> camera) override;
+            virtual std::shared_ptr<VAOContainer> processEntityToVaoContainer(std::shared_ptr<entities::Entity> entity) override;
         };
     } // namespace vt
 } // namespace TerrainDemo

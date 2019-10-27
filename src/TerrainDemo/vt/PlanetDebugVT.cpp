@@ -2,6 +2,9 @@
 #include <TerrainDemo/core/Camera.h>
 
 #include <TerrainDemo/vt/PlanetDebugVT.h>
+#include <TerrainDemo/vt/VAOContainer.h>
+
+#include <TerrainDemo/entities/PlanetEntity.h>
 #include <geGL/geGL.h>
 #include <geUtil/Text.h>
 
@@ -32,4 +35,13 @@ void PlanetDebugVT::draw(shared_ptr<core::Camera> camera)
 	beforeDraw(camera);
 	drawInternal(camera);
 	afterDraw(camera);
+
+	_program = _program_faces;
+}
+
+shared_ptr<VAOContainer> PlanetDebugVT::processEntityToVaoContainer(shared_ptr<entities::Entity> entity)
+{
+	auto res = PlanetVT::processEntityToVaoContainer(entity);
+	_program_lines->set1ui("resolution", _planet->getMeshResolution());
+	return res;
 }
