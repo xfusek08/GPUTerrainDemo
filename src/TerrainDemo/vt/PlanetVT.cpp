@@ -1,19 +1,19 @@
 
+#include <geGL/geGL.h>
+#include <geUtil/Text.h>
+
 #include <TerrainDemo/core/Utils.h>
 #include <TerrainDemo/core/Camera.h>
 
 #include <TerrainDemo/vt/VAOContainer.h>
 #include <TerrainDemo/vt/PlanetVT.h>
-#include <geGL/geGL.h>
-#include <geUtil/Text.h>
 
-#include <TerrainLib/SurfaceConfig.h>
-#include <TerrainLib/PlanetSurface.h>
 #include <TerrainLib/SurfaceRegion.h>
 
 using namespace std;
 using namespace TerrainDemo;
 using namespace TerrainDemo::vt;
+using namespace TerrainDemo::entities;
 
 void PlanetVT::initGlProgram()
 {
@@ -26,15 +26,12 @@ void PlanetVT::initGlProgram()
 void PlanetVT::processScene(std::shared_ptr<core::Scene> scene)
 {
 	BaseVisualizationTechnique::processScene(scene);
-
 }
 
-shared_ptr<VAOContainer> PlanetVT::processEntityToVaoContainer(std::shared_ptr<entities::Entity> entity)
+shared_ptr<VAOContainer> PlanetVT::processEntityToVaoContainer(shared_ptr<Entity> entity)
 {
-	tl::SurfaceConfig config;
-	config.resolution = 15;
-	auto planetSurface = make_shared<tl::PlanetSurface>(config);
-	auto regions = planetSurface->getRegions();
+	_planet = dynamic_pointer_cast<PlanetEntity>(entity);
+	auto regions = _planet->getRegions();
 	vector<float> regionBuffer = {};
 	for (tl::SurfaceRegion region : regions) {
 		regionBuffer.push_back(region.get3dPosition().x);
@@ -48,8 +45,8 @@ shared_ptr<VAOContainer> PlanetVT::processEntityToVaoContainer(std::shared_ptr<e
 	}
 
     auto vaoContainer = make_shared<VAOContainer>(_gl);
-	_program->set1ui("resolution", 10);
-	_program->set1ui("regionResolution", config.resolution);
+	_program->set1ui("resolution", _planet->getMeshResolution());
+	_program->set1ui("regionResolution", _planet->getRegionResolution());
 	_program->bindBuffer("regionBuffer", vaoContainer->newBuffer(regionBuffer));
     return vaoContainer;
 }
@@ -59,6 +56,6 @@ void PlanetVT::drawInternal(shared_ptr<core::Camera> camera)
     for (auto pair: _vaoContainerMap) {
 		auto elem = pair.second;
 		elem->vao->bind();
-        _gl->glDrawArrays(GL_TRIANGLES, 0, 6 * 6 * 10 * 10);
+        _gl->glDrawArrays(GL_TRIANGLES, 0, 6 * 6 * _planet->getMeshResolution() * _planet->getMeshResolution());
     }
 }

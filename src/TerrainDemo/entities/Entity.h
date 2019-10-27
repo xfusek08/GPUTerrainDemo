@@ -27,7 +27,6 @@ namespace TerrainDemo
 
 			virtual std::vector<float>    getVerticies()  const;
             virtual std::vector<unsigned> getIndieces()   const;
-
             virtual std::vector<float>    getColors()     const { return {}; }
 
         protected:

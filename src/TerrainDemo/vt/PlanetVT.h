@@ -1,6 +1,7 @@
 #pragma once
 
 #include <TerrainDemo/vt/BaseVisualizationTechnique.h>
+#include <TerrainDemo/entities/PlanetEntity.h>
 #include <geGL/Generated/OpenGLTypes.h>
 #include <geGL/Generated/OpenGLConstants.h>
 
@@ -24,6 +25,8 @@ namespace TerrainDemo
 			void processScene(std::shared_ptr<core::Scene> scene) override;
 
 		protected:
+			std::shared_ptr<entities::PlanetEntity> _planet = nullptr;
+
 			virtual void initGlProgram() override;
             virtual std::shared_ptr<VAOContainer> processEntityToVaoContainer(std::shared_ptr<entities::Entity> entity) override;
             virtual void drawInternal(std::shared_ptr<core::Camera> camera) override;

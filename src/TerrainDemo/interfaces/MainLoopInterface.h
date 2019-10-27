@@ -7,7 +7,7 @@ namespace TerrainDemo
     {
         /**
          * Interface of the main loop used by Application
-         * ! not used currently ... cannot avoid dependency on SDL_EVENT - custom event system is not imoplemented
+         * ! not used currently ... cannot avoid dependency on SDL_EVENT - custom event system is not implemented
          * ! TD_EVENT doest not exists
          */
         class MainLoopInterface
