@@ -24,12 +24,12 @@ bool ApplicationEventReciever::processSDLEvent(SDL_Event const& event)
 				return true;
 			} else if (event.key.keysym.sym == SDLK_p) {
 				auto planetEntity = dynamic_pointer_cast<PlanetEntity>(_application->scene->getEntity("planet"));
-				planetEntity->setRegionResolution(planetEntity->getRegionResolution() + 3);
+				planetEntity->setRegionResolution(planetEntity->getRegionResolution() + 1);
 				_application->renderer->updateScene();
 				return true;
 			} else if (event.key.keysym.sym == SDLK_o) {
 				auto planetEntity = dynamic_pointer_cast<PlanetEntity>(_application->scene->getEntity("planet"));
-				planetEntity->setRegionResolution(planetEntity->getRegionResolution() - 3);
+				planetEntity->setRegionResolution(planetEntity->getRegionResolution() - 1);
 				_application->renderer->updateScene();
 				return true;
 			}

@@ -48,6 +48,10 @@ shared_ptr<VAOContainer> PlanetVT::processEntityToVaoContainer(shared_ptr<Entity
 	_program->set1ui("resolution", _planet->getMeshResolution());
 	_program->set1ui("regionResolution", _planet->getRegionResolution());
 	_program->bindBuffer("regionBuffer", vaoContainer->newBuffer(regionBuffer));
+
+    TD_LOG_DEBUG("resolution: " << _planet->getMeshResolution());
+    TD_LOG_DEBUG("regionResolution: " << _planet->getRegionResolution());
+    TD_LOG_DEBUG("regionBufferSize: " << regionBuffer.size());
     return vaoContainer;
 }
 

@@ -43,10 +43,7 @@ void main()
         case 4: pos = vec3(pos.z, pos.y, -pos.x); break; // right face
         case 5: pos = vec3(-pos.x, pos.y, -pos.z); break; // back face
     }
-
-    pos = normalize(pos);
-
-    direction = pos; //vec2(pos.x + 1, -pos.y + 1) / 2;
-
+    direction = normalize(pos);
+    pos = direction;
     gl_Position = projectionMatrix * viewMatrix * vec4(pos, 1.0f);
 }

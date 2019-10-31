@@ -12,6 +12,12 @@ struct Region {
 
 layout (std430) buffer regionBuffer { Region regions[]; };
 
+bool dthrown = false;
+#define THROW_COLOR(c) dthrown = true; fColor = c
+#define IS_ERROR       (dthrown == true)
+#define ASSERTC(e,c)   if (!(e)) THROW_COLOR(c)
+#define ASSERT(e)      if (!(e)) THROW_COLOR(vec4(1,1,1,0))
+
 #define REGION_ID    uint
 #define FACE_ID      uint
 
@@ -26,23 +32,42 @@ layout (std430) buffer regionBuffer { Region regions[]; };
 #define FACE_SOUTH   5
 #define FACE_INVALID 99
 
-FACE_ID faceIdFromPos(inout vec3 pos)
+#define MAGIC_ANGLE 0.868734829276 // radians
+float tan_warp_theta;
+
+/* Unwarp to go sphere -> cube */
+vec2 unwarp(vec2 x) {
+    return atan(x * tan_warp_theta) / MAGIC_ANGLE;
+}
+
+vec3 normalizeToCube(vec3 pos)
 {
     vec3 absVector = abs(pos);
     float maxComp = max(max(absVector.x, absVector.y), absVector.z);
-    pos /= maxComp; // normalize vector to surface of cube
+    return pos /= maxComp; // normalize vector to surface of cube
+}
+
+vec3 sphereLocalToCubeLocal(vec3 coords)
+{
+    vec3 p = normalizeToCube(coords);
+    return vec3(unwarp(p.xy), p.z);
+}
+
+FACE_ID faceIdFromPos(in vec3 sphereGlobal3dCoords)
+{
+    vec3 pos = normalizeToCube(sphereGlobal3dCoords);
 
     if (pos.z > 0.9999) {
         return FACE_FRONT;
-    } else if (pos.z < -0.9999) {
+    } else if (pos.z < -0.99999) {
         return FACE_BACK;
-    } else if (pos.x > 0.9999) {
+    } else if (pos.x >  0.99999) {
         return FACE_RIGHT;
-    } else if (pos.x < -0.9999) {
+    } else if (pos.x < -0.99999) {
         return FACE_LEFT;
-    } else if (pos.y > 0.9999) {
+    } else if (pos.y >  0.99999) {
         return FACE_NORTH;
-    } else if (pos.y < -0.9999) {
+    } else if (pos.y < -0.99999) {
         return FACE_SOUTH;
     }
 
@@ -86,19 +111,12 @@ mat3 ptFromFaceId(FACE_ID faceId)
     }
 }
 
-REGION_ID getRegionOnFace(in FACE_ID faceId, in vec3 local3dCoors)
+REGION_ID getRegionOnFace(in FACE_ID faceId, in vec3 cubeLocal3dCoords)
 {
-    vec2 p = vec2(local3dCoors.x + 1.0f, 1.0f - local3dCoors.y) / 2.0f;
+    vec2 p = clamp(vec2(cubeLocal3dCoords.x + 1.0f, 1.0f - cubeLocal3dCoords.y) / 2.0f, 0.0f, 1.0f);
     uint x = uint(p.x * regionResolution);
     uint y = uint(p.y * regionResolution);
     return (faceId * regionResolution * regionResolution) + (regionResolution * y) + x;
-}
-
-REGION_ID regionFrom3D(in vec3 global3DPositon)
-{
-    FACE_ID actFace = faceIdFromPos(global3DPositon);
-    mat3    facePt  = ptFromFaceId(actFace);
-    return getRegionOnFace(actFace, global3DPositon * facePt);
 }
 
 float regionDistanceToVector(in REGION_ID region, in vec3 position)
@@ -106,59 +124,67 @@ float regionDistanceToVector(in REGION_ID region, in vec3 position)
     return distance(normalize(position), normalize(regions[region].position));
 }
 
-REGION_ID regionIdFromLocal3d(in FACE_ID faceId, in vec3 local3DPos)
+REGION_ID regionIdFromLocal3d(in FACE_ID faceId, in vec3 cubeLocal3dCoords)
 {
-	vec2 faceCoords_clamp = clamp(local3DPos.xy, -1.0f, 1.0f);
-    vec2 faceCoords_extra = abs(faceCoords_clamp - vec2(local3DPos));
-    float extra_dist = faceCoords_extra.x + faceCoords_extra.y;
+    vec2  faceCoords_clamp = clamp(cubeLocal3dCoords.xy, -1.0f, 1.0f);
+    vec2  faceCoords_extra = abs(faceCoords_clamp - cubeLocal3dCoords.xy);
+    float extra_dist       = faceCoords_extra.x + faceCoords_extra.y;
 
     if (extra_dist == 0.0) {
-        return getRegionOnFace(faceId, local3DPos);
+        return getRegionOnFace(faceId, cubeLocal3dCoords);
     }
     if (min(faceCoords_extra.x, faceCoords_extra.y) > 0) {
         return INVALID_REGION_ID; // double wrap - not allowed
     } else {
         // wrap to neighbor cube face in 3D space
-        return regionFrom3D(ptFromFaceId(faceId) * vec3(faceCoords_clamp.x, faceCoords_clamp.y, 1.0f - extra_dist));
+        vec3    cubeGlobalCoords = ptFromFaceId(faceId) * vec3(faceCoords_clamp.x, faceCoords_clamp.y, 1.0f - extra_dist);
+        FACE_ID newFaceId        = faceIdFromPos(cubeGlobalCoords);
+        return getRegionOnFace(newFaceId, cubeGlobalCoords * ptFromFaceId(newFaceId));
     }
-
 }
 
-REGION_ID getClosestRegionId(in vec3 global3DPositon, out float distToClosest)
+REGION_ID getClosestRegionId(in vec3 sphereGlobal3dCoords, out float distToClosest)
 {
-    vec3      pos             = global3DPositon;
-    FACE_ID   faceId          = faceIdFromPos(pos);
-    REGION_ID region          = getRegionOnFace(faceId, pos * ptFromFaceId(faceId));
-    REGION_ID closestRegionID = region;
-    float     gridstep        = 2.0f / float(regionResolution);
+    vec3      speheLocalPos   = sphereGlobal3dCoords;
+    FACE_ID   faceId          = faceIdFromPos(speheLocalPos);
+    REGION_ID region          = getRegionOnFace(faceId, sphereLocalToCubeLocal(speheLocalPos * ptFromFaceId(faceId)));
+    REGION_ID closestRegionId = region;
+    float     closestDistance = regionDistanceToVector(closestRegionId, sphereGlobal3dCoords);
+    float     gridHalfStep    = 1.0f / float(regionResolution);
+    float     gridStep        = 2.0f * gridHalfStep;
     int       gridX           = int(region % regionResolution);
-    int       gridY           = int(float(region) / float(regionResolution)) % int(regionResolution);
-    float     closestDistance = regionDistanceToVector(closestRegionID, global3DPositon);
+    int       gridY           = int(double(region % (regionResolution * regionResolution)) / double(regionResolution));
 
     for (int y = gridY - 1; y <= gridY + 1; ++y) {
         for (int x = gridX - 1; x <= gridX + 1; ++x) {
+            if (x == gridX && y == gridY)
+                continue;
             REGION_ID neighbor = regionIdFromLocal3d(faceId, vec3(
-                -1.0f + ((gridstep / 2.0f) + gridstep * x),
-                 1.0f - ((gridstep / 2.0f) + gridstep * y),
-                 1)
-            );
+                -1.0f + (gridHalfStep + gridStep * x),
+                1.0f - (gridHalfStep + gridStep * y),
+                1
+            ));
             if (neighbor != INVALID_REGION_ID) {
-                float dist = regionDistanceToVector(neighbor, global3DPositon);
+                float dist = regionDistanceToVector(neighbor, sphereGlobal3dCoords);
                 if (dist < closestDistance) {
                     closestDistance = dist;
-                    closestRegionID = neighbor;
+                    closestRegionId = neighbor;
                 }
             }
         }
     }
 
     distToClosest = closestDistance;
-    return closestRegionID;
+    return closestRegionId;
 }
 
 void main()
 {
+    tan_warp_theta = tan(MAGIC_ANGLE);
     float distToClosest = 0.0;
     REGION_ID regId = getClosestRegionId(direction, distToClosest);
-    fColor = distToClosest < (1.0f / float(10*regionResolution)) ? vec4(0,0,0,0) : vec4(regions[regId].color, 0);
+
+    if (!IS_ERROR) {
+        fColor = distToClosest < (1.0f / float(10*regionResolution)) ? vec4(0,0,0,0) : vec4(regions[regId].color, 0);
+    }
 }
