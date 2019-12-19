@@ -41,7 +41,7 @@ set(${APP_NAME}_RESOURCES  "${DEFAULT_RESOERCES_PATH}" CACHE PATH "Relative or a
 set(SHADER_FILES
     basic/vertex.glsl       basic/fragment.glsl
     vert_color/vertex.glsl  vert_color/fragment.glsl
-    planet/vertex.glsl      planet/fragment.glsl        planet/fragment_lines.glsl
+    planet/vertex.glsl      planet/fragment.glsl        planet/fragment_lines.glsl  planet/fragment_cube_map.glsl
 )
 
 # source files
@@ -91,12 +91,18 @@ set(SRC_TERRAIN_DEMO_INTERFACES
     src/${APP_NAME}/interfaces/RendererInterface.h
 )
 
+set(SRC_VENDOR_STB
+    src/vendor/stb/stb_image.h
+)
+
 source_group("TerrainDemo"              FILES ${SRC_TERRAIN_DEMO})
 source_group("TerrainDemo\\core"        FILES ${SRC_TERRAIN_DEMO_CORE})
 source_group("TerrainDemo\\entities"    FILES ${SRC_TERRAIN_DEMO_ENTITIES})
 source_group("TerrainDemo\\vt"          FILES ${SRC_ERRAIN_DEMO_VT})
 source_group("TerrainDemo\\tdsdl"       FILES ${SRC_ERRAIN_DEMO_TDSDL})
 source_group("TerrainDemo\\interfaces"  FILES ${SRC_TERRAIN_DEMO_INTERFACES})
+
+source_group("vendor/stb"               FILES ${SRC_VENDOR_STB} )
 
 # generate shader definitions from SHADER_FILES based on their location
 set(SHADER_COMPILE_DEFINITIONS )
@@ -133,6 +139,7 @@ add_executable(${APP_NAME}
     ${SRC_ERRAIN_DEMO_VT}
     ${SRC_ERRAIN_DEMO_TDSDL}
     ${SRC_TERRAIN_DEMO_INTERFACES}
+    ${SRC_VENDOR_STB}
 )
 
 target_link_libraries(${APP_NAME}
@@ -147,8 +154,15 @@ target_include_directories(${APP_NAME}
     PRIVATE src
 )
 
-# add macra to code
+# texture files
+find_file(textureImage
+    coords_cube_map.png
+    HINTS ${${APP_NAME}_RESOURCES/textures}
+)
+
+# add macra definitions to code
 target_compile_definitions(${APP_NAME} PUBLIC
     ${SHADER_COMPILE_DEFINITIONS}
     $<$<CONFIG:DEBUG>: "TD_DEBUG" "TD_ENABLE_ASSERTS" >
+    "COORDS_CUBE_MAP=\"${textureImage}\""
 )
