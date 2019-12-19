@@ -125,7 +125,7 @@ foreach(FILE_RELATIVE_NAME ${SHADER_FILES})
         "SHADER_" ${definition_name} "=\"" ${shader_file} "\""
     )
 
-    messagE(${shader_definition})
+    message(${shader_definition})
 
     # add shader_definition to SHADER_COMPILE_DEFINITIONS list
     list(APPEND SHADER_COMPILE_DEFINITIONS ${shader_definition})
@@ -155,14 +155,14 @@ target_include_directories(${APP_NAME}
 )
 
 # texture files
-find_file(textureImage
+find_file(coordCubeMapImage
     coords_cube_map.png
-    HINTS ${${APP_NAME}_RESOURCES/textures}
+    HINTS ${${APP_NAME}_RESOURCES}/textures
 )
 
 # add macra definitions to code
 target_compile_definitions(${APP_NAME} PUBLIC
     ${SHADER_COMPILE_DEFINITIONS}
     $<$<CONFIG:DEBUG>: "TD_DEBUG" "TD_ENABLE_ASSERTS" >
-    "COORDS_CUBE_MAP=\"${textureImage}\""
+    "COORDS_CUBE_MAP=\"${coordCubeMapImage}\""
 )

@@ -30,10 +30,17 @@ unique_ptr<unsigned char[]> PlanetCubeMapEntity::getTextureDataForFace(unsigned 
     for (unsigned int y = 0; y < face_height; ++y) {
 		for (unsigned int x = 0; x < face_width;  ++x) {
 
+			vec2 localWarpCoords = vec2(x / (float)face_width, y / (float)face_height);
+			localWarpCoords = (localWarpCoords - vec2(0.5, 0.5)) * 2.0f;
+			localWarpCoords = glm::atan(localWarpCoords * 1.18228668555f) * 1.151099238f;
+			localWarpCoords = localWarpCoords / 2.0f + vec2(0.5, 0.5);
+
 			uvec2 coords = uvec2(
-				texOffset.x + x * width / (4.f * face_width),
-				texOffset.y + y * height / (3.f * face_height)
+				texOffset.x + (width / 4) * localWarpCoords.x,
+				texOffset.y + (height / 3) * localWarpCoords.y
 			);
+
+            // coords = glm::tan(coords * 0.868734829276f) * 0.845818541496f;
 
 			unsigned int i = (4 * x) + (4 * face_width * y);
 			unsigned int j = (nrChannels * coords.x) + (nrChannels * coords.y * width);
