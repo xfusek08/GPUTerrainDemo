@@ -29,7 +29,6 @@ bool dthrown = false;
 #define FACE_LEFT    3
 #define FACE_NORTH   4
 #define FACE_SOUTH   5
-#define FACE_SOUTH   5
 #define FACE_INVALID 99
 
 #define MAGIC_ANGLE 0.868734829276 // radians

@@ -4,6 +4,7 @@
     BaseVisualizationTechnique, \
     ColorLinesVT, \
     PlanetVT, \
+    PlanetCubeMapVT, \
     PlanetDebugVT
 
 namespace TerrainDemo

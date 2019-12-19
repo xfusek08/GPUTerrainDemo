@@ -12,6 +12,7 @@
 
 #include <TerrainDemo/entities/AxisEntity.h>
 #include <TerrainDemo/entities/PlanetEntity.h>
+#include <TerrainDemo/entities/PlanetCubeMapEntity.h>
 
 #include <TerrainDemo/vt/types.h>
 
@@ -36,7 +37,8 @@ int Application::init()
     camera   = make_shared<core::Camera>(Application::WINDOW_WIDTH, Application::WINDOW_HEIGHT);
 
 	scene->addEntity("axis", make_shared<entities::AxisEntity>(vt::VTType::ColorLinesVT));
-    scene->addEntity("planet", make_shared<entities::PlanetEntity>(vt::VTType::PlanetVT));
+    // scene->addEntity("planet", make_shared<entities::PlanetEntity>(vt::VTType::PlanetVT));
+    scene->addEntity("planet", make_shared<entities::PlanetCubeMapEntity>(vt::VTType::PlanetCubeMapVT));
     renderer->updateScene();
 
     auto cameraController = make_shared<tdsdl::SDLOrbitCameraController>(camera);

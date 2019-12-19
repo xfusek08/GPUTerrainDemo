@@ -64,6 +64,7 @@ set(SRC_TERRAIN_DEMO_ENTITIES
     src/${APP_NAME}/entities/Entity.h                 src/${APP_NAME}/entities/Entity.cpp
     src/${APP_NAME}/entities/AxisEntity.h             src/${APP_NAME}/entities/AxisEntity.cpp
     src/${APP_NAME}/entities/PlanetEntity.h           src/${APP_NAME}/entities/PlanetEntity.cpp
+    src/${APP_NAME}/entities/PlanetCubeMapEntity.h    src/${APP_NAME}/entities/PlanetCubeMapEntity.cpp
 )
 
 set(SRC_ERRAIN_DEMO_TDSDL
@@ -80,6 +81,7 @@ set(SRC_ERRAIN_DEMO_VT
     src/${APP_NAME}/vt/BaseVisualizationTechnique.h   src/${APP_NAME}/vt/BaseVisualizationTechnique.cpp
     src/${APP_NAME}/vt/ColorLinesVT.h                 src/${APP_NAME}/vt/ColorLinesVT.cpp
     src/${APP_NAME}/vt/PlanetVT.h                     src/${APP_NAME}/vt/PlanetVT.cpp
+    src/${APP_NAME}/vt/PlanetCubeMapVT.h              src/${APP_NAME}/vt/PlanetCubeMapVT.cpp
     src/${APP_NAME}/vt/PlanetDebugVT.h                src/${APP_NAME}/vt/PlanetDebugVT.cpp
 )
 
