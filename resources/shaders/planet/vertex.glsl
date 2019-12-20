@@ -4,6 +4,7 @@
 uniform mat4 projectionMatrix;  // Projection matrix
 uniform mat4 viewMatrix;        // View Matrix
 uniform uint resolution;
+uniform uint showCube;
 
 out vec3 direction;
 
@@ -43,7 +44,11 @@ void main()
         case 4: pos = vec3(pos.z, pos.y, -pos.x); break; // right face
         case 5: pos = vec3(-pos.x, pos.y, -pos.z); break; // back face
     }
-    pos = normalize(pos);
+
+    if (showCube == 0) {
+        pos = normalize(pos);
+    }
+
     direction = pos;
     gl_Position = projectionMatrix * viewMatrix * vec4(pos, 1.0f);
 }

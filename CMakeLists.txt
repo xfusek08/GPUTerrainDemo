@@ -64,7 +64,6 @@ set(SRC_TERRAIN_DEMO_ENTITIES
     src/${APP_NAME}/entities/Entity.h                 src/${APP_NAME}/entities/Entity.cpp
     src/${APP_NAME}/entities/AxisEntity.h             src/${APP_NAME}/entities/AxisEntity.cpp
     src/${APP_NAME}/entities/PlanetEntity.h           src/${APP_NAME}/entities/PlanetEntity.cpp
-    src/${APP_NAME}/entities/PlanetCubeMapEntity.h    src/${APP_NAME}/entities/PlanetCubeMapEntity.cpp
 )
 
 set(SRC_ERRAIN_DEMO_TDSDL

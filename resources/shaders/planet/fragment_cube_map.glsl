@@ -5,9 +5,17 @@ out vec4 fColor;
 
 in vec3 direction;
 
-uniform samplerCube tex;
+uniform uint warpTexture;
+
+uniform samplerCube warpedTexture;
+uniform samplerCube unwarpedTexture;
 
 void main()
 {
-    fColor = texture(tex, direction);
+    if (warpTexture == 0) {
+        fColor = texture(unwarpedTexture, direction);
+    } else {
+        fColor = texture(warpedTexture, direction);
+    }
+    // fColor = texture(warpedTexture, direction);
 }

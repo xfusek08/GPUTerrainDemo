@@ -10,7 +10,6 @@ namespace ge
     {
 		class VertexArray;
 		class Buffer;
-		class Texture;
 		class Context;
     }
 }

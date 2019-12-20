@@ -42,6 +42,6 @@ void PlanetDebugVT::draw(shared_ptr<core::Camera> camera)
 shared_ptr<VAOContainer> PlanetDebugVT::processEntityToVaoContainer(shared_ptr<entities::Entity> entity)
 {
 	auto res = PlanetVT::processEntityToVaoContainer(entity);
-	_program_lines->set1ui("resolution", _planet->getMeshResolution());
+	_program_lines->set1ui("resolution", _planet->meshResolution);
 	return res;
 }

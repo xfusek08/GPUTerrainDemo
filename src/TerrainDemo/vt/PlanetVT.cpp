@@ -45,11 +45,15 @@ shared_ptr<VAOContainer> PlanetVT::processEntityToVaoContainer(shared_ptr<Entity
 	}
 
     auto vaoContainer = make_shared<VAOContainer>(_gl);
-	_program->set1ui("resolution", _planet->getMeshResolution());
+	_program->set1ui("resolution", _planet->meshResolution);
+	_program->set1ui("showCube", _planet->showCube);
+
 	_program->set1ui("regionResolution", _planet->getRegionResolution());
+	_program->set1ui("warpTexture", _planet->warpTexture);
 	_program->bindBuffer("regionBuffer", vaoContainer->newBuffer(regionBuffer));
 
-    TD_LOG_DEBUG("resolution: " << _planet->getMeshResolution());
+    TD_LOG_DEBUG("resolution: " << _planet->meshResolution);
+    TD_LOG_DEBUG("warpTexture: " << _planet->warpTexture);
     TD_LOG_DEBUG("regionResolution: " << _planet->getRegionResolution());
     TD_LOG_DEBUG("regionBufferSize: " << regionBuffer.size());
     return vaoContainer;
@@ -60,6 +64,6 @@ void PlanetVT::drawInternal(shared_ptr<core::Camera> camera)
     for (auto pair: _vaoContainerMap) {
 		auto elem = pair.second;
 		elem->vao->bind();
-        _gl->glDrawArrays(GL_TRIANGLES, 0, 6 * 6 * _planet->getMeshResolution() * _planet->getMeshResolution());
+        _gl->glDrawArrays(GL_TRIANGLES, 0, 6 * 6 * _planet->meshResolution * _planet->meshResolution);
     }
 }

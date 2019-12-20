@@ -2,7 +2,7 @@
 #include <geGL/geGL.h>
 #include <geUtil/Text.h>
 
-#include <TerrainDemo/entities/PlanetCubeMapEntity.h>
+#include <TerrainDemo/entities/PlanetEntity.h>
 
 #include <TerrainDemo/vt/VAOContainer.h>
 #include <TerrainDemo/vt/PlanetCubeMapVT.h>
@@ -24,29 +24,53 @@ shared_ptr<VAOContainer> PlanetCubeMapVT::processEntityToVaoContainer(shared_ptr
 {
     auto vaoContainer = make_shared<VAOContainer>(_gl);
     _planet = dynamic_pointer_cast<PlanetEntity>(entity);
-    _program->set1ui("resolution", _planet->getMeshResolution());
 
-	/// move to VAO container or get working texture object
+	if (_texture == nullptr || _textureWarped == nullptr) {
+        bool isWarpPrev = _planet->warpTexture;
 
-    auto cubeMapPlanet = dynamic_pointer_cast<PlanetCubeMapEntity>(_planet);
+        _planet->warpTexture = true;
+        _textureWarped = loadTextureFromPlanet();
+		// _textureWarped->bind(0);
 
-    unsigned int texture;
-	unsigned int w = 1000;
-	unsigned int h = 1000;
+        _planet->warpTexture = false;
+        _texture = loadTextureFromPlanet();
+		// _texture->bind(1);
 
-	_gl->glGenTextures(1, &texture);
-	_gl->glBindTexture(GL_TEXTURE_CUBE_MAP, texture);
+        _planet->warpTexture = isWarpPrev;
+	};
 
-    for (int i = 0; i < 6; ++i) {
-        unique_ptr<unsigned char[]> data = cubeMapPlanet->getTextureDataForFace(i, w, h);
-        _gl->glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_RGBA, w, h, 0, GL_RGBA, GL_UNSIGNED_BYTE, data.get());
-    }
+    _program->set1ui("resolution", _planet->meshResolution);
+	_program->set1ui("showCube", _planet->showCube);
 
-	_gl->glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-	_gl->glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-	_gl->glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
-	_gl->glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	_gl->glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	_program->set1ui("warpTexture", _planet->warpTexture);
 
     return vaoContainer;
+}
+
+shared_ptr<ge::gl::Texture> PlanetCubeMapVT::loadTextureFromPlanet()
+{
+    unsigned int w = 1000;
+	unsigned int h = 1000;
+
+	// move to VAO container or get working texture object
+    auto tex = make_shared<ge::gl::Texture>(GL_TEXTURE_CUBE_MAP, GL_RGBA, 0, w, h);
+	tex->bind(0);
+	for (int i = 0; i < 6; ++i) {
+		unique_ptr<unsigned char[]> data = _planet->getTextureDataForFace(i, w, h);
+        tex->setData2D(
+            data.get(),                        // data
+            GL_RGBA,                           // format
+            GL_UNSIGNED_BYTE,                  // type
+            0,                                 // level
+            GL_TEXTURE_CUBE_MAP_POSITIVE_X + i // target
+        );
+	}
+
+	tex->texParameteri(GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+	tex->texParameteri(GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+	tex->texParameteri(GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
+	tex->texParameteri(GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	tex->texParameteri(GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+    return tex;
 }
