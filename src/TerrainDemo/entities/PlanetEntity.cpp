@@ -67,7 +67,7 @@ unique_ptr<unsigned char[]> PlanetEntity::getTextureDataForFace(unsigned int fac
 
 			vec2 localWarpCoords = vec2(x / (float)face_width, y / (float)face_height);
 
-            if (warpTexture) {
+            if (warpTexture) { // use warp method of coordinate system from tl
                 localWarpCoords = (localWarpCoords - vec2(0.5, 0.5)) * 2.0f;
                 localWarpCoords = glm::atan(localWarpCoords * 1.18228668555f) * 1.151099238f;
                 localWarpCoords = localWarpCoords / 2.0f + vec2(0.5, 0.5);

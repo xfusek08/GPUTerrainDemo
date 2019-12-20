@@ -4,7 +4,6 @@ out vec4 fColor;
 in vec3 direction;
 
 uniform uint regionResolution;
-uniform uint warpTexture;
 
 struct Region {
     vec3 position;
@@ -37,10 +36,7 @@ float tan_warp_theta;
 
 /* Unwarp to go sphere -> cube */
 vec2 unwarp(vec2 x) {
-    if (warpTexture != 0) {
-        return atan(x * tan_warp_theta) / MAGIC_ANGLE;
-    }
-    return x;
+    return atan(x * tan_warp_theta) / MAGIC_ANGLE;
 }
 
 vec3 normalizeToCube(vec3 pos)

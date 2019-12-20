@@ -30,19 +30,21 @@ shared_ptr<VAOContainer> PlanetCubeMapVT::processEntityToVaoContainer(shared_ptr
 
         _planet->warpTexture = true;
         _textureWarped = loadTextureFromPlanet();
-		// _textureWarped->bind(0);
 
         _planet->warpTexture = false;
         _texture = loadTextureFromPlanet();
-		// _texture->bind(1);
 
         _planet->warpTexture = isWarpPrev;
 	};
 
+    if (_planet->warpTexture) {
+        _textureWarped->bind(0);
+    } else {
+        _texture->bind(0);
+    }
+
     _program->set1ui("resolution", _planet->meshResolution);
 	_program->set1ui("showCube", _planet->showCube);
-
-	_program->set1ui("warpTexture", _planet->warpTexture);
 
     return vaoContainer;
 }
@@ -54,7 +56,6 @@ shared_ptr<ge::gl::Texture> PlanetCubeMapVT::loadTextureFromPlanet()
 
 	// move to VAO container or get working texture object
     auto tex = make_shared<ge::gl::Texture>(GL_TEXTURE_CUBE_MAP, GL_RGBA, 0, w, h);
-	tex->bind(0);
 	for (int i = 0; i < 6; ++i) {
 		unique_ptr<unsigned char[]> data = _planet->getTextureDataForFace(i, w, h);
         tex->setData2D(
