@@ -16,7 +16,7 @@
 #include <TerrainDemo/vt/types.h>
 
 #include <TerrainDemo/Application.h>
-#include <TerrainDemo/ApplicationEventReciever.h>
+#include <TerrainDemo/ApplicationEventReceiver.h>
 
 using namespace std;
 using namespace TerrainDemo;
@@ -40,10 +40,10 @@ int Application::init()
     renderer->updateScene();
 
     auto cameraController = make_shared<tdsdl::SDLOrbitCameraController>(camera);
-    auto applicationEventReciever = make_shared<ApplicationEventReciever>(this);
+    auto applicationEventReceiver = make_shared<ApplicationEventReceiver>(this);
 
     mainLoop->addEventReceiver(cameraController);
-    mainLoop->addEventReceiver(applicationEventReciever);
+    mainLoop->addEventReceiver(applicationEventReceiver);
     mainLoop->setDrawCallback(bind(&Application::draw, this)); // TODO: maybe bind renderer draw directly
 
     TD_LOG_DEBUG("Application initialized.");
@@ -60,6 +60,6 @@ int Application::run()
 
 void Application::draw()
 {
-    // camera is moved with mainLoop with help of manipulator as event reciever
+    // camera is moved with mainLoop with help of manipulator as event receiver
     renderer->draw(camera);
 }

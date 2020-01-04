@@ -1,5 +1,5 @@
 
-#include <TerrainDemo/ApplicationEventReciever.h>
+#include <TerrainDemo/ApplicationEventReceiver.h>
 #include <TerrainDemo/core/Scene.h>
 #include <TerrainDemo/core/Utils.h>
 #include <TerrainDemo/vt/types.h>
@@ -19,7 +19,7 @@ using namespace TerrainDemo::entities;
 } \
 return false
 
-bool ApplicationEventReciever::processSDLEvent(SDL_Event const& event)
+bool ApplicationEventReceiver::processSDLEvent(SDL_Event const& event)
 {
     switch(event.type) {
 		case SDL_KEYDOWN:
@@ -85,7 +85,7 @@ bool ApplicationEventReciever::processSDLEvent(SDL_Event const& event)
     return false;
 }
 
-void ApplicationEventReciever::onFrameUpdate()
+void ApplicationEventReceiver::onFrameUpdate()
 {
 
 }

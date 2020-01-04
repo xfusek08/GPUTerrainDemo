@@ -48,7 +48,7 @@ set(SHADER_FILES
 
 set(SRC_TERRAIN_DEMO
     src/${APP_NAME}/Application.h                     src/${APP_NAME}/Application.cpp
-    src/${APP_NAME}/ApplicationEventReciever.h        src/${APP_NAME}/ApplicationEventReciever.cpp
+    src/${APP_NAME}/ApplicationEventReceiver.h        src/${APP_NAME}/ApplicationEventReceiver.cpp
 )
 
 set(SRC_TERRAIN_DEMO_CORE

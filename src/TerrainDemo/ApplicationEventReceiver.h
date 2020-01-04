@@ -5,10 +5,10 @@
 
 namespace TerrainDemo
 {
-    class ApplicationEventReciever : public tdsdl::SDLEventReceiverInterface
+    class ApplicationEventReceiver : public tdsdl::SDLEventReceiverInterface
     {
     public:
-        ApplicationEventReciever(Application* application): _application(application) {}
+        ApplicationEventReceiver(Application* application): _application(application) {}
         bool processSDLEvent(SDL_Event const&) override;
         void onFrameUpdate() override;
 
