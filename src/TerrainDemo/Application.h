@@ -19,8 +19,8 @@ namespace TerrainDemo
     class Application
     {
     public:
-		const int WINDOW_WIDTH  = 1920;
-		const int WINDOW_HEIGHT = 1080;
+		const int WINDOW_WIDTH  = 1240;
+		const int WINDOW_HEIGHT = 720;
 
 		std::shared_ptr<tdsdl::SDLGlMainLoop>           mainLoop = nullptr;
 		std::shared_ptr<interfaces::RendererInterface>  renderer = nullptr;
