@@ -1,0 +1,31 @@
+{
+    "configurations": [
+        {
+            "name": "Win32",
+            "includePath": [
+                "${workspaceFolder}/src",
+                "${workspaceFolder}/../TerrainLib/src",
+                "D:/software/_CmakeLibs/_install/glm/include",
+                "D:/software/_CmakeLibs/_install/GPUEngine/include",
+                "D:/software/_CmakeLibs/_build/TerrainLibProject/TerrainLib"
+            ],
+            "defines": [
+                "_DEBUG",
+                "UNICODE",
+                "_UNICODE",
+                "SHADER_BASIC_VERTEX=\"D:/Disk Google/VUT/BakalarskaPrace/Projekt/TerrainLibProject/TerrainLibDemo/resources/shaders/basic/vertex.glsl\"",
+                "SHADER_BASIC_FRAGMENT=\"D:/Disk Google/VUT/BakalarskaPrace/Projekt/TerrainLibProject/TerrainLibDemo/resources/shaders/basic/fragment.glsl\"",
+                "SHADER_VERT_COLOR_VERTEX=\"D:/Disk Google/VUT/BakalarskaPrace/Projekt/TerrainLibProject/TerrainLibDemo/resources/shaders/vert_color/vertex.glsl\"",
+                "SHADER_VERT_COLOR_FRAGMENT=\"D:/Disk Google/VUT/BakalarskaPrace/Projekt/TerrainLibProject/TerrainLibDemo/resources/shaders/vert_color/fragment.glsl\"",
+                "SHADER_PLANET_VERTEX=\"D:/Disk Google/VUT/BakalarskaPrace/Projekt/TerrainLibProject/TerrainLibDemo/resources/shaders/planet/vertex.glsl\"",
+                "SHADER_PLANET_FRAGMENT=\"D:/Disk Google/VUT/BakalarskaPrace/Projekt/TerrainLibProject/TerrainLibDemo/resources/shaders/planet/fragment.glsl\"",
+                "SHADER_PLANET_FRAGMENT_LINES=\"D:/Disk Google/VUT/BakalarskaPrace/Projekt/TerrainLibProject/TerrainLibDemo/resources/shaders/planet/fragment_lines.glsl\"",
+                "SHADER_PLANET_FRAGMENT_CUBE_MAP=\"D:/Disk Google/VUT/BakalarskaPrace/Projekt/TerrainLibProject/TerrainLibDemo/resources/shaders/planet/fragment_cube_map.glsl\""
+            ],
+            "windowsSdkVersion": "10.0.18362.0",
+            "compilerPath": "C:/Program Files (x86)/Microsoft Visual Studio/2019/Community/VC/Tools/MSVC/14.23.28105/bin/Hostx64/x64/cl.exe",
+            "intelliSenseMode": "msvc-x64"
+        }
+    ],
+    "version": 4
+}
