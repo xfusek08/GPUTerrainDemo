@@ -2,11 +2,11 @@
 cmake_minimum_required(VERSION 3.12.4)
 
 project(
-    TerrainLibProject-Demo
+    GeoPlanetProject-Demo
     VERSION 0.0.0
 )
 
-set(APP_NAME "TerrainDemo")
+set(APP_NAME "GeoPlanetDemo")
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
@@ -24,9 +24,9 @@ if(NOT TARGET SDL2CPP)
     find_package(SDL2CPP REQUIRED)
 endif()
 
-# find TerrainLib library
-if(NOT TARGET TerrainLib)
-    find_package(TerrainLib REQUIRED)
+# find GeoPlanet library
+if(NOT TARGET GeoPlanetLib)
+    find_package(GeoPlanetLib REQUIRED)
 endif()
 
 if(NOT TARGET glm)
@@ -46,12 +46,12 @@ set(SHADER_FILES
 
 # source files
 
-set(SRC_TERRAIN_DEMO
+set(SRC_GEO_PLANET_DEMO
     src/${APP_NAME}/Application.h                     src/${APP_NAME}/Application.cpp
     src/${APP_NAME}/ApplicationEventReceiver.h        src/${APP_NAME}/ApplicationEventReceiver.cpp
 )
 
-set(SRC_TERRAIN_DEMO_CORE
+set(SRC_GEO_PLANET_DEMO_CORE
     src/${APP_NAME}/core/Log.h                        src/${APP_NAME}/core/Log.cpp
     src/${APP_NAME}/core/Camera.h                     src/${APP_NAME}/core/Camera.cpp
     src/${APP_NAME}/core/OrbitCameraController.h      src/${APP_NAME}/core/OrbitCameraController.cpp
@@ -60,20 +60,20 @@ set(SRC_TERRAIN_DEMO_CORE
     src/${APP_NAME}/core/Utils.h
 )
 
-set(SRC_TERRAIN_DEMO_ENTITIES
+set(SRC_GEO_PLANET_DEMO_ENTITIES
     src/${APP_NAME}/entities/Entity.h                 src/${APP_NAME}/entities/Entity.cpp
     src/${APP_NAME}/entities/AxisEntity.h             src/${APP_NAME}/entities/AxisEntity.cpp
     src/${APP_NAME}/entities/PlanetEntity.h           src/${APP_NAME}/entities/PlanetEntity.cpp
 )
 
-set(SRC_ERRAIN_DEMO_TDSDL
-    src/${APP_NAME}/tdsdl/SDLGlMainLoop.h             src/${APP_NAME}/tdsdl/SDLGlMainLoop.cpp
-    src/${APP_NAME}/tdsdl/SDLOrbitCameraController.h  src/${APP_NAME}/tdsdl/SDLOrbitCameraController.cpp
-    src/${APP_NAME}/tdsdl/SDLPerformance.h            src/${APP_NAME}/tdsdl/SDLPerformance.cpp
-    src/${APP_NAME}/tdsdl/SDLEventReceiverInterface.h
+set(SRC_GEO_PLANET_DEMO_SDL
+    src/${APP_NAME}/sdl/SDLGlMainLoop.h             src/${APP_NAME}/SDL/SDLGlMainLoop.cpp
+    src/${APP_NAME}/sdl/SDLOrbitCameraController.h  src/${APP_NAME}/sdl/SDLOrbitCameraController.cpp
+    src/${APP_NAME}/sdl/SDLPerformance.h            src/${APP_NAME}/sdl/SDLPerformance.cpp
+    src/${APP_NAME}/sdl/SDLEventReceiverInterface.h
 )
 
-set(SRC_ERRAIN_DEMO_VT
+set(SRC_GEO_PLANET_DEMO_VT
     src/${APP_NAME}/vt/types.h
     src/${APP_NAME}/vt/VTFactory.h
     src/${APP_NAME}/vt/VAOContainer.h                 src/${APP_NAME}/vt/VAOContainer.cpp
@@ -84,7 +84,7 @@ set(SRC_ERRAIN_DEMO_VT
     src/${APP_NAME}/vt/PlanetDebugVT.h                src/${APP_NAME}/vt/PlanetDebugVT.cpp
 )
 
-set(SRC_TERRAIN_DEMO_INTERFACES
+set(SRC_GEO_PLANET_DEMO_INTERFACES
     src/${APP_NAME}/interfaces/LoggerInterface.h
     src/${APP_NAME}/interfaces/MainLoopInterface.h
     src/${APP_NAME}/interfaces/RendererInterface.h
@@ -94,12 +94,12 @@ set(SRC_VENDOR_STB
     src/vendor/stb/stb_image.h
 )
 
-source_group("TerrainDemo"              FILES ${SRC_TERRAIN_DEMO})
-source_group("TerrainDemo\\core"        FILES ${SRC_TERRAIN_DEMO_CORE})
-source_group("TerrainDemo\\entities"    FILES ${SRC_TERRAIN_DEMO_ENTITIES})
-source_group("TerrainDemo\\vt"          FILES ${SRC_ERRAIN_DEMO_VT})
-source_group("TerrainDemo\\tdsdl"       FILES ${SRC_ERRAIN_DEMO_TDSDL})
-source_group("TerrainDemo\\interfaces"  FILES ${SRC_TERRAIN_DEMO_INTERFACES})
+source_group("GeoPlanetDemo"              FILES ${SRC_GEO_PLANET_DEMO})
+source_group("GeoPlanetDemo\\core"        FILES ${SRC_GEO_PLANET_DEMO_CORE})
+source_group("GeoPlanetDemo\\entities"    FILES ${SRC_GEO_PLANET_DEMO_ENTITIES})
+source_group("GeoPlanetDemo\\vt"          FILES ${SRC_GEO_PLANET_DEMO_VT})
+source_group("GeoPlanetDemo\\sdl"         FILES ${SRC_GEO_PLANET_DEMO_SDL})
+source_group("GeoPlanetDemo\\interfaces"  FILES ${SRC_GEO_PLANET_DEMO_INTERFACES})
 
 source_group("vendor/stb"               FILES ${SRC_VENDOR_STB} )
 
@@ -132,12 +132,12 @@ endforeach()
 
 add_executable(${APP_NAME}
     src/main.cpp
-    ${SRC_TERRAIN_DEMO}
-    ${SRC_TERRAIN_DEMO_CORE}
-    ${SRC_TERRAIN_DEMO_ENTITIES}
-    ${SRC_ERRAIN_DEMO_VT}
-    ${SRC_ERRAIN_DEMO_TDSDL}
-    ${SRC_TERRAIN_DEMO_INTERFACES}
+    ${SRC_GEO_PLANET_DEMO}
+    ${SRC_GEO_PLANET_DEMO_CORE}
+    ${SRC_GEO_PLANET_DEMO_ENTITIES}
+    ${SRC_GEO_PLANET_DEMO_VT}
+    ${SRC_GEO_PLANET_DEMO_SDL}
+    ${SRC_GEO_PLANET_DEMO_INTERFACES}
     ${SRC_VENDOR_STB}
 )
 
@@ -145,7 +145,7 @@ target_link_libraries(${APP_NAME}
     geGL
     geUtil
     SDL2CPP::SDL2CPP
-    TerrainLib::TerrainLib
+    GeoPlanetLib::GeoPlanetLib
     glm
 )
 
@@ -162,6 +162,6 @@ find_file(coordCubeMapImage
 # add macra definitions to code
 target_compile_definitions(${APP_NAME} PUBLIC
     ${SHADER_COMPILE_DEFINITIONS}
-    $<$<CONFIG:DEBUG>: "TD_DEBUG" "TD_ENABLE_ASSERTS" >
+    $<$<CONFIG:DEBUG>: "GPD_DEBUG" "GPD_ENABLE_ASSERTS" >
     "COORDS_CUBE_MAP=\"${coordCubeMapImage}\""
 )

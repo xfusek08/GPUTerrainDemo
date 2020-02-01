@@ -1,0 +1,24 @@
+#pragma once
+
+#include <GeoPlanetDemo/vt/BaseVisualizationTechnique.h>
+#include <geGL/Generated/OpenGLTypes.h>
+#include <geGL/Generated/OpenGLConstants.h>
+
+namespace  gpd
+{
+    namespace vt
+    {
+        class ColorLinesVT : public BaseVisualizationTechnique
+        {
+		public:
+			ColorLinesVT(std::shared_ptr<ge::gl::Context> gl) : BaseVisualizationTechnique(gl) {}
+
+			inline VTType getType() const override { return VTType::ColorLinesVT; }
+			inline GLenum getDrawMode() const { return GL_LINES; }
+
+		protected:
+            void initGlProgram() override;
+            virtual std::shared_ptr<VAOContainer> processEntityToVaoContainer(std::shared_ptr<entities::Entity> entity) override;
+        };
+    } // namespace vt
+} // namespace  gpd
