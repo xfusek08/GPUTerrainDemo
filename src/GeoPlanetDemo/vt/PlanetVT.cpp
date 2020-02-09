@@ -8,10 +8,8 @@
 #include <GeoPlanetDemo/vt/VAOContainer.h>
 #include <GeoPlanetDemo/vt/PlanetVT.h>
 
-#include <TerrainLib/SurfaceRegion.h>
-
 using namespace std;
-using namespace  gpd;
+using namespace gpd;
 using namespace gpd::vt;
 using namespace gpd::entities;
 
@@ -33,14 +31,18 @@ shared_ptr<VAOContainer> PlanetVT::processEntityToVaoContainer(shared_ptr<Entity
 	_planet = dynamic_pointer_cast<PlanetEntity>(entity);
 	auto regions = _planet->getRegions();
 	vector<float> regionBuffer = {};
-	for (tl::SurfaceRegion region : regions) {
-		regionBuffer.push_back(region.get3dPosition().x);
-		regionBuffer.push_back(region.get3dPosition().y);
-		regionBuffer.push_back(region.get3dPosition().z);
+	for (auto region : regions) {
+
+        auto pos   = region->getPosition().getGlobal();
+        auto color = region->attributes[gp::RegionAttributeType::Color].data.vector3;
+
+		regionBuffer.push_back(pos.x);
+		regionBuffer.push_back(pos.y);
+		regionBuffer.push_back(pos.z);
         regionBuffer.push_back(0);
-		regionBuffer.push_back(float(region.getColor().r) / 255.0);
-		regionBuffer.push_back(float(region.getColor().g) / 255.0);
-		regionBuffer.push_back(float(region.getColor().b) / 255.0);
+		regionBuffer.push_back(color.r / 255.0);
+		regionBuffer.push_back(color.g / 255.0);
+		regionBuffer.push_back(color.b / 255.0);
         regionBuffer.push_back(0);
 	}
 
@@ -48,11 +50,11 @@ shared_ptr<VAOContainer> PlanetVT::processEntityToVaoContainer(shared_ptr<Entity
 	_program->set1ui("resolution", _planet->meshResolution);
 	_program->set1ui("showCube", _planet->showCube);
 
-	_program->set1ui("regionResolution", _planet->getRegionResolution());
+	_program->set1ui("regionResolution", _planet->getResolution());
 	_program->bindBuffer("regionBuffer", vaoContainer->newBuffer(regionBuffer));
 
     GPD_LOG_DEBUG("resolution: " << _planet->meshResolution);
-    GPD_LOG_DEBUG("regionResolution: " << _planet->getRegionResolution());
+    GPD_LOG_DEBUG("regionResolution: " << _planet->getResolution());
     GPD_LOG_DEBUG("regionBufferSize: " << regionBuffer.size());
     return vaoContainer;
 }

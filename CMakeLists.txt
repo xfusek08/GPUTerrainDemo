@@ -159,6 +159,8 @@ find_file(coordCubeMapImage
     HINTS ${${APP_NAME}_RESOURCES}/textures
 )
 
+message("COORDS_CUBE_MAP=\"${coordCubeMapImage}\"")
+
 # add macra definitions to code
 target_compile_definitions(${APP_NAME} PUBLIC
     ${SHADER_COMPILE_DEFINITIONS}

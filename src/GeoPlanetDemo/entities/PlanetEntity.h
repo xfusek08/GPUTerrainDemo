@@ -2,49 +2,50 @@
 
 #include <GeoPlanetDemo/entities/Entity.h>
 
-#include <TerrainLib/SurfaceConfig.h>
-#include <TerrainLib/PlanetSurface.h>
-#include <TerrainLib/SurfaceRegion.h>
+#include <GeoPlanetLib/Surface.h>
+#include <GeoPlanetLib/SurfaceGenerator.h>
+#include <GeoPlanetLib/Region.h>
 
-namespace  gpd
+namespace gpd
 {
     namespace entities
     {
         class PlanetEntity : public entities::Entity
         {
-		// properties
-        public:
-			unsigned int meshResolution = 10;
-            bool showCube = false;
-			bool warpTexture = true;
-
-		private:
-			tl::SurfaceConfig _config;
-			std::shared_ptr<tl::PlanetSurface> _surface;
-
-		// methods
 		public:
+    		// properties
+            bool showCube = false;
+            bool warpTexture = true;
+            unsigned int meshResolution = 10;
+
+    		// methods
 			PlanetEntity(vt::VTType vtType);
 
-			// virtual
             virtual std::vector<float>    getVerticies() const override { return {}; }
             virtual std::vector<unsigned> getIndieces()  const override { return {}; }
             virtual std::vector<float>    getColors()    const override { return {}; }
 
-			// getters
-			inline unsigned int getRegionResolution() const { return _config.resolution; }
-			inline float	    getJitter()			  const { return _config.jitter; }
-			inline bool			getShowFaceColor()    const { return _config.showFaceColor; }
+			inline unsigned int getResolution()    const { return surface->getResolution(); }
+            inline bool         getShowFaceColor() const { return showFaceColor;}
+			float	            getJitter()		   const;
 
-			inline const std::vector<tl::SurfaceRegion>& getRegions() const { return _surface->getRegions(); }
+			void setResolution(unsigned int value);
+			void setJitter(float value);
+            void setShowFaceColor(bool value);
+
+			const gp::RegionList& getRegions() const { return surface->getRegions(); }
 
 			std::unique_ptr<unsigned char[]> getTextureDataForFace(unsigned int faceId, unsigned int face_width, unsigned int face_height) const;
 
-			// setters
-			void setRegionResolution(unsigned int value);
-			void setJitter(float value);
-			void setShowFaceColor(bool value);
+		private:
+    		// properties
+            bool showFaceColor = false;
+            std::shared_ptr<gp::SurfaceGenerator> generator;
+			std::shared_ptr<gp::Surface> surface;
 
+            // methods
+            void refreshSurface();
         };
+
     } // namespace entities
 } // namespace  gpd

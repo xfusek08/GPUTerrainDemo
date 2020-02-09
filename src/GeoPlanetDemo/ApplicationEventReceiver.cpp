@@ -46,12 +46,12 @@ bool ApplicationEventReceiver::processSDLEvent(SDL_Event const& event)
 				});
 
                 case SDLK_p: RUN_FOR_PLANET({
-					planetEntity->setRegionResolution(planetEntity->getRegionResolution() + 1);
+					planetEntity->setResolution(planetEntity->getResolution() + 1);
 					_application->renderer->updateScene();
 				});
 
                 case SDLK_o: RUN_FOR_PLANET({
-                    planetEntity->setRegionResolution(planetEntity->getRegionResolution() - 1);
+                    planetEntity->setResolution(planetEntity->getResolution() - 1);
                     _application->renderer->updateScene();
 				});
 

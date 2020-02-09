@@ -1,31 +1,45 @@
 
 #include <geGL/geGL.h>
 
-#include <TerrainLib/PlanetSurface.h>
-
 #include <GeoPlanetDemo/entities/PlanetEntity.h>
 #include <GeoPlanetDemo/vt/VAOContainer.h>
+
+#include <GeoPlanetLib/modifiers/modifiers.h>
 
 #define STB_IMAGE_IMPLEMENTATION
 #include <vendor/stb/stb_image.h>
 
 using namespace std;
 using namespace glm;
-using namespace  gpd;
+using namespace gpd;
 using namespace gpd::entities;
 
 PlanetEntity::PlanetEntity(vt::VTType vtType) : Entity(vtType)
 {
-	_surface = make_shared<tl::PlanetSurface>(_config);
+    generator = make_shared<gp::SurfaceGenerator>(initializer_list<string>{
+        "JitterModifier",
+        "RandomColorModifier",
+        "FaceColorModifier",
+    });
+
+    generator->disableModifier("RandomColorModifier");
+
+    surface = generator->generate();
 }
 
-void PlanetEntity::setRegionResolution(unsigned int value)
+void PlanetEntity::setResolution(unsigned int value)
 {
     if (value < 1) {
         value = 1;
     }
-	_config.resolution = value;
-	_surface->setConfig(_config);
+    surface = generator->generate(value);
+}
+
+float PlanetEntity::getJitter() const
+{
+    return dynamic_pointer_cast<gp::modifiers::JitterModifier>(
+        generator->getModifier("JitterModifier").modifier
+    )->jitter;
 }
 
 void PlanetEntity::setJitter(float value)
@@ -36,14 +50,24 @@ void PlanetEntity::setJitter(float value)
         value = 1;
     }
 
-	_config.jitter = value;
-	_surface->setConfig(_config);
+    dynamic_pointer_cast<gp::modifiers::JitterModifier>(
+        generator->getModifier("JitterModifier").modifier
+    )->jitter = value;
+
+    refreshSurface();
 }
 
 void PlanetEntity::setShowFaceColor(bool value)
 {
-	_config.showFaceColor = value;
-	_surface->setConfig(_config);
+    if (value) {
+        generator->disableModifier("RandomColorModifier");
+        generator->enableModifier("FaceColorModifier");
+    } else {
+        generator->disableModifier("FaceColorModifier");
+        generator->enableModifier("RandomColorModifier");
+    }
+    showFaceColor = value;
+    refreshSurface();
 }
 
 unique_ptr<unsigned char[]> PlanetEntity::getTextureDataForFace(unsigned int faceId, unsigned int face_width, unsigned int face_height) const
@@ -90,4 +114,9 @@ unique_ptr<unsigned char[]> PlanetEntity::getTextureDataForFace(unsigned int fac
 
 	stbi_image_free(data);
     return tex;
+}
+
+void PlanetEntity::refreshSurface()
+{
+    generator->applyModifiers(surface);
 }
