@@ -25,9 +25,9 @@ namespace gpd
             virtual std::vector<unsigned> getIndieces()  const override { return {}; }
             virtual std::vector<float>    getColors()    const override { return {}; }
 
-			inline unsigned int getResolution()    const { return surface->getResolution(); }
-            inline bool         getShowFaceColor() const { return showFaceColor;}
-			float	            getJitter()		   const;
+			inline unsigned int getResolution() const { return surface->getResolution(); }
+            bool  getShowFaceColor() const;
+			float getJitter() const;
 
 			void setResolution(unsigned int value);
 			void setJitter(float value);
@@ -39,7 +39,6 @@ namespace gpd
 
 		private:
     		// properties
-            bool showFaceColor = false;
             std::shared_ptr<gp::SurfaceGenerator> generator;
 			std::shared_ptr<gp::Surface> surface;
 

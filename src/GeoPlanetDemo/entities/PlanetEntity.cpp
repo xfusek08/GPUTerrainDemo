@@ -39,20 +39,19 @@ float PlanetEntity::getJitter() const
 {
     return dynamic_pointer_cast<gp::modifiers::JitterModifier>(
         generator->getModifier("JitterModifier").modifier
-    )->jitter;
+    )->getJitter();
+}
+
+bool PlanetEntity::getShowFaceColor() const
+{
+    return generator->getModifier("FaceColorModifier").enabled;
 }
 
 void PlanetEntity::setJitter(float value)
 {
-    if (value < 0) {
-        value = 0;
-    } else if (value > 1) {
-        value = 1;
-    }
-
     dynamic_pointer_cast<gp::modifiers::JitterModifier>(
         generator->getModifier("JitterModifier").modifier
-    )->jitter = value;
+    )->setJitter(value);
 
     refreshSurface();
 }
@@ -65,8 +64,7 @@ void PlanetEntity::setShowFaceColor(bool value)
     } else {
         generator->disableModifier("FaceColorModifier");
         generator->enableModifier("RandomColorModifier");
-    }
-    showFaceColor = value;
+    }    
     refreshSurface();
 }
 

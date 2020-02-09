@@ -33,8 +33,8 @@ shared_ptr<VAOContainer> PlanetVT::processEntityToVaoContainer(shared_ptr<Entity
 	vector<float> regionBuffer = {};
 	for (auto region : regions) {
 
-        auto pos   = region->getPosition().getGlobal();
-        auto color = region->attributes[gp::RegionAttributeType::Color].data.vector3;
+        auto pos   = region->position.getGlobal();
+        auto color = region->attributes[gp::RegionAttributeType::Color].data.uVector3;
 
 		regionBuffer.push_back(pos.x);
 		regionBuffer.push_back(pos.y);
