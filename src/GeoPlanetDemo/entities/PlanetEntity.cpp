@@ -64,7 +64,7 @@ void PlanetEntity::setShowFaceColor(bool value)
     } else {
         generator->disableModifier("FaceColorModifier");
         generator->enableModifier("RandomColorModifier");
-    }    
+    }
     refreshSurface();
 }
 

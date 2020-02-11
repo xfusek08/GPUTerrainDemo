@@ -26,3 +26,12 @@ vector<unsigned> Entity::getIndieces() const
         0, 1, 2
     };
 }
+
+bool Entity::setVtType(vt::VTType type)
+{
+    if (type != _vtType) {
+        _vtType = type;
+        return true;
+    }
+    return false;
+}

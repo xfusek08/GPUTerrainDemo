@@ -13,6 +13,8 @@
 #include <GeoPlanetDemo/ApplicationGui.h>
 #include <GeoPlanetDemo/sdl/SDLGlMainLoop.h>
 #include <GeoPlanetDemo/sdl/SDLPerformance.h>
+#include <GeoPlanetDemo/core/Scene.h>
+#include <GeoPlanetDemo/entities/PlanetEntity.h>
 
 using namespace std;
 using namespace gpd;
@@ -63,33 +65,120 @@ void ApplicationGui::draw()
     drawPrepare();
     // create gui
 
+    auto planetEntity = dynamic_pointer_cast<entities::PlanetEntity>(application->scene->getEntity("planet"));
+    bool updateScene = false;
+
     // build main invisible window (left panel)
     ImGui::SetNextWindowPos({0,0});
-    ImGui::SetNextWindowSize({
-        300.0f,                                          // width
-        (float)application->mainLoop->getWindow()->getHeight()  // height
-	});
-    ImGui::Begin("menu", nullptr,
-        ImGuiWindowFlags_NoTitleBar
-        | ImGuiWindowFlags_NoResize
+    ImGui::SetNextWindowSize({300.0f, 0});
+    ImGui::PushStyleColor(ImGuiCol_Text, {0.6f, 0.6f, 0.6f, 1});
+    ImGui::PushStyleColor(ImGuiCol_WindowBg, {0, 0, 0, 0.9});
+
+    ImGui::Begin("general", nullptr,
+        ImGuiWindowFlags_NoResize
+        | ImGuiWindowFlags_NoTitleBar
         | ImGuiWindowFlags_NoMove
-        | ImGuiWindowFlags_NoBackground
+        // | ImGuiWindowFlags_NoBackground
     );
 
     // FPS plotting
-    auto performance = application->mainLoop->getPerformance();
-    char text[20];
-	sprintf_s(text, 20, "FPS: %g", performance->getFrames());
-	float fpsHistory[sdl::SDLPerformance::HISTORY_LEN];
-    performance->getHistory(fpsHistory);
-	ImGui::PlotLines(text, fpsHistory, sdl::SDLPerformance::HISTORY_LEN);
+    {
+        auto performance = application->mainLoop->getPerformance();
+        char text[20];
+        sprintf_s(text, 20, "FPS: %g", performance->getFrames());
+        float fpsHistory[sdl::SDLPerformance::HISTORY_LEN];
+        performance->getHistory(fpsHistory);
+        ImGui::PlotLines(text, fpsHistory, sdl::SDLPerformance::HISTORY_LEN);
+    }
 
-    // controls
+    if (ImGui::CollapsingHeader("Menu")) {
+        ImGui::Text("Visualization technique:");
+        {
+            int vtTypeInt = vtTypeToInt(planetEntity->getVtType());
+            ImGui::RadioButton("Default (F1)",              &vtTypeInt, vtTypeToInt(vt::VTType::PlanetVT));      // ImGui::SameLine();
+            ImGui::RadioButton("Show Wireframe (F2)",       &vtTypeInt, vtTypeToInt(vt::VTType::PlanetDebugVT)); // ImGui::SameLine();
+            ImGui::RadioButton("Show coordinate mask (F3)", &vtTypeInt, vtTypeToInt(vt::VTType::PlanetCubeMapVT));
+            if (planetEntity->setVtType(intToVtType(vtTypeInt))) {
+                updateScene = true;
+                application->camera->setViewChanged();
+            }
 
+        }
+        ImGui::Separator();
+
+        ImGui::Text("Render options:");
+        {
+            bool showFaceColor = planetEntity->getShowFaceColor();
+            ImGui::Checkbox("Show face color (f)", &showFaceColor);
+            if (showFaceColor != planetEntity->getShowFaceColor()) {
+                planetEntity->setShowFaceColor(showFaceColor);
+                updateScene = true;
+            }
+        }
+        {
+            bool showCube = planetEntity->showCube;
+            ImGui::Checkbox("Show as cube (c)", &showCube);
+            if (showCube != planetEntity->showCube) {
+                planetEntity->showCube = showCube;
+                updateScene = true;
+            }
+        }
+        {
+        {
+            bool warpTexture = planetEntity->warpTexture;
+            ImGui::Checkbox("warp texture (v)", &warpTexture);
+            if (warpTexture != planetEntity->warpTexture) {
+                planetEntity->warpTexture = warpTexture;
+                updateScene = true;
+            }
+        }
+        }
+        ImGui::Separator();
+
+        ImGui::Text("Region generator setting:");
+        {
+            // resolution
+            int resolution = planetEntity->getResolution();
+            ImGui::PushItemWidth(100);
+            ImGui::InputInt("Resolution (-o) (+p)", &resolution);
+            if (resolution != planetEntity->getResolution()) {
+                planetEntity->setResolution(resolution);
+                updateScene = true;
+            }
+        }
+        {
+            // jitter
+            float jitter = planetEntity->getJitter();
+            // ImGui::PushItemWidth(100);
+            ImGui::InputFloat("Jitter     (-j) (+k)", &jitter, 0.1f);
+            if (jitter != planetEntity->getJitter()) {
+                planetEntity->setJitter(jitter);
+                updateScene = true;
+            }
+        }
+        ImGui::Separator();
+
+        ImGui::Text("Controls:");
+        ImGui::Text("Zoom in:      (w)");
+        ImGui::Text("Zoom out:     (s)");
+        ImGui::Text("");
+        ImGui::Text("Rotate up:    (up)");
+        ImGui::Text("Rotate down:  (down)");
+        ImGui::Text("Rotate left:  (left)");
+        ImGui::Text("Rotate right: (right)");
+
+        if (updateScene) {
+            application->renderer->updateScene();
+        }
+    }
 
 	ImGui::End();
+    ImGui::PopStyleColor();
+    ImGui::PopStyleColor();
     drawTearDown();
 }
+
+// private supportive functions
 
 void ApplicationGui::drawPrepare()
 {
@@ -102,4 +191,26 @@ void ApplicationGui::drawTearDown()
 {
 	ImGui::Render();
 	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+}
+
+vt::VTType ApplicationGui::intToVtType(int val) const
+{
+    switch (val)
+    {
+        case 0: return vt::VTType::PlanetVT;
+        case 1: return vt::VTType::PlanetDebugVT;
+        case 2: return vt::VTType::PlanetCubeMapVT;
+        default: throw "unknown planet type integer";
+    }
+}
+
+int ApplicationGui::vtTypeToInt(vt::VTType val) const
+{
+    switch (val)
+    {
+        case vt::VTType::PlanetVT: return 0;
+        case vt::VTType::PlanetDebugVT: return 1;
+        case vt::VTType::PlanetCubeMapVT: return 2;
+        default: throw "unknown planet type";
+    }
 }

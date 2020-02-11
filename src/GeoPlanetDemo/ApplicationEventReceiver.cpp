@@ -1,6 +1,7 @@
 
 #include <GeoPlanetDemo/ApplicationEventReceiver.h>
 #include <GeoPlanetDemo/core/Scene.h>
+#include <GeoPlanetDemo/core/Camera.h>
 #include <GeoPlanetDemo/core/Utils.h>
 #include <GeoPlanetDemo/vt/types.h>
 #include <GeoPlanetDemo/entities/PlanetEntity.h>
@@ -25,23 +26,23 @@ bool ApplicationEventReceiver::processSDLEvent(SDL_Event const& event)
 		case SDL_KEYDOWN:
             switch(event.key.keysym.sym) {
                 case SDLK_F1: RUN_FOR_PLANET({
-					if (planetEntity->getVtType() != vt::VTType::PlanetVT) {
-						planetEntity->setVtType(vt::VTType::PlanetVT);
+					if (planetEntity->setVtType(vt::VTType::PlanetVT)) {
                         _application->renderer->updateScene();
+                        _application->camera->setViewChanged();
 					}
 				});
 
                 case SDLK_F2: RUN_FOR_PLANET({
-					if (planetEntity->getVtType() != vt::VTType::PlanetDebugVT) {
-						planetEntity->setVtType(vt::VTType::PlanetDebugVT);
+					if (planetEntity->setVtType(vt::VTType::PlanetDebugVT)) {
                         _application->renderer->updateScene();
+                        _application->camera->setViewChanged();
 					}
 				});
 
                 case SDLK_F3: RUN_FOR_PLANET({
-					if (planetEntity->getVtType() != vt::VTType::PlanetCubeMapVT) {
-						planetEntity->setVtType(vt::VTType::PlanetCubeMapVT);
+					if (planetEntity->setVtType(vt::VTType::PlanetCubeMapVT)) {
                         _application->renderer->updateScene();
+                        _application->camera->setViewChanged();
 					}
 				});
 

@@ -3,6 +3,8 @@
 #include <GeoPlanetDemo/Application.h>
 #include <GeoPlanetDemo/sdl/SDLEventReceiverInterface.h>
 
+#include <GeoPlanetDemo/vt/types.h>
+
 namespace  gpd
 {
     class ApplicationGui : public sdl::SDLEventReceiverInterface
@@ -19,5 +21,8 @@ namespace  gpd
 
         void drawPrepare();
         void drawTearDown();
+
+        vt::VTType intToVtType(int val)  const;
+        int vtTypeToInt(vt::VTType val)  const;
     };
 } // namespace  gpd

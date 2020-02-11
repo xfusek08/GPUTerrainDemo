@@ -23,11 +23,12 @@ namespace  gpd
 			~Entity() {}
 
 			inline vt::VTType getVtType() const { return _vtType; }
-            inline void setVtType(vt::VTType type) { _vtType = type; }
 
 			virtual std::vector<float>    getVerticies()  const;
             virtual std::vector<unsigned> getIndieces()   const;
             virtual std::vector<float>    getColors()     const { return {}; }
+
+            bool setVtType(vt::VTType type);
 
         protected:
             vt::VTType _vtType;
