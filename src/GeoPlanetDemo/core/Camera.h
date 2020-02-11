@@ -43,9 +43,11 @@ namespace  gpd
             inline glm::vec3 getUpVector()        const { return _up; }
             inline glm::vec3 getCameraDirection() const { return _position - _target;  }
 
-			inline void setCameraPosition(glm::vec3 position) { _position = position; setViewChanged(); }
-            inline void setTargetPosition(glm::vec3 target)   { _target   = target;   setViewChanged(); }
-            inline void setUpVector(glm::vec3 up)             { _up       = up;       setViewChanged(); }
+			inline void setCameraPosition(glm::vec3 position)                 { _position = position; setViewChanged(); }
+            inline void setTargetPosition(glm::vec3 target)                   { _target   = target;   setViewChanged(); }
+            inline void setUpVector(glm::vec3 up)                             { _up       = up;       setViewChanged(); }
+            inline void setViewSize(unsigned int width, unsigned int height)  { _viewWidth = width; _viewHeight = height; updateProjectionMatrix(); setViewChanged(); }
+            inline void setViewSize(glm::uvec2 newSize)                       { setViewSize(newSize.x, newSize.y); }
 
             // projection scalars
             inline float getFov() const { return _fov; }

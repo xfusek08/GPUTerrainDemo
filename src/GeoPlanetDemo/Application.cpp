@@ -28,10 +28,10 @@ int Application::init()
     GPD_LOG_DEBUG("Application initiating ...");
 
     // init main components
-    mainLoop = make_shared<sdl::SDLGlMainLoop>(Application::WINDOW_WIDTH, Application::WINDOW_HEIGHT);
+    mainLoop = make_shared<sdl::SDLGlMainLoop>(Application::DEFAULT_WINDOW_WIDTH, Application::DEFAULT_WINDOW_HEIGHT);
     scene    = make_shared<core::Scene>();
     renderer = make_shared<core::SceneRenderer>(mainLoop->getGlContext(), scene);
-    camera   = make_shared<core::Camera>(Application::WINDOW_WIDTH, Application::WINDOW_HEIGHT);
+    camera   = make_shared<core::Camera>(Application::DEFAULT_WINDOW_WIDTH, Application::DEFAULT_WINDOW_HEIGHT);
     gui      = make_shared<ApplicationGui>(this);
 
     // create entities

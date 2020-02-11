@@ -77,10 +77,6 @@ void SDLGlMainLoop::setDrawCallback(function<void()> const& callback)
 
 bool SDLGlMainLoop::update(SDL_Event const& event)
 {
-    if (event.type == SDL_WINDOWEVENT)
-        if (event.window.event == SDL_WINDOWEVENT_CLOSE)
-            _mainLoop->stop();
-
     for (auto eventReceiver : _eventReceivers)
         if (eventReceiver->processSDLEvent(event))
             break;
@@ -102,7 +98,7 @@ void SDLGlMainLoop::draw()
         _drawCallback();
 
 	#ifdef GPD_DEBUG
-    if (_performance.framesCounted())
+    if (_performance.IsFramesCounted())
         GPD_LOG_INFO("FPS: " << _performance.getFrames());
 	#endif
 

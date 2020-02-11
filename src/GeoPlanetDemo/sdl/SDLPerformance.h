@@ -1,5 +1,6 @@
 #pragma once
 
+#include <list>
 #include <SDL.h>
 
 namespace  gpd
@@ -8,22 +9,32 @@ namespace  gpd
     {
         class SDLPerformance
         {
-            const unsigned FPS_CAP = 60;
-
         public:
+            static const unsigned FPS_CAP = 60;
+            static const unsigned HISTORY_LEN = 60;
+
             SDLPerformance();
             void frame();
 
-            inline bool framesCounted() { return _framesCounted; }
-            inline unsigned getFrames() { return _frameCnt; }
+            inline bool  IsFramesCounted() const { return isFramesCounted; }
+            inline float getFrames()       const { return previousCounted; }
+
+            void getHistory(float *buffer, unsigned size = SDLPerformance::HISTORY_LEN) const;
+
         protected:
-            bool _framesCounted = false;
+            std::list<float> history;
+
+            bool isFramesCounted = false;
+            float previousCounted = 0.0f;
+
             Uint32
-                _frameCnt = 0,
-                _frameCountingTimeMs = 0,
-                _msPerFrame = 0,
-                _frameBeginTime = 0,
-                _previousBeginTime = 0;
+                frameCnt = 0,
+                frameCountingTimeMs = 0,
+                msPerFrame = 0,
+                frameBeginTime = 0,
+                previousBeginTime = 0;
+
+            void historyAdd(float frames);
         };
     }
 }

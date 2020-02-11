@@ -16,5 +16,8 @@ namespace  gpd
 
     private:
 		Application* application;
+
+        void drawPrepare();
+        void drawTearDown();
     };
 } // namespace  gpd

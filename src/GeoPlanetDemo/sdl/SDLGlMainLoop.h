@@ -35,12 +35,15 @@ namespace  gpd
             inline std::shared_ptr<ge::gl::Context> getGlContext() const { return _gl; }
             inline std::shared_ptr<sdl2cpp::Window> getWindow()    const { return _window; }
             inline bool isInitialized() { return _initialized; }
+            inline const SDLPerformance *getPerformance() { return &_performance; }
 
             virtual void init();
             virtual void run();
             virtual void addEventReceiver(std::shared_ptr<sdl::SDLEventReceiverInterface>);
             virtual void setEventHandler(std::function<bool(SDL_Event const&)> const& handler);
             virtual void setDrawCallback(std::function<void()> const& callback);
+
+            inline void stop() { _mainLoop->stop(); }
 
         protected:
             // properties

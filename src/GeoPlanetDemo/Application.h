@@ -22,15 +22,15 @@ namespace  gpd
     {
     public:
         // constants
-		const int WINDOW_WIDTH  = 1280;
-		const int WINDOW_HEIGHT = 720;
+		static const int DEFAULT_WINDOW_WIDTH  = 1280;
+		static const int DEFAULT_WINDOW_HEIGHT = 720;
 
         // properties
-		std::shared_ptr<sdl::SDLGlMainLoop>             mainLoop = nullptr;
-		std::shared_ptr<interfaces::RendererInterface>  renderer = nullptr;
-		std::shared_ptr<core::Camera>                   camera = nullptr;
-		std::shared_ptr<core::Scene>                    scene = nullptr;
-        std::shared_ptr<ApplicationGui>                 gui = nullptr;
+		std::shared_ptr<sdl::SDLGlMainLoop>            mainLoop = nullptr;
+		std::shared_ptr<interfaces::RendererInterface> renderer = nullptr;
+		std::shared_ptr<core::Camera>                  camera = nullptr;
+		std::shared_ptr<core::Scene>                   scene = nullptr;
+        std::shared_ptr<ApplicationGui>                gui = nullptr;
 
         // methods
 		Application() {}
