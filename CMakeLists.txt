@@ -39,6 +39,7 @@ set(DEFAULT_RESOERCES_PATH "${CMAKE_CURRENT_LIST_DIR}/resources")
 set(${APP_NAME}_RESOURCES  "${DEFAULT_RESOERCES_PATH}" CACHE PATH "Relative or absolute path to Application resources.")
 
 set(SHADER_FILES
+    # vertex                # fragment
     basic/vertex.glsl       basic/fragment.glsl
     vert_color/vertex.glsl  vert_color/fragment.glsl
     planet/vertex.glsl      planet/fragment.glsl        planet/fragment_lines.glsl  planet/fragment_cube_map.glsl
@@ -49,6 +50,7 @@ set(SHADER_FILES
 set(SRC_GEO_PLANET_DEMO
     src/${APP_NAME}/Application.h                     src/${APP_NAME}/Application.cpp
     src/${APP_NAME}/ApplicationEventReceiver.h        src/${APP_NAME}/ApplicationEventReceiver.cpp
+    src/${APP_NAME}/ApplicationGui.h                  src/${APP_NAME}/ApplicationGui.cpp
 )
 
 set(SRC_GEO_PLANET_DEMO_CORE
@@ -67,9 +69,9 @@ set(SRC_GEO_PLANET_DEMO_ENTITIES
 )
 
 set(SRC_GEO_PLANET_DEMO_SDL
-    src/${APP_NAME}/sdl/SDLGlMainLoop.h             src/${APP_NAME}/SDL/SDLGlMainLoop.cpp
-    src/${APP_NAME}/sdl/SDLOrbitCameraController.h  src/${APP_NAME}/sdl/SDLOrbitCameraController.cpp
-    src/${APP_NAME}/sdl/SDLPerformance.h            src/${APP_NAME}/sdl/SDLPerformance.cpp
+    src/${APP_NAME}/sdl/SDLGlMainLoop.h               src/${APP_NAME}/SDL/SDLGlMainLoop.cpp
+    src/${APP_NAME}/sdl/SDLOrbitCameraController.h    src/${APP_NAME}/sdl/SDLOrbitCameraController.cpp
+    src/${APP_NAME}/sdl/SDLPerformance.h              src/${APP_NAME}/sdl/SDLPerformance.cpp
     src/${APP_NAME}/sdl/SDLEventReceiverInterface.h
 )
 
@@ -94,14 +96,32 @@ set(SRC_VENDOR_STB
     src/vendor/stb/stb_image.h
 )
 
-source_group("GeoPlanetDemo"              FILES ${SRC_GEO_PLANET_DEMO})
-source_group("GeoPlanetDemo\\core"        FILES ${SRC_GEO_PLANET_DEMO_CORE})
-source_group("GeoPlanetDemo\\entities"    FILES ${SRC_GEO_PLANET_DEMO_ENTITIES})
-source_group("GeoPlanetDemo\\vt"          FILES ${SRC_GEO_PLANET_DEMO_VT})
-source_group("GeoPlanetDemo\\sdl"         FILES ${SRC_GEO_PLANET_DEMO_SDL})
-source_group("GeoPlanetDemo\\interfaces"  FILES ${SRC_GEO_PLANET_DEMO_INTERFACES})
+set(SRC_VENDOR_IAMGUI
+    src/vendor/imgui/imconfig.h
+    src/vendor/imgui/imgui.cpp
+    src/vendor/imgui/imgui.h
+    # src/vendor/imgui/imgui_demo.cpp
+    src/vendor/imgui/imgui_draw.cpp
+    src/vendor/imgui/imgui_impl_opengl3.cpp
+    src/vendor/imgui/imgui_impl_opengl3.h
+    src/vendor/imgui/imgui_impl_sdl.cpp
+    src/vendor/imgui/imgui_impl_sdl.h
+    src/vendor/imgui/imgui_internal.h
+    src/vendor/imgui/imgui_widgets.cpp
+    src/vendor/imgui/imstb_rectpack.h
+    src/vendor/imgui/imstb_textedit.h
+    src/vendor/imgui/imstb_truetype.h
+)
 
-source_group("vendor/stb"               FILES ${SRC_VENDOR_STB} )
+source_group("GeoPlanetDemo"             FILES ${SRC_GEO_PLANET_DEMO})
+source_group("GeoPlanetDemo\\core"       FILES ${SRC_GEO_PLANET_DEMO_CORE})
+source_group("GeoPlanetDemo\\entities"   FILES ${SRC_GEO_PLANET_DEMO_ENTITIES})
+source_group("GeoPlanetDemo\\vt"         FILES ${SRC_GEO_PLANET_DEMO_VT})
+source_group("GeoPlanetDemo\\sdl"        FILES ${SRC_GEO_PLANET_DEMO_SDL})
+source_group("GeoPlanetDemo\\interfaces" FILES ${SRC_GEO_PLANET_DEMO_INTERFACES})
+
+source_group("vendor/stb"                FILES ${SRC_VENDOR_STB})
+source_group("vendor/imgui"              FILES ${SRC_VENDOR_IAMGUI})
 
 # generate shader definitions from SHADER_FILES based on their location
 set(SHADER_COMPILE_DEFINITIONS )
@@ -139,6 +159,7 @@ add_executable(${APP_NAME}
     ${SRC_GEO_PLANET_DEMO_SDL}
     ${SRC_GEO_PLANET_DEMO_INTERFACES}
     ${SRC_VENDOR_STB}
+    ${SRC_VENDOR_IAMGUI}
 )
 
 target_link_libraries(${APP_NAME}

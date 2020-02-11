@@ -17,34 +17,35 @@
 
 #include <GeoPlanetDemo/Application.h>
 #include <GeoPlanetDemo/ApplicationEventReceiver.h>
+#include <GeoPlanetDemo/ApplicationGui.h>
 
 using namespace std;
 using namespace  gpd;
 using namespace sdl2cpp;
 
-Application::Application() {}
-
-Application::~Application() {}
-
 int Application::init()
 {
     GPD_LOG_DEBUG("Application initiating ...");
 
+    // init main components
     mainLoop = make_shared<sdl::SDLGlMainLoop>(Application::WINDOW_WIDTH, Application::WINDOW_HEIGHT);
     scene    = make_shared<core::Scene>();
     renderer = make_shared<core::SceneRenderer>(mainLoop->getGlContext(), scene);
     camera   = make_shared<core::Camera>(Application::WINDOW_WIDTH, Application::WINDOW_HEIGHT);
+    gui      = make_shared<ApplicationGui>(this);
 
-	scene->addEntity("axis", make_shared<entities::AxisEntity>(vt::VTType::ColorLinesVT));
+    // create entities
+	scene->addEntity("axis",   make_shared<entities::AxisEntity>(vt::VTType::ColorLinesVT));
     scene->addEntity("planet", make_shared<entities::PlanetEntity>(vt::VTType::PlanetVT));
     renderer->updateScene();
 
-    auto cameraController = make_shared<sdl::SDLOrbitCameraController>(camera);
-    auto applicationEventReceiver = make_shared<ApplicationEventReceiver>(this);
+    // init control
+    mainLoop->addEventReceiver(make_shared<sdl::SDLOrbitCameraController>(camera));
+    mainLoop->addEventReceiver(make_shared<ApplicationEventReceiver>(this)); // todo gui will take most of responsibility from this one ... maybe keep for keyboard input
+    mainLoop->addEventReceiver(gui);
 
-    mainLoop->addEventReceiver(cameraController);
-    mainLoop->addEventReceiver(applicationEventReceiver);
-    mainLoop->setDrawCallback(bind(&Application::draw, this)); // TODO: maybe bind renderer draw directly
+    // bind main loop draw to
+    mainLoop->setDrawCallback(bind(&Application::draw, this));
 
     GPD_LOG_DEBUG("Application initialized.");
     return true;
@@ -62,4 +63,6 @@ void Application::draw()
 {
     // camera is moved with mainLoop with help of manipulator as event receiver
     renderer->draw(camera);
+
+    gui->draw();
 }

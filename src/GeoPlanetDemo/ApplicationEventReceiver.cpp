@@ -87,5 +87,4 @@ bool ApplicationEventReceiver::processSDLEvent(SDL_Event const& event)
 
 void ApplicationEventReceiver::onFrameUpdate()
 {
-
 }

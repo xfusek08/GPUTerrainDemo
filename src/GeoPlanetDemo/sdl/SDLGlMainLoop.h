@@ -1,15 +1,15 @@
 #pragma once
 
-#include <GeoPlanetDemo/sdl/SDLPerformance.h>
-#include <GeoPlanetDemo/sdl/SDLEventReceiverInterface.h>
-
-#include <SDL2CPP/MainLoop.h>
-#include <SDL2CPP/Window.h>
-
 #include <memory>
 #include <functional>
 #include <vector>
 #include <SDL.h>
+
+#include <SDL2CPP/MainLoop.h>
+#include <SDL2CPP/Window.h>
+
+#include <GeoPlanetDemo/sdl/SDLPerformance.h>
+#include <GeoPlanetDemo/sdl/SDLEventReceiverInterface.h>
 
 namespace ge
 {
@@ -17,12 +17,6 @@ namespace ge
     {
         class Context;
     }
-}
-
-namespace sdl2cpp
-{
-    class Window;
-    class MainLoop;
 }
 
 namespace  gpd
@@ -38,7 +32,8 @@ namespace  gpd
             SDLGlMainLoop(int width, int height);
             ~SDLGlMainLoop();
 
-            inline std::shared_ptr<ge::gl::Context> getGlContext() { return _gl; }
+            inline std::shared_ptr<ge::gl::Context> getGlContext() const { return _gl; }
+            inline std::shared_ptr<sdl2cpp::Window> getWindow()    const { return _window; }
             inline bool isInitialized() { return _initialized; }
 
             virtual void init();
@@ -48,13 +43,11 @@ namespace  gpd
             virtual void setDrawCallback(std::function<void()> const& callback);
 
         protected:
-            virtual bool update(SDL_Event const& event);
-            virtual void draw();
-
-            bool _initialized           = false;
-            int _windowWidth            = 0;
-            int _windowHeight           = 0;
-            SDLPerformance _performance = SDLPerformance();
+            // properties
+            bool           _initialized  = false;
+            int            _windowWidth  = 0;
+            int            _windowHeight = 0;
+            SDLPerformance _performance  = SDLPerformance();
 
             std::vector<std::shared_ptr<sdl::SDLEventReceiverInterface>> _eventReceivers;
 
@@ -63,6 +56,10 @@ namespace  gpd
             std::function<bool(SDL_Event const&)> _eventHandler = nullptr;
             std::function<void()>                 _drawCallback = nullptr;
             std::shared_ptr<ge::gl::Context>      _gl = nullptr;
+
+            // methods
+            virtual bool update(SDL_Event const& event);
+            virtual void draw();
         };
 
     } // namespace tdesdl
