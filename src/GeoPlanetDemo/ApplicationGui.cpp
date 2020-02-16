@@ -124,14 +124,12 @@ void ApplicationGui::draw()
             }
         }
         {
-        {
             bool warpTexture = planetEntity->warpTexture;
             ImGui::Checkbox("warp texture (v)", &warpTexture);
             if (warpTexture != planetEntity->warpTexture) {
                 planetEntity->warpTexture = warpTexture;
                 updateScene = true;
             }
-        }
         }
         ImGui::Separator();
 
@@ -153,6 +151,15 @@ void ApplicationGui::draw()
             ImGui::InputFloat("Jitter     (-j) (+k)", &jitter, 0.1f);
             if (jitter != planetEntity->getJitter()) {
                 planetEntity->setJitter(jitter);
+                updateScene = true;
+            }
+        }
+        ImGui::Separator();
+
+        // plate expand step
+        {
+            if (ImGui::Button("Step")) {
+                planetEntity->stepPlateExpansion();
                 updateScene = true;
             }
         }

@@ -14,17 +14,22 @@ using namespace glm;
 using namespace gpd;
 using namespace gpd::entities;
 
+#define MODIFIER_INSTANCE(type) dynamic_pointer_cast<gp::modifiers::type>(generator->getModifier(#type).modifier)
+
 PlanetEntity::PlanetEntity(vt::VTType vtType) : Entity(vtType)
 {
     generator = make_shared<gp::SurfaceGenerator>(initializer_list<string>{
         "JitterModifier",
-        "RandomColorModifier",
+        "ColorModifier",
+        "TectonicPlateModifier",
         "FaceColorModifier",
     });
 
-    generator->disableModifier("RandomColorModifier");
+    generator->disableModifier("FaceColorModifier");
 
-    surface = generator->generate();
+    // enable step mode
+    // MODIFIER_INSTANCE(TectonicPlateModifier)->stepMode = true;
+    generateFresh();
 }
 
 void PlanetEntity::setResolution(unsigned int value)
@@ -32,14 +37,12 @@ void PlanetEntity::setResolution(unsigned int value)
     if (value < 1) {
         value = 1;
     }
-    surface = generator->generate(value);
+    generateFresh(value);
 }
 
 float PlanetEntity::getJitter() const
 {
-    return dynamic_pointer_cast<gp::modifiers::JitterModifier>(
-        generator->getModifier("JitterModifier").modifier
-    )->getJitter();
+    return MODIFIER_INSTANCE(JitterModifier)->getJitter();
 }
 
 bool PlanetEntity::getShowFaceColor() const
@@ -49,23 +52,29 @@ bool PlanetEntity::getShowFaceColor() const
 
 void PlanetEntity::setJitter(float value)
 {
-    dynamic_pointer_cast<gp::modifiers::JitterModifier>(
-        generator->getModifier("JitterModifier").modifier
-    )->setJitter(value);
-
-    refreshSurface();
+    MODIFIER_INSTANCE(JitterModifier)->setJitter(value);
+    generator->applyModifier(surface, "JitterModifier");
 }
 
 void PlanetEntity::setShowFaceColor(bool value)
 {
     if (value) {
-        generator->disableModifier("RandomColorModifier");
+        generator->disableModifier("TectonicPlateModifier");
         generator->enableModifier("FaceColorModifier");
+        generator->applyModifier(surface, "FaceColorModifier");
     } else {
         generator->disableModifier("FaceColorModifier");
-        generator->enableModifier("RandomColorModifier");
+        generator->enableModifier("TectonicPlateModifier");
+        generator->applyModifier(surface, "ColorModifier");
+        MODIFIER_INSTANCE(TectonicPlateModifier)->applyStateAsRegionColors(surface);
     }
-    refreshSurface();
+}
+
+void PlanetEntity::stepPlateExpansion()
+{
+    auto mod = MODIFIER_INSTANCE(TectonicPlateModifier);
+    mod->stepExpandPlates(surface);
+    mod->applyStateAsRegionColors(surface);
 }
 
 unique_ptr<unsigned char[]> PlanetEntity::getTextureDataForFace(unsigned int faceId, unsigned int face_width, unsigned int face_height) const
@@ -114,7 +123,9 @@ unique_ptr<unsigned char[]> PlanetEntity::getTextureDataForFace(unsigned int fac
     return tex;
 }
 
-void PlanetEntity::refreshSurface()
+void PlanetEntity::generateFresh(unsigned int value)
 {
-    generator->applyModifiers(surface);
+    surface = generator->generate(value);
+    MODIFIER_INSTANCE(TectonicPlateModifier)->expansionFinished = false;
+    MODIFIER_INSTANCE(TectonicPlateModifier)->applyStateAsRegionColors(surface);
 }

@@ -4,7 +4,6 @@
 
 #include <GeoPlanetLib/Surface.h>
 #include <GeoPlanetLib/SurfaceGenerator.h>
-#include <GeoPlanetLib/Region.h>
 
 namespace gpd
 {
@@ -35,6 +34,8 @@ namespace gpd
 
 			const gp::RegionList& getRegions() const { return surface->getRegions(); }
 
+            void stepPlateExpansion();
+
 			std::unique_ptr<unsigned char[]> getTextureDataForFace(unsigned int faceId, unsigned int face_width, unsigned int face_height) const;
 
 		private:
@@ -43,7 +44,7 @@ namespace gpd
 			std::shared_ptr<gp::Surface> surface;
 
             // methods
-            void refreshSurface();
+            void generateFresh(unsigned int value = 0);
         };
 
     } // namespace entities
