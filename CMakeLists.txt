@@ -125,8 +125,8 @@ source_group("GeoPlanetDemo\\vt\\planet" FILES ${SRC_GEO_PLANET_DEMO_VT_PLANET})
 source_group("GeoPlanetDemo\\sdl"        FILES ${SRC_GEO_PLANET_DEMO_SDL})
 source_group("GeoPlanetDemo\\interfaces" FILES ${SRC_GEO_PLANET_DEMO_INTERFACES})
 
-source_group("vendor\\stb"                FILES ${SRC_VENDOR_STB})
-source_group("vendor\\imgui"              FILES ${SRC_VENDOR_IAMGUI})
+source_group("vendor\\stb"               FILES ${SRC_VENDOR_STB})
+source_group("vendor\\imgui"             FILES ${SRC_VENDOR_IAMGUI})
 
 # generate shader definitions from SHADER_FILES based on their location
 set(SHADER_COMPILE_DEFINITIONS )

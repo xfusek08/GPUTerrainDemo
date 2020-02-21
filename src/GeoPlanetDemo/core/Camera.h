@@ -32,7 +32,7 @@ namespace gpd
             // flags
             inline bool hasViewChanged() const { return viewChanged || !changeAccepted; }
             inline void setViewChanged() { viewChanged = true; changeAccepted = false; }
-            inline void acceptChange() { changeAccepted = true; }
+            inline void acceptChange()   { changeAccepted = true; }
 
             // matrices
             glm::mat4 getViewMatrix();
@@ -44,10 +44,10 @@ namespace gpd
             inline glm::vec3 getUpVector()        const { return up; }
             inline glm::vec3 getCameraDirection() const { return position - target;  }
 
-            inline void setCameraPosition(glm::vec3 position)                { position = position; setViewChanged(); }
-            inline void setTargetPosition(glm::vec3 target)                  { target   = target;   setViewChanged(); }
-            inline void setUpVector(glm::vec3 up)                            { up       = up;       setViewChanged(); }
-            inline void setViewSize(unsigned int width, unsigned int height) { viewWidth = width; viewHeight = height; updateProjectionMatrix(); setViewChanged(); }
+            inline void setCameraPosition(glm::vec3 position)                { this->position = position; setViewChanged(); }
+            inline void setTargetPosition(glm::vec3 target)                  { this->target = target;     setViewChanged(); }
+            inline void setUpVector(glm::vec3 up)                            { this->up = up;             setViewChanged(); }
+            inline void setViewSize(unsigned int width, unsigned int height) { this->viewWidth = width; this->viewHeight = height; updateProjectionMatrix(); setViewChanged(); }
             inline void setViewSize(glm::uvec2 newSize)                      { setViewSize(newSize.x, newSize.y); }
 
             // projection scalars
@@ -59,7 +59,7 @@ namespace gpd
             // properties
 
             // flags
-            bool viewChanged = true;
+            bool viewChanged    = true;
             bool changeAccepted = false;
 
             glm::mat4 viewMatrix;

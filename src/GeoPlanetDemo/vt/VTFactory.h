@@ -58,9 +58,9 @@ namespace gpd
                 return getMap()[type]->create(type, gl);
             }
 
-            static std::map<std::string, VTFactorySpecific*>& getMap()
+            static std::map<VTType, VTFactorySpecific*>& getMap()
             {
-                static std::map<std::string, VTFactorySpecific*> map;
+                static std::map<VTType, VTFactorySpecific*> map;
                 return map;
             }
 

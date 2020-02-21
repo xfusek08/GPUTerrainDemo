@@ -10,6 +10,7 @@
 
 #include <GeoPlanetDemo/core/Camera.h>
 #include <GeoPlanetDemo/core/Scene.h>
+#include <GeoPlanetDemo/core/Utils.h>
 
 #include <GeoPlanetDemo/sdl/SDLGlMainLoop.h>
 #include <GeoPlanetDemo/sdl/SDLPerformance.h>
@@ -222,4 +223,6 @@ int ApplicationGui::vtTypeToInt(vt::VTType val) const
         }
         ++index;
     }
+    GPD_ASSERT(false, "ApplicationGui::vtTypeToInt(" << val << "): not found.");
+    return -1;
 }
