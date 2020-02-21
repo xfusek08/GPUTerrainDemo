@@ -26,7 +26,7 @@ bool ApplicationEventReceiver::processSDLEvent(SDL_Event const& event)
         case SDL_KEYDOWN:
             switch(event.key.keysym.sym) {
                 case SDLK_F1: RUN_FOR_PLANET({
-                    if (planetEntity->setVtType(vt::types::PlanetVT)) {
+                    if (planetEntity->setVtType(vt::types::PlanetPlatesVT)) {
                         application->renderer->updateScene();
                         application->camera->setViewChanged();
                     }

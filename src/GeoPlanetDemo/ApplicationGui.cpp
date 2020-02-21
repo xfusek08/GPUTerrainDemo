@@ -100,18 +100,17 @@ void ApplicationGui::draw()
         ImGui::Text("Visualization technique:");
         {
             int vtTypeInt = vtTypeToInt(planetEntity->getVtType());
-            ImGui::RadioButton("Default (F1)",              &vtTypeInt, vtTypeToInt(vt::types::PlanetVT));          // ImGui::SameLine();
-            ImGui::RadioButton("Show Wireframe (F2)",       &vtTypeInt, vtTypeToInt(vt::types::PlanetWireFrameVT)); // ImGui::SameLine();
+            ImGui::RadioButton("Show tectonic plates (F1)", &vtTypeInt, vtTypeToInt(vt::types::PlanetPlatesVT));
+            ImGui::RadioButton("Default Wireframe    (F2)", &vtTypeInt, vtTypeToInt(vt::types::PlanetWireFrameVT));
             ImGui::RadioButton("Show coordinate mask (F3)", &vtTypeInt, vtTypeToInt(vt::types::PlanetCubeMapVT));
             if (planetEntity->setVtType(intToVtType(vtTypeInt))) {
                 updateScene = true;
                 application->camera->setViewChanged();
             }
-
         }
         ImGui::Separator();
 
-        ImGui::Text("Render options:");
+        ImGui::Text("Shared options:");
         {
             bool showFaceColor = planetEntity->getShowFaceColor();
             ImGui::Checkbox("Show face color (f)", &showFaceColor);
@@ -122,7 +121,7 @@ void ApplicationGui::draw()
         }
         {
             bool showCube = planetEntity->showCube;
-            ImGui::Checkbox("Show as cube (c)", &showCube);
+            ImGui::Checkbox("Show as cube    (c)", &showCube);
             if (showCube != planetEntity->showCube) {
                 planetEntity->showCube = showCube;
                 updateScene = true;
@@ -130,7 +129,7 @@ void ApplicationGui::draw()
         }
         {
             bool warpTexture = planetEntity->warpTexture;
-            ImGui::Checkbox("warp texture (v)", &warpTexture);
+            ImGui::Checkbox("Warp texture    (v)", &warpTexture);
             if (warpTexture != planetEntity->warpTexture) {
                 planetEntity->warpTexture = warpTexture;
                 updateScene = true;

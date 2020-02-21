@@ -36,7 +36,7 @@ shared_ptr<VAOContainer> PlanetVT::processEntityToVaoContainer(shared_ptr<Entity
     for (auto region : regions) {
 
         auto pos   = region->position.getGlobal();
-        auto color = region->attributes[gp::RegionAttributeType::Color].data.uVector3;
+        auto color = regionToColor(region);
 
         regionBuffer.push_back(pos.x);
         regionBuffer.push_back(pos.y);
@@ -59,6 +59,12 @@ shared_ptr<VAOContainer> PlanetVT::processEntityToVaoContainer(shared_ptr<Entity
     GPD_LOG_DEBUG("regionResolution: " << planet->getResolution());
     GPD_LOG_DEBUG("regionBufferSize: " << regionBuffer.size());
     return vaoContainer;
+}
+
+glm::uvec4 PlanetVT::regionToColor(shared_ptr<gp::Region> region)
+{
+    auto color = region->attributes[gp::RegionAttributeType::Color].data.uVector3;
+    return glm::uvec4(color.x, color.y, color.z, 0);
 }
 
 void PlanetVT::drawInternal(shared_ptr<core::Camera> camera)
