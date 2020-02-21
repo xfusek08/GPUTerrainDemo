@@ -25,9 +25,6 @@ PlanetEntity::PlanetEntity(vt::VTType vtType) : Entity(vtType)
         "JitterModifier",
         "TectonicPlateModifier",
     });
-
-    // enable step mode
-    // MODIFIER_INSTANCE(TectonicPlateModifier)->stepMode = true;
     generateFresh();
 }
 
@@ -44,20 +41,20 @@ float PlanetEntity::getJitter() const
     return MODIFIER_INSTANCE(JitterModifier)->getJitter();
 }
 
-bool PlanetEntity::getShowFaceColor() const
-{
-    return generator->getModifier("FaceColorModifier").enabled;
-}
-
 void PlanetEntity::setJitter(float value)
 {
     MODIFIER_INSTANCE(JitterModifier)->setJitter(value);
     generator->applyModifier(surface, "JitterModifier");
 }
 
-void PlanetEntity::setShowFaceColor(bool value)
+bool PlanetEntity::getStepPlates() const
 {
-    GPD_LOG_DEBUG("PlanetEntity::setShowFaceColor()");
+    return MODIFIER_INSTANCE(TectonicPlateModifier)->stepMode;
+}
+
+void PlanetEntity::setStepPlates(bool value)
+{
+    MODIFIER_INSTANCE(TectonicPlateModifier)->stepMode = value;
 }
 
 void PlanetEntity::stepPlateExpansion()
@@ -114,6 +111,8 @@ unique_ptr<unsigned char[]> PlanetEntity::getTextureDataForFace(unsigned int fac
 
 void PlanetEntity::generateFresh(unsigned int value)
 {
+    auto steps = getStepPlates();
     surface = generator->generate(value);
+    setStepPlates(steps);
     MODIFIER_INSTANCE(TectonicPlateModifier)->expansionFinished = false;
 }

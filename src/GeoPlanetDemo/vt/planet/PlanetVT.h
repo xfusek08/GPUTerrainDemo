@@ -29,7 +29,7 @@ namespace gpd
 
             virtual void processScene(std::shared_ptr<core::Scene> scene) override;
 
-            virtual glm::uvec4 regionToColor(std::shared_ptr<gp::Region> region);
+            virtual glm::uvec4 regionToColor(std::shared_ptr<gp::Region> region) = 0;
 
         protected:
             // properties
@@ -42,5 +42,3 @@ namespace gpd
         };
     } // namespace vt
 } // namespace gpd
-
-REGISTER_VT_TYPE(PlanetVT)

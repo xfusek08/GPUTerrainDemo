@@ -103,6 +103,7 @@ void ApplicationGui::draw()
             ImGui::RadioButton("Show tectonic plates (F1)", &vtTypeInt, vtTypeToInt(vt::types::PlanetPlatesVT));
             ImGui::RadioButton("Default Wireframe    (F2)", &vtTypeInt, vtTypeToInt(vt::types::PlanetWireFrameVT));
             ImGui::RadioButton("Show coordinate mask (F3)", &vtTypeInt, vtTypeToInt(vt::types::PlanetCubeMapVT));
+            ImGui::RadioButton("Show face colors     (F4)", &vtTypeInt, vtTypeToInt(vt::types::PlanetFaceColorVT));
             if (planetEntity->setVtType(intToVtType(vtTypeInt))) {
                 updateScene = true;
                 application->camera->setViewChanged();
@@ -112,16 +113,8 @@ void ApplicationGui::draw()
 
         ImGui::Text("Shared options:");
         {
-            bool showFaceColor = planetEntity->getShowFaceColor();
-            ImGui::Checkbox("Show face color (f)", &showFaceColor);
-            if (showFaceColor != planetEntity->getShowFaceColor()) {
-                planetEntity->setShowFaceColor(showFaceColor);
-                updateScene = true;
-            }
-        }
-        {
             bool showCube = planetEntity->showCube;
-            ImGui::Checkbox("Show as cube    (c)", &showCube);
+            ImGui::Checkbox("Show as cube (c)", &showCube);
             if (showCube != planetEntity->showCube) {
                 planetEntity->showCube = showCube;
                 updateScene = true;
@@ -161,7 +154,14 @@ void ApplicationGui::draw()
         ImGui::Separator();
 
         // plate expand step
+        ImGui::Text("Debug control:");
         {
+            bool stepPlates = planetEntity->getStepPlates();
+            ImGui::Checkbox("", &stepPlates);
+            if (stepPlates != planetEntity->getStepPlates()) {
+                planetEntity->setStepPlates(stepPlates);
+            }
+            ImGui::SameLine();
             if (ImGui::Button("Step")) {
                 planetEntity->stepPlateExpansion();
                 updateScene = true;

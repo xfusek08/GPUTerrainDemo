@@ -25,6 +25,8 @@ namespace gpd
             // methods
             PlanetCubeMapVT(VTType type, std::shared_ptr<ge::gl::Context> gl) : PlanetVT(type, gl) {}
 
+            virtual glm::uvec4 regionToColor(std::shared_ptr<gp::Region> region) override { return glm::uvec4(0); }
+
         protected:
             // propertires
             std::shared_ptr<ge::gl::Texture> textureWarped;

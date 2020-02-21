@@ -46,6 +46,13 @@ bool ApplicationEventReceiver::processSDLEvent(SDL_Event const& event)
                     }
                 });
 
+                case SDLK_F4: RUN_FOR_PLANET({
+                    if (planetEntity->setVtType(vt::types::PlanetFaceColorVT)) {
+                        application->renderer->updateScene();
+                        application->camera->setViewChanged();
+                    }
+                });
+
                 case SDLK_p: RUN_FOR_PLANET({
                     planetEntity->setResolution(planetEntity->getResolution() + 1);
                     application->renderer->updateScene();
@@ -63,11 +70,6 @@ bool ApplicationEventReceiver::processSDLEvent(SDL_Event const& event)
 
                 case SDLK_j: RUN_FOR_PLANET({
                     planetEntity->setJitter(planetEntity->getJitter() - 0.1f);
-                    application->renderer->updateScene();
-                });
-
-                case SDLK_f: RUN_FOR_PLANET({
-                    planetEntity->setShowFaceColor(!planetEntity->getShowFaceColor());
                     application->renderer->updateScene();
                 });
 

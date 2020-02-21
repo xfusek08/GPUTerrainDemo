@@ -25,12 +25,14 @@ namespace gpd
             virtual std::vector<float>    getColors()    const override { return {}; }
 
             inline unsigned int getResolution() const { return surface->getResolution(); }
-            bool  getShowFaceColor() const;
+            bool getShowFaceColor() const;
+            bool getStepPlates() const;
             float getJitter() const;
+
 
             void setResolution(unsigned int value);
             void setJitter(float value);
-            void setShowFaceColor(bool value);
+            void setStepPlates(bool value);
 
             const gp::RegionList& getRegions() const { return surface->getRegions(); }
 

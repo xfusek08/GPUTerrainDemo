@@ -61,12 +61,6 @@ shared_ptr<VAOContainer> PlanetVT::processEntityToVaoContainer(shared_ptr<Entity
     return vaoContainer;
 }
 
-glm::uvec4 PlanetVT::regionToColor(shared_ptr<gp::Region> region)
-{
-    auto color = region->attributes[gp::RegionAttributeType::Color].data.uVector3;
-    return glm::uvec4(color.x, color.y, color.z, 0);
-}
-
 void PlanetVT::drawInternal(shared_ptr<core::Camera> camera)
 {
     for (auto pair: vaoContainerMap) {
