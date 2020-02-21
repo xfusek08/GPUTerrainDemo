@@ -17,7 +17,7 @@
 
 #include <GeoPlanetDemo/interfaces/LoggerInterface.h>
 
-namespace  gpd
+namespace gpd
 {
     namespace core
     {
@@ -44,7 +44,7 @@ namespace  gpd
             static std::shared_ptr<gpd::interfaces::LoggerInterface> &getLogger();
 
         private:
-            static std::shared_ptr<gpd::interfaces::LoggerInterface> _logger;
+            static std::shared_ptr<gpd::interfaces::LoggerInterface> logger;
         };
     } // namespace core
-} // namespace  gpd
+} // namespace gpd

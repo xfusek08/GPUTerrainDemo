@@ -5,7 +5,7 @@
 #include <GeoPlanetDemo/sdl/SDLEventReceiverInterface.h>
 #include <GeoPlanetDemo/core/OrbitCameraController.h>
 
-namespace  gpd
+namespace gpd
 {
     namespace sdl
     {

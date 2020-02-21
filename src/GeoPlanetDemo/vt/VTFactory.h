@@ -1,42 +1,89 @@
 #pragma once
 
 #include <memory>
+#include <map>
 
-#include <GeoPlanetDemo/vt/types.h>
-#include <GeoPlanetDemo/vt/BaseVisualizationTechnique.h>
-#include <GeoPlanetDemo/vt/ColorLinesVT.h>
-#include <GeoPlanetDemo/vt/PlanetVT.h>
-#include <GeoPlanetDemo/vt/PlanetCubeMapVT.h>
-#include <GeoPlanetDemo/vt/PlanetDebugVT.h>
+#include <GeoPlanetDemo/vt/VisualizationTechnique.h>
+
+#define REGISTER_VT_TYPE(vt_class)\
+namespace gpd {\
+    namespace vt {\
+        namespace types {\
+            const VTType vt_class = #vt_class;\
+        }\
+        class vt_class##Factory : public VTFactorySpecific\
+        {\
+        public:\
+            vt_class##Factory()\
+            {\
+                VTFactory::registerType(types::vt_class, this);\
+            }\
+            virtual std::shared_ptr<VisualizationTechnique> create(const VTType& type, std::shared_ptr<ge::gl::Context> gl) override\
+            {\
+                return std::make_shared<vt_class>(type, gl);\
+            }\
+        };\
+        static vt_class##Factory global_##vt_class##Factory;\
+    }\
+}
 
 namespace ge
 {
-	namespace gl
-	{
-		class Context;
-	}
+    namespace gl
+    {
+        class Context;
+    }
 }
 
-namespace  gpd
+namespace gpd
 {
     namespace vt
     {
-        class VTFactory
+        class VTFactorySpecific
         {
-		public:
-            static std::shared_ptr<BaseVisualizationTechnique> createVTFromType(std::shared_ptr<ge::gl::Context> context, VTType type)
-            {
-                switch(type) {
-					case VTType::BaseVisualizationTechnique : return std::make_shared<BaseVisualizationTechnique>(context);
-					case VTType::ColorLinesVT               : return std::make_shared<ColorLinesVT>(context);
-					case VTType::PlanetVT                   : return std::make_shared<PlanetVT>(context);
-					case VTType::PlanetCubeMapVT            : return std::make_shared<PlanetCubeMapVT>(context);
-                    case VTType::PlanetDebugVT              : return std::make_shared<PlanetDebugVT>(context);
-					default:
-						return nullptr;
-                };
-            }
+        public:
+            virtual std::shared_ptr<VisualizationTechnique> create(const VTType& type, std::shared_ptr<ge::gl::Context> gl) = 0;
         };
 
+        class VTFactory
+        {
+        public:
+            // static methods
+            static std::shared_ptr<VisualizationTechnique> create(const VTType& type, std::shared_ptr<ge::gl::Context> gl)
+            {
+                if (getMap().find(type) == getMap().end()) {
+                    return nullptr;
+                }
+
+                return getMap()[type]->create(type, gl);
+            }
+
+            static std::map<std::string, VTFactorySpecific*>& getMap()
+            {
+                static std::map<std::string, VTFactorySpecific*> map;
+                return map;
+            }
+
+            static void registerType(const VTType& type, VTFactorySpecific* factory)
+            {
+                getMap()[type] = factory;
+            }
+
+            static std::vector<VTType> list()
+            {
+                std::vector<VTType> result;
+                result.reserve(getMap().size());
+                for(auto item : getMap()) {
+                    result.push_back(item.first);
+                }
+                return result;
+            }
+
+        private:
+            // preperties
+            // static std::map<std::string, VTFactorySpecific*> getMap();
+        };
     } // namespace vt
-} // namespace  gpd
+} // namespace gpd
+
+REGISTER_VT_TYPE(VisualizationTechnique)

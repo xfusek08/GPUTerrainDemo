@@ -1,12 +1,12 @@
 
 #pragma once
 
-namespace  gpd
+namespace gpd
 {
-	namespace core
-	{
-		class Camera;
-	}
+    namespace core
+    {
+        class Camera;
+    }
 
     namespace interfaces
     {

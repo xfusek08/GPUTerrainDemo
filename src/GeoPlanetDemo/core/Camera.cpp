@@ -18,14 +18,14 @@ Camera::Camera(
     float nearPlaneDistance,
     float farPlaneDistace
 ) :
-    _viewWidth(viewWidth),
-    _viewHeight(viewHeight),
-    _position(position),
-    _fov(fov),
-    _nearPlane(nearPlaneDistance),
-    _farPlane(farPlaneDistace),
-    _target(glm::vec3{ 0.f, 0.f, 0.f }),
-    _up(glm::vec3 { 0.f, 1.f, 0.f })
+    viewWidth(viewWidth),
+    viewHeight(viewHeight),
+    position(position),
+    fov(fov),
+    nearPlane(nearPlaneDistance),
+    farPlane(farPlaneDistace),
+    target(glm::vec3{ 0.f, 0.f, 0.f }),
+    up(glm::vec3 { 0.f, 1.f, 0.f })
 {
     updateProjectionMatrix();
     updateViewMatrix();
@@ -33,25 +33,25 @@ Camera::Camera(
 
 glm::mat4 Camera::getViewMatrix()
 {
-    if (_hasViewChanged)
+    if (viewChanged)
         updateViewMatrix();
-    return _viewMatrix;
+    return viewMatrix;
 }
 
 // PRIVATE =============================================================
 
 void Camera::updateViewMatrix()
 {
-    _viewMatrix = glm::lookAt(_position, _target, _up);
-    _hasViewChanged = false;
+    viewMatrix = glm::lookAt(position, target, up);
+    viewChanged = false;
 }
 
 void Camera::updateProjectionMatrix()
 {
-    _projectionMatrix = glm::perspective(
-        glm::radians(_fov),
-        _viewWidth / _viewHeight,
-        _nearPlane,
-        _farPlane
+    projectionMatrix = glm::perspective(
+        glm::radians(fov),
+        viewWidth / viewHeight,
+        nearPlane,
+        farPlane
     );
 }

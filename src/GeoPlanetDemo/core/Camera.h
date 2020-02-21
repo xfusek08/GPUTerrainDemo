@@ -12,13 +12,14 @@ namespace ge
     }
 }
 
-namespace  gpd
+namespace gpd
 {
     namespace core
     {
         class Camera
         {
         public:
+            // methods
             Camera(
                 float viewWidth,
                 float viewHeight,
@@ -29,54 +30,57 @@ namespace  gpd
             );
 
             // flags
-            inline bool hasViewChanged() const { return _hasViewChanged || !_changeAccepted; }
-			inline void setViewChanged() { _hasViewChanged = true; _changeAccepted = false; }
-			inline void acceptChange() { _changeAccepted = true; }
+            inline bool hasViewChanged() const { return viewChanged || !changeAccepted; }
+            inline void setViewChanged() { viewChanged = true; changeAccepted = false; }
+            inline void acceptChange() { changeAccepted = true; }
 
             // matrices
             glm::mat4 getViewMatrix();
-            inline glm::mat4 getProjectionMatrix() const { return _projectionMatrix; }
+            inline glm::mat4 getProjectionMatrix() const { return projectionMatrix; }
 
             // vectors
-            inline glm::vec3 getCameraPosition()  const { return _position; }
-            inline glm::vec3 getTargetPosition()  const { return _target; }
-            inline glm::vec3 getUpVector()        const { return _up; }
-            inline glm::vec3 getCameraDirection() const { return _position - _target;  }
+            inline glm::vec3 getCameraPosition()  const { return position; }
+            inline glm::vec3 getTargetPosition()  const { return target; }
+            inline glm::vec3 getUpVector()        const { return up; }
+            inline glm::vec3 getCameraDirection() const { return position - target;  }
 
-			inline void setCameraPosition(glm::vec3 position)                 { _position = position; setViewChanged(); }
-            inline void setTargetPosition(glm::vec3 target)                   { _target   = target;   setViewChanged(); }
-            inline void setUpVector(glm::vec3 up)                             { _up       = up;       setViewChanged(); }
-            inline void setViewSize(unsigned int width, unsigned int height)  { _viewWidth = width; _viewHeight = height; updateProjectionMatrix(); setViewChanged(); }
-            inline void setViewSize(glm::uvec2 newSize)                       { setViewSize(newSize.x, newSize.y); }
+            inline void setCameraPosition(glm::vec3 position)                { position = position; setViewChanged(); }
+            inline void setTargetPosition(glm::vec3 target)                  { target   = target;   setViewChanged(); }
+            inline void setUpVector(glm::vec3 up)                            { up       = up;       setViewChanged(); }
+            inline void setViewSize(unsigned int width, unsigned int height) { viewWidth = width; viewHeight = height; updateProjectionMatrix(); setViewChanged(); }
+            inline void setViewSize(glm::uvec2 newSize)                      { setViewSize(newSize.x, newSize.y); }
 
             // projection scalars
-            inline float getFov() const { return _fov; }
-            inline float getNearPlaneDistance() const { return _nearPlane; }
-            inline float getFarPlaneDistance() const { return _farPlane; }
-        protected:
+            inline float getFov() const { return fov; }
+            inline float getNearPlaneDistance() const { return nearPlane; }
+            inline float getFarPlaneDistance() const { return farPlane; }
 
-			void updateViewMatrix();
-            void updateProjectionMatrix();
+        protected:
+            // properties
 
             // flags
-            bool _hasViewChanged = true;
-			bool _changeAccepted = false;
+            bool viewChanged = true;
+            bool changeAccepted = false;
 
-            glm::mat4 _viewMatrix;
-            glm::mat4 _projectionMatrix;
+            glm::mat4 viewMatrix;
+            glm::mat4 projectionMatrix;
 
             // projection details
-            float _viewWidth  = 0.f;
-            float _viewHeight = 0.f;
-            float _fov        = 0.f;
-            float _nearPlane  = 0.f;
-            float _farPlane   = 0.f;
+            float viewWidth  = 0.f;
+            float viewHeight = 0.f;
+            float fov        = 0.f;
+            float nearPlane  = 0.f;
+            float farPlane   = 0.f;
 
             // view details
-            glm::vec3 _position;
-            glm::vec3 _target;
-            glm::vec3 _up;
+            glm::vec3 position;
+            glm::vec3 target;
+            glm::vec3 up;
+
+            // methods
+            void updateViewMatrix();
+            void updateProjectionMatrix();
         };
 
     }; // namespace core
-} // namespace  gpd
+} // namespace gpd

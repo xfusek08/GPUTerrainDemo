@@ -9,12 +9,16 @@
 #include <vendor/imgui/imgui_impl_opengl3.h>
 
 #include <GeoPlanetDemo/core/Camera.h>
+#include <GeoPlanetDemo/core/Scene.h>
 
-#include <GeoPlanetDemo/ApplicationGui.h>
 #include <GeoPlanetDemo/sdl/SDLGlMainLoop.h>
 #include <GeoPlanetDemo/sdl/SDLPerformance.h>
-#include <GeoPlanetDemo/core/Scene.h>
+
 #include <GeoPlanetDemo/entities/PlanetEntity.h>
+
+#include <GeoPlanetDemo/vt/planet/vts.h>
+
+#include <GeoPlanetDemo/ApplicationGui.h>
 
 using namespace std;
 using namespace gpd;
@@ -48,7 +52,7 @@ bool ApplicationGui::processSDLEvent(SDL_Event const& event)
             case SDL_WINDOWEVENT_RESIZED:
                 application->mainLoop->getWindow()->setSize(event.window.data1, event.window.data2);
                 application->mainLoop->getGlContext()->glViewport(0, 0, event.window.data1, event.window.data2);
-				application->camera->setViewSize(event.window.data1, event.window.data2);
+                application->camera->setViewSize(event.window.data1, event.window.data2);
                 break;
         }
     }
@@ -91,13 +95,13 @@ void ApplicationGui::draw()
         ImGui::PlotLines(text, fpsHistory, sdl::SDLPerformance::HISTORY_LEN);
     }
 
-    if (ImGui::CollapsingHeader("Menu")) {
+    if (planetEntity != nullptr && ImGui::CollapsingHeader("Menu")) {
         ImGui::Text("Visualization technique:");
         {
             int vtTypeInt = vtTypeToInt(planetEntity->getVtType());
-            ImGui::RadioButton("Default (F1)",              &vtTypeInt, vtTypeToInt(vt::VTType::PlanetVT));      // ImGui::SameLine();
-            ImGui::RadioButton("Show Wireframe (F2)",       &vtTypeInt, vtTypeToInt(vt::VTType::PlanetDebugVT)); // ImGui::SameLine();
-            ImGui::RadioButton("Show coordinate mask (F3)", &vtTypeInt, vtTypeToInt(vt::VTType::PlanetCubeMapVT));
+            ImGui::RadioButton("Default (F1)",              &vtTypeInt, vtTypeToInt(vt::types::PlanetVT));          // ImGui::SameLine();
+            ImGui::RadioButton("Show Wireframe (F2)",       &vtTypeInt, vtTypeToInt(vt::types::PlanetWireFrameVT)); // ImGui::SameLine();
+            ImGui::RadioButton("Show coordinate mask (F3)", &vtTypeInt, vtTypeToInt(vt::types::PlanetCubeMapVT));
             if (planetEntity->setVtType(intToVtType(vtTypeInt))) {
                 updateScene = true;
                 application->camera->setViewChanged();
@@ -179,7 +183,7 @@ void ApplicationGui::draw()
         }
     }
 
-	ImGui::End();
+    ImGui::End();
     ImGui::PopStyleColor();
     ImGui::PopStyleColor();
     drawTearDown();
@@ -191,33 +195,31 @@ void ApplicationGui::drawPrepare()
 {
     ImGui_ImplOpenGL3_NewFrame();
     ImGui_ImplSDL2_NewFrame(application->mainLoop->getWindow()->getWindow());
-	ImGui::NewFrame();
+    ImGui::NewFrame();
 }
 
 void ApplicationGui::drawTearDown()
 {
-	ImGui::Render();
-	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+    ImGui::Render();
+    ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 }
 
 vt::VTType ApplicationGui::intToVtType(int val) const
 {
-    switch (val)
-    {
-        case 0: return vt::VTType::PlanetVT;
-        case 1: return vt::VTType::PlanetDebugVT;
-        case 2: return vt::VTType::PlanetCubeMapVT;
-        default: throw "unknown planet type integer";
+    auto list = vt::VTFactory::list();
+    if (val < 0 || val > list.size()) {
+        return vt::types::UndefinedVT;
     }
+    return list[val];
 }
 
 int ApplicationGui::vtTypeToInt(vt::VTType val) const
 {
-    switch (val)
-    {
-        case vt::VTType::PlanetVT: return 0;
-        case vt::VTType::PlanetDebugVT: return 1;
-        case vt::VTType::PlanetCubeMapVT: return 2;
-        default: throw "unknown planet type";
+    size_t index = 0;
+    for (auto type : vt::VTFactory::list()) {
+        if (type == val) {
+            return index;
+        }
+        ++index;
     }
 }

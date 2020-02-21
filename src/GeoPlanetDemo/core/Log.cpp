@@ -13,19 +13,19 @@ using namespace std;
 using namespace gpd::core;
 using namespace gpd::interfaces;
 
-shared_ptr<LoggerInterface> Log::_logger;
+shared_ptr<LoggerInterface> Log::logger;
 
 void Log::setLogger(shared_ptr<LoggerInterface> logger = nullptr)
 {
     if (logger != nullptr)
-        _logger = logger;
+        Log::logger = logger;
     else
-        _logger = make_shared<BasicLogger>();
+        Log::logger = make_shared<BasicLogger>();
 }
 
 std::shared_ptr<LoggerInterface>& Log::getLogger()
 {
-    if (_logger == nullptr)
+    if (Log::logger == nullptr)
         setLogger();
-    return _logger;
+    return Log::logger;
 }

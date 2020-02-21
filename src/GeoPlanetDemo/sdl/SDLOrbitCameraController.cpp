@@ -8,9 +8,9 @@ using namespace gpd::core;
 SDLOrbitCameraController::SDLOrbitCameraController(shared_ptr<Camera> camera) :
     OrbitCameraController::OrbitCameraController(camera)
 {
-    _speed = 0.005f;
-    _radius = 5.f;
-    _camera->setCameraPosition(glm::vec3{ 0,0,1 });
+    speed = 0.005f;
+    radius = 5.f;
+    camera->setCameraPosition(glm::vec3{0, 0, 1});
     performRotation();
 }
 

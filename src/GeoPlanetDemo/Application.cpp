@@ -13,14 +13,16 @@
 #include <GeoPlanetDemo/entities/AxisEntity.h>
 #include <GeoPlanetDemo/entities/PlanetEntity.h>
 
-#include <GeoPlanetDemo/vt/types.h>
+#include <GeoPlanetDemo/vt/VTFactory.h>
+#include <GeoPlanetDemo/vt/ColorLinesVT.h>
+#include <GeoPlanetDemo/vt/planet/PlanetVT.h>
 
 #include <GeoPlanetDemo/Application.h>
 #include <GeoPlanetDemo/ApplicationEventReceiver.h>
 #include <GeoPlanetDemo/ApplicationGui.h>
 
 using namespace std;
-using namespace  gpd;
+using namespace gpd;
 using namespace sdl2cpp;
 
 int Application::init()
@@ -35,8 +37,8 @@ int Application::init()
     gui      = make_shared<ApplicationGui>(this);
 
     // create entities
-	scene->addEntity("axis",   make_shared<entities::AxisEntity>(vt::VTType::ColorLinesVT));
-    scene->addEntity("planet", make_shared<entities::PlanetEntity>(vt::VTType::PlanetVT));
+    scene->addEntity("axis",   make_shared<entities::AxisEntity>(vt::types::ColorLinesVT));
+    scene->addEntity("planet", make_shared<entities::PlanetEntity>(vt::types::PlanetVT));
     renderer->updateScene();
 
     // init control
@@ -63,6 +65,5 @@ void Application::draw()
 {
     // camera is moved with mainLoop with help of manipulator as event receiver
     renderer->draw(camera);
-
     gui->draw();
 }

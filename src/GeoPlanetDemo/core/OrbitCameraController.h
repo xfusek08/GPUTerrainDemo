@@ -2,7 +2,7 @@
 #include <SDL.h>
 #include <GeoPlanetDemo/core/Camera.h>
 
-namespace  gpd
+namespace gpd
 {
     namespace core
     {
@@ -11,7 +11,7 @@ namespace  gpd
         public:
             OrbitCameraController(std::shared_ptr<core::Camera>);
 
-            inline std::shared_ptr<core::Camera> getCamera() { return _camera; }
+            inline std::shared_ptr<core::Camera> getCamera() { return camera; }
 
             void up();
             void down();
@@ -25,10 +25,10 @@ namespace  gpd
         protected:
             void performRotation(float = 0, glm::vec3 = glm::vec3{0,0,0});
 
-            std::shared_ptr<core::Camera> _camera;
+            std::shared_ptr<core::Camera> camera;
 
-            float _speed;
-            float _radius;
+            float speed;
+            float radius;
         };
     }
 }

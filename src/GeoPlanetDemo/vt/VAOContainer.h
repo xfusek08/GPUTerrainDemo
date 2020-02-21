@@ -8,36 +8,36 @@ namespace ge
 {
     namespace gl
     {
-		class VertexArray;
-		class Buffer;
-		class Context;
+        class VertexArray;
+        class Buffer;
+        class Context;
     }
 }
 
-namespace  gpd
+namespace gpd
 {
     namespace vt
     {
         class VAOContainer {
         public:
             std::shared_ptr<ge::gl::VertexArray> vao;
-			GLsizei indexSize;
+            GLsizei indexSize;
 
             VAOContainer(std::shared_ptr<ge::gl::Context> gl);
 
             void bind();
             void unbind();
 
-			template<typename T>
+            template<typename T>
             std::shared_ptr<ge::gl::Buffer> newBuffer(std::vector<T> values)
-			{
-				auto buffer = std::make_shared<ge::gl::Buffer>(values.size() * sizeof(T), values.data());
-				_bufferContainer.push_back(buffer);
-				return buffer;
-			}
+            {
+                auto buffer = std::make_shared<ge::gl::Buffer>(values.size() * sizeof(T), values.data());
+                bufferContainer.push_back(buffer);
+                return buffer;
+            }
 
-		protected:
-            std::vector<std::shared_ptr<ge::gl::Buffer>> _bufferContainer;
-		};
+        protected:
+            std::vector<std::shared_ptr<ge::gl::Buffer>> bufferContainer;
+        };
     } // namespace vt
-} // namespace  gpd
+} // namespace gpd

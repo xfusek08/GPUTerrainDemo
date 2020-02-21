@@ -1,24 +1,24 @@
 #pragma once
 
-#include <GeoPlanetDemo/vt/BaseVisualizationTechnique.h>
-#include <geGL/Generated/OpenGLTypes.h>
-#include <geGL/Generated/OpenGLConstants.h>
+#include <GeoPlanetDemo/vt/VTFactory.h>
 
-namespace  gpd
+namespace gpd
 {
     namespace vt
     {
-        class ColorLinesVT : public BaseVisualizationTechnique
+        class ColorLinesVT : public VisualizationTechnique
         {
-		public:
-			ColorLinesVT(std::shared_ptr<ge::gl::Context> gl) : BaseVisualizationTechnique(gl) {}
+        public:
+            // methods
+            ColorLinesVT(VTType type, std::shared_ptr<ge::gl::Context> gl) : VisualizationTechnique(type, gl) {}
 
-			inline VTType getType() const override { return VTType::ColorLinesVT; }
-			inline GLenum getDrawMode() const { return GL_LINES; }
+            inline GLenum getDrawMode() const { return GL_LINES; }
 
-		protected:
+        protected:
             void initGlProgram() override;
             virtual std::shared_ptr<VAOContainer> processEntityToVaoContainer(std::shared_ptr<entities::Entity> entity) override;
         };
     } // namespace vt
-} // namespace  gpd
+} // namespace gpd
+
+REGISTER_VT_TYPE(ColorLinesVT)

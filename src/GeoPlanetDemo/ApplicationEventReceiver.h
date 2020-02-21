@@ -3,16 +3,16 @@
 #include <GeoPlanetDemo/Application.h>
 #include <GeoPlanetDemo/sdl/SDLEventReceiverInterface.h>
 
-namespace  gpd
+namespace gpd
 {
     class ApplicationEventReceiver : public sdl::SDLEventReceiverInterface
     {
     public:
-        ApplicationEventReceiver(Application* application): _application(application) {}
+        ApplicationEventReceiver(Application* application): application(application) {}
         bool processSDLEvent(SDL_Event const&) override;
         void onFrameUpdate() override;
 
     private:
-		Application* _application;
+        Application* application;
     };
-} // namespace  gpd
+} // namespace gpd

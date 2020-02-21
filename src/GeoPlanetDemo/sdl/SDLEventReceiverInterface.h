@@ -2,7 +2,7 @@
 
 #include <SDL.h>
 
-namespace  gpd
+namespace gpd
 {
     namespace sdl
     {

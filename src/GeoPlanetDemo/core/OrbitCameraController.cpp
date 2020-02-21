@@ -17,34 +17,34 @@ using namespace std;
 using namespace gpd::core;
 
 OrbitCameraController::OrbitCameraController(shared_ptr<Camera> camera) :
-    _camera(camera),
-    _speed(0),
-    _radius(0)
+    camera(camera),
+    speed(0),
+    radius(0)
 {
-    _camera->setCameraPosition(glm::vec3{0,0,1});
+    camera->setCameraPosition(glm::vec3{0,0,1});
     performRotation();
 }
 
 void OrbitCameraController::up()
 {
     performRotation(
-        _speed,
-        glm::normalize(glm::cross(_camera->getCameraDirection(), glm::vec3{ 0.f,1.f,0.f }))
+        speed,
+        glm::normalize(glm::cross(camera->getCameraDirection(), glm::vec3{ 0.f,1.f,0.f }))
     );
 }
 
 void OrbitCameraController::down()
 {
     performRotation(
-        -_speed,
-        glm::normalize(glm::cross(_camera->getCameraDirection(), glm::vec3{ 0.f,1.f,0.f }))
+        -speed,
+        glm::normalize(glm::cross(camera->getCameraDirection(), glm::vec3{ 0.f,1.f,0.f }))
     );
 }
 
 void OrbitCameraController::left()
 {
     performRotation(
-        -_speed,
+        -speed,
         glm::vec3(0.f, 1.f, 0.f)
     );
 }
@@ -52,20 +52,20 @@ void OrbitCameraController::left()
 void OrbitCameraController::right()
 {
     performRotation(
-        _speed,
+        speed,
         glm::vec3(0.f, 1.f, 0.f)
     );
 }
 
 void OrbitCameraController::zoomIn()
 {
-    _radius *= 0.99f;
+    radius *= 0.99f;
     performRotation();
 }
 
 void OrbitCameraController::zoomOut()
 {
-    _radius *= 1.01f;
+    radius *= 1.01f;
     performRotation();
 }
 
@@ -75,11 +75,11 @@ void OrbitCameraController::lookXY(glm::vec2 delta)
 
 void OrbitCameraController::performRotation(float angleIncrement, glm::vec3 axis)
 {
-    auto pos = _camera->getCameraPosition();
+    auto pos = camera->getCameraPosition();
     if (angleIncrement != 0 || axis == glm::vec3(0)) {
         glm::quat rot = glm::angleAxis(angleIncrement, axis);
         pos = glm::conjugate(rot) * pos * rot;
     }
-    pos = glm::normalize(pos) * _radius;
-    _camera->setCameraPosition(pos);
+    pos = glm::normalize(pos) * radius;
+    camera->setCameraPosition(pos);
 }

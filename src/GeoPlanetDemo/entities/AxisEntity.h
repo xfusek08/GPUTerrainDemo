@@ -2,7 +2,7 @@
 
 #include <GeoPlanetDemo/entities/Entity.h>
 
-namespace  gpd
+namespace gpd
 {
     namespace entities
     {
@@ -11,9 +11,9 @@ namespace  gpd
         public:
             AxisEntity(vt::VTType vtType) : Entity(vtType) {}
 
-			virtual std::vector<float>    getVerticies()  const override;
+            virtual std::vector<float>    getVerticies()  const override;
             virtual std::vector<unsigned> getIndieces()   const override;
             virtual std::vector<float>    getColors()     const override;
         };
     } // namespace entities
-} // namespace  gpd
+} // namespace gpd

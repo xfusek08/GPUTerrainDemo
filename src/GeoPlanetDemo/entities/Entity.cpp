@@ -6,10 +6,10 @@
 
 using namespace std;
 using namespace ge::gl;
-using namespace  gpd;
+using namespace gpd;
 using namespace gpd::entities;
 
-Entity::Entity(vt::VTType vtType) : _vtType(vtType) {}
+Entity::Entity(vt::VTType vtType) : vtType(vtType) {}
 
 vector<float> Entity::getVerticies() const
 {
@@ -29,8 +29,8 @@ vector<unsigned> Entity::getIndieces() const
 
 bool Entity::setVtType(vt::VTType type)
 {
-    if (type != _vtType) {
-        _vtType = type;
+    if (type != vtType) {
+        vtType = type;
         return true;
     }
     return false;

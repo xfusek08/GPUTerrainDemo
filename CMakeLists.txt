@@ -48,42 +48,46 @@ set(SHADER_FILES
 # source files
 
 set(SRC_GEO_PLANET_DEMO
-    src/${APP_NAME}/Application.h                     src/${APP_NAME}/Application.cpp
-    src/${APP_NAME}/ApplicationEventReceiver.h        src/${APP_NAME}/ApplicationEventReceiver.cpp
-    src/${APP_NAME}/ApplicationGui.h                  src/${APP_NAME}/ApplicationGui.cpp
+    src/${APP_NAME}/Application.h                    src/${APP_NAME}/Application.cpp
+    src/${APP_NAME}/ApplicationEventReceiver.h       src/${APP_NAME}/ApplicationEventReceiver.cpp
+    src/${APP_NAME}/ApplicationGui.h                 src/${APP_NAME}/ApplicationGui.cpp
 )
 
 set(SRC_GEO_PLANET_DEMO_CORE
-    src/${APP_NAME}/core/Log.h                        src/${APP_NAME}/core/Log.cpp
-    src/${APP_NAME}/core/Camera.h                     src/${APP_NAME}/core/Camera.cpp
-    src/${APP_NAME}/core/OrbitCameraController.h      src/${APP_NAME}/core/OrbitCameraController.cpp
-    src/${APP_NAME}/core/SceneRenderer.h              src/${APP_NAME}/core/SceneRenderer.cpp
-    src/${APP_NAME}/core/Scene.h                      src/${APP_NAME}/core/Scene.cpp
+    src/${APP_NAME}/core/Log.h                       src/${APP_NAME}/core/Log.cpp
+    src/${APP_NAME}/core/Camera.h                    src/${APP_NAME}/core/Camera.cpp
+    src/${APP_NAME}/core/OrbitCameraController.h     src/${APP_NAME}/core/OrbitCameraController.cpp
+    src/${APP_NAME}/core/SceneRenderer.h             src/${APP_NAME}/core/SceneRenderer.cpp
+    src/${APP_NAME}/core/Scene.h                     src/${APP_NAME}/core/Scene.cpp
     src/${APP_NAME}/core/Utils.h
 )
 
 set(SRC_GEO_PLANET_DEMO_ENTITIES
-    src/${APP_NAME}/entities/Entity.h                 src/${APP_NAME}/entities/Entity.cpp
-    src/${APP_NAME}/entities/AxisEntity.h             src/${APP_NAME}/entities/AxisEntity.cpp
-    src/${APP_NAME}/entities/PlanetEntity.h           src/${APP_NAME}/entities/PlanetEntity.cpp
+    src/${APP_NAME}/entities/Entity.h                src/${APP_NAME}/entities/Entity.cpp
+    src/${APP_NAME}/entities/AxisEntity.h            src/${APP_NAME}/entities/AxisEntity.cpp
+    src/${APP_NAME}/entities/PlanetEntity.h          src/${APP_NAME}/entities/PlanetEntity.cpp
 )
 
 set(SRC_GEO_PLANET_DEMO_SDL
-    src/${APP_NAME}/sdl/SDLGlMainLoop.h               src/${APP_NAME}/SDL/SDLGlMainLoop.cpp
-    src/${APP_NAME}/sdl/SDLOrbitCameraController.h    src/${APP_NAME}/sdl/SDLOrbitCameraController.cpp
-    src/${APP_NAME}/sdl/SDLPerformance.h              src/${APP_NAME}/sdl/SDLPerformance.cpp
+    src/${APP_NAME}/sdl/SDLGlMainLoop.h              src/${APP_NAME}/SDL/SDLGlMainLoop.cpp
+    src/${APP_NAME}/sdl/SDLOrbitCameraController.h   src/${APP_NAME}/sdl/SDLOrbitCameraController.cpp
+    src/${APP_NAME}/sdl/SDLPerformance.h             src/${APP_NAME}/sdl/SDLPerformance.cpp
     src/${APP_NAME}/sdl/SDLEventReceiverInterface.h
 )
 
 set(SRC_GEO_PLANET_DEMO_VT
-    src/${APP_NAME}/vt/types.h
+    src/${APP_NAME}/vt/VTType.h
     src/${APP_NAME}/vt/VTFactory.h
-    src/${APP_NAME}/vt/VAOContainer.h                 src/${APP_NAME}/vt/VAOContainer.cpp
-    src/${APP_NAME}/vt/BaseVisualizationTechnique.h   src/${APP_NAME}/vt/BaseVisualizationTechnique.cpp
-    src/${APP_NAME}/vt/ColorLinesVT.h                 src/${APP_NAME}/vt/ColorLinesVT.cpp
-    src/${APP_NAME}/vt/PlanetVT.h                     src/${APP_NAME}/vt/PlanetVT.cpp
-    src/${APP_NAME}/vt/PlanetCubeMapVT.h              src/${APP_NAME}/vt/PlanetCubeMapVT.cpp
-    src/${APP_NAME}/vt/PlanetDebugVT.h                src/${APP_NAME}/vt/PlanetDebugVT.cpp
+    src/${APP_NAME}/vt/VAOContainer.h                src/${APP_NAME}/vt/VAOContainer.cpp
+    src/${APP_NAME}/vt/VisualizationTechnique.h      src/${APP_NAME}/vt/VisualizationTechnique.cpp
+    src/${APP_NAME}/vt/ColorLinesVT.h                src/${APP_NAME}/vt/ColorLinesVT.cpp
+)
+
+set(SRC_GEO_PLANET_DEMO_VT_PLANET
+    src/${APP_NAME}/vt/planet/vts.h
+    src/${APP_NAME}/vt/planet/PlanetVT.h             src/${APP_NAME}/vt/planet/PlanetVT.cpp
+    src/${APP_NAME}/vt/planet/PlanetCubeMapVT.h      src/${APP_NAME}/vt/planet/PlanetCubeMapVT.cpp
+    src/${APP_NAME}/vt/planet/PlanetWireFrameVT.h    src/${APP_NAME}/vt/planet/PlanetWireFrameVT.cpp
 )
 
 set(SRC_GEO_PLANET_DEMO_INTERFACES
@@ -117,11 +121,12 @@ source_group("GeoPlanetDemo"             FILES ${SRC_GEO_PLANET_DEMO})
 source_group("GeoPlanetDemo\\core"       FILES ${SRC_GEO_PLANET_DEMO_CORE})
 source_group("GeoPlanetDemo\\entities"   FILES ${SRC_GEO_PLANET_DEMO_ENTITIES})
 source_group("GeoPlanetDemo\\vt"         FILES ${SRC_GEO_PLANET_DEMO_VT})
+source_group("GeoPlanetDemo\\vt\\planet" FILES ${SRC_GEO_PLANET_DEMO_VT_PLANET})
 source_group("GeoPlanetDemo\\sdl"        FILES ${SRC_GEO_PLANET_DEMO_SDL})
 source_group("GeoPlanetDemo\\interfaces" FILES ${SRC_GEO_PLANET_DEMO_INTERFACES})
 
-source_group("vendor/stb"                FILES ${SRC_VENDOR_STB})
-source_group("vendor/imgui"              FILES ${SRC_VENDOR_IAMGUI})
+source_group("vendor\\stb"                FILES ${SRC_VENDOR_STB})
+source_group("vendor\\imgui"              FILES ${SRC_VENDOR_IAMGUI})
 
 # generate shader definitions from SHADER_FILES based on their location
 set(SHADER_COMPILE_DEFINITIONS )
@@ -156,6 +161,7 @@ add_executable(${APP_NAME}
     ${SRC_GEO_PLANET_DEMO_CORE}
     ${SRC_GEO_PLANET_DEMO_ENTITIES}
     ${SRC_GEO_PLANET_DEMO_VT}
+    ${SRC_GEO_PLANET_DEMO_VT_PLANET}
     ${SRC_GEO_PLANET_DEMO_SDL}
     ${SRC_GEO_PLANET_DEMO_INTERFACES}
     ${SRC_VENDOR_STB}

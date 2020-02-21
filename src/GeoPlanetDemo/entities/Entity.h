@@ -5,9 +5,9 @@
 
 #include <glm/glm.hpp>
 
-#include <GeoPlanetDemo/vt/types.h>
+#include <GeoPlanetDemo/vt/VTType.h>
 
-namespace  gpd
+namespace gpd
 {
     namespace vt
     {
@@ -19,19 +19,19 @@ namespace  gpd
         class Entity
         {
         public:
-            Entity(vt::VTType vtType = vt::VTType::BaseVisualizationTechnique);
-			~Entity() {}
+            Entity(vt::VTType vtType);
+            ~Entity() {}
 
-			inline vt::VTType getVtType() const { return _vtType; }
+            inline vt::VTType getVtType() const { return vtType; }
 
-			virtual std::vector<float>    getVerticies()  const;
+            virtual std::vector<float>    getVerticies()  const;
             virtual std::vector<unsigned> getIndieces()   const;
             virtual std::vector<float>    getColors()     const { return {}; }
 
             bool setVtType(vt::VTType type);
 
         protected:
-            vt::VTType _vtType;
+            vt::VTType vtType;
         };
-    } // core
-} // namespace  gpd
+    } // namespace entities
+} // namespace gpd

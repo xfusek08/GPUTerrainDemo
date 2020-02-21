@@ -7,7 +7,7 @@
 
 #include <GeoPlanetDemo/entities/Entity.h>
 
-namespace  gpd
+namespace gpd
 {
     namespace core
     {
@@ -17,11 +17,14 @@ namespace  gpd
             Scene() {}
             std::vector<std::shared_ptr<entities::Entity>> getEntities() const;
 
-            inline void addEntity(std::string id, std::shared_ptr<entities::Entity> entity) { _entities[id] = entity; }
-            inline std::shared_ptr<entities::Entity> getEntity(std::string id) { return _entities[id]; }
+            inline void addEntity(std::string id, std::shared_ptr<entities::Entity> entity) { entities[id] = entity; }
+            inline std::shared_ptr<entities::Entity> getEntity(std::string id) { 
+                auto it = entities.find(id); 
+                return (it != entities.end()) ? it->second : nullptr;
+            }
 
         protected:
-            std::map<std::string, std::shared_ptr<entities::Entity>> _entities;
+            std::map<std::string, std::shared_ptr<entities::Entity>> entities;
         };
     } // core
-} // namespace  gpd
+} // namespace gpd

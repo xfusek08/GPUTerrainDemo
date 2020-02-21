@@ -19,7 +19,7 @@ namespace ge
     }
 }
 
-namespace  gpd
+namespace gpd
 {
     namespace sdl
     {
@@ -29,13 +29,14 @@ namespace  gpd
         class SDLGlMainLoop
         {
         public:
+            // methods
             SDLGlMainLoop(int width, int height);
             ~SDLGlMainLoop();
 
-            inline std::shared_ptr<ge::gl::Context> getGlContext() const { return _gl; }
-            inline std::shared_ptr<sdl2cpp::Window> getWindow()    const { return _window; }
-            inline bool isInitialized() { return _initialized; }
-            inline const SDLPerformance *getPerformance() { return &_performance; }
+            inline std::shared_ptr<ge::gl::Context> getGlContext() const { return gl; }
+            inline std::shared_ptr<sdl2cpp::Window> getWindow()    const { return window; }
+            inline bool isInitialized() { return initialized; }
+            inline const SDLPerformance *getPerformance() { return &performance; }
 
             virtual void init();
             virtual void run();
@@ -43,22 +44,22 @@ namespace  gpd
             virtual void setEventHandler(std::function<bool(SDL_Event const&)> const& handler);
             virtual void setDrawCallback(std::function<void()> const& callback);
 
-            inline void stop() { _mainLoop->stop(); }
+            inline void stop() { mainLoop->stop(); }
 
         protected:
             // properties
-            bool           _initialized  = false;
-            int            _windowWidth  = 0;
-            int            _windowHeight = 0;
-            SDLPerformance _performance  = SDLPerformance();
+            bool           initialized  = false;
+            int            windowWidth  = 0;
+            int            windowHeight = 0;
+            SDLPerformance performance  = SDLPerformance();
 
-            std::vector<std::shared_ptr<sdl::SDLEventReceiverInterface>> _eventReceivers;
+            std::vector<std::shared_ptr<sdl::SDLEventReceiverInterface>> eventReceivers;
 
-            std::shared_ptr<sdl2cpp::Window>      _window = nullptr;
-            std::shared_ptr<sdl2cpp::MainLoop>    _mainLoop = nullptr;
-            std::function<bool(SDL_Event const&)> _eventHandler = nullptr;
-            std::function<void()>                 _drawCallback = nullptr;
-            std::shared_ptr<ge::gl::Context>      _gl = nullptr;
+            std::shared_ptr<sdl2cpp::Window>      window = nullptr;
+            std::shared_ptr<sdl2cpp::MainLoop>    mainLoop = nullptr;
+            std::function<bool(SDL_Event const&)> eventHandler = nullptr;
+            std::function<void()>                 drawCallback = nullptr;
+            std::shared_ptr<ge::gl::Context>      gl = nullptr;
 
             // methods
             virtual bool update(SDL_Event const& event);
@@ -66,4 +67,4 @@ namespace  gpd
         };
 
     } // namespace tdesdl
-} // namespace  gpd
+} // namespace gpd

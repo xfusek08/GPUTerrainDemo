@@ -1,7 +1,7 @@
 
 #pragma once
 
-namespace  gpd
+namespace gpd
 {
     namespace interfaces
     {

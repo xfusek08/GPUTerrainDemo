@@ -11,41 +11,41 @@ namespace gpd
     {
         class PlanetEntity : public entities::Entity
         {
-		public:
-    		// properties
+        public:
+            // properties
             bool showCube = false;
             bool warpTexture = true;
             unsigned int meshResolution = 10;
 
-    		// methods
-			PlanetEntity(vt::VTType vtType);
+            // methods
+            PlanetEntity(vt::VTType vtType);
 
             virtual std::vector<float>    getVerticies() const override { return {}; }
             virtual std::vector<unsigned> getIndieces()  const override { return {}; }
             virtual std::vector<float>    getColors()    const override { return {}; }
 
-			inline unsigned int getResolution() const { return surface->getResolution(); }
+            inline unsigned int getResolution() const { return surface->getResolution(); }
             bool  getShowFaceColor() const;
-			float getJitter() const;
+            float getJitter() const;
 
-			void setResolution(unsigned int value);
-			void setJitter(float value);
+            void setResolution(unsigned int value);
+            void setJitter(float value);
             void setShowFaceColor(bool value);
 
-			const gp::RegionList& getRegions() const { return surface->getRegions(); }
+            const gp::RegionList& getRegions() const { return surface->getRegions(); }
 
             void stepPlateExpansion();
 
-			std::unique_ptr<unsigned char[]> getTextureDataForFace(unsigned int faceId, unsigned int face_width, unsigned int face_height) const;
+            std::unique_ptr<unsigned char[]> getTextureDataForFace(unsigned int faceId, unsigned int face_width, unsigned int face_height) const;
 
-		private:
-    		// properties
+        private:
+            // properties
             std::shared_ptr<gp::SurfaceGenerator> generator;
-			std::shared_ptr<gp::Surface> surface;
+            std::shared_ptr<gp::Surface> surface;
 
             // methods
             void generateFresh(unsigned int value = 0);
         };
 
     } // namespace entities
-} // namespace  gpd
+} // namespace gpd

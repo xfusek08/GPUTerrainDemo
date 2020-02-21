@@ -3,7 +3,7 @@
 
 #include <string>
 
-namespace  gpd
+namespace gpd
 {
     namespace interfaces
     {

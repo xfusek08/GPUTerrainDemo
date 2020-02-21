@@ -28,7 +28,7 @@ void SDLPerformance::frame()
     frameCnt++;
 
     if (frameCountingTimeMs >= 1000) {
-		previousCounted = float(frameCnt) + (1000.0f - float(frameCountingTimeMs)) / 1000;
+        previousCounted = float(frameCnt) + (1000.0f - float(frameCountingTimeMs)) / 1000;
         historyAdd(previousCounted);
         isFramesCounted = true;
         frameCountingTimeMs = 0;
