@@ -24,6 +24,7 @@ PlanetEntity::PlanetEntity(vt::VTType vtType) : Entity(vtType)
     generator = make_shared<gp::SurfaceGenerator>(initializer_list<string>{
         "JitterModifier",
         "TectonicPlateModifier",
+        "ElevationModifier",
     });
     generateFresh();
 }
@@ -54,13 +55,25 @@ bool PlanetEntity::getStepPlates() const
 
 void PlanetEntity::setStepPlates(bool value)
 {
-    MODIFIER_INSTANCE(TectonicPlateModifier)->stepMode = value;
+    MODIFIER_INSTANCE(TectonicPlateModifier)->stepMode = value;    
 }
 
 void PlanetEntity::stepPlateExpansion()
 {
-    auto mod = MODIFIER_INSTANCE(TectonicPlateModifier);
+    auto mod = MODIFIER_INSTANCE(TectonicPlateModifier);    
     mod->stepExpandPlates(surface);
+    generator->applyModifier(surface, "ElevationModifier");
+}
+
+unsigned int PlanetEntity::getNumberOfPlates() const
+{
+    return MODIFIER_INSTANCE(TectonicPlateModifier)->numberOfPlates;
+}
+
+void PlanetEntity::setNumberOfPlates(unsigned int value)
+{
+    MODIFIER_INSTANCE(TectonicPlateModifier)->numberOfPlates = value;
+    generateFresh(getResolution());
 }
 
 unique_ptr<unsigned char[]> PlanetEntity::getTextureDataForFace(unsigned int faceId, unsigned int face_width, unsigned int face_height) const
@@ -84,7 +97,7 @@ unique_ptr<unsigned char[]> PlanetEntity::getTextureDataForFace(unsigned int fac
 
             vec2 localWarpCoords = vec2(x / (float)face_width, y / (float)face_height);
 
-            if (warpTexture) { // use warp method of coordinate system from tl
+            if (doWarp) { // use warp method of coordinate system from tl
                 localWarpCoords = (localWarpCoords - vec2(0.5, 0.5)) * 2.0f;
                 localWarpCoords = glm::atan(localWarpCoords * 1.18228668555f) * 1.151099238f;
                 localWarpCoords = localWarpCoords / 2.0f + vec2(0.5, 0.5);

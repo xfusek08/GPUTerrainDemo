@@ -4,6 +4,7 @@ out vec4 fColor;
 in vec3 direction;
 
 uniform uint regionResolution;
+uniform uint showRegionBounds;
 
 struct Region {
     vec3 position;
@@ -184,6 +185,10 @@ void main()
     REGION_ID regId = getClosestRegionId(direction, distToClosest);
 
     if (!IS_ERROR) {
-        fColor = distToClosest < (1.0f / float(10*regionResolution)) ? vec4(0,0,0,0) : vec4(regions[regId].color, 0);
+        if (showRegionBounds == 1) {
+            fColor = distToClosest < (1.0f / float(10*regionResolution)) ? vec4(0,0,0,0) : vec4(regions[regId].color, 0);
+        } else {
+            fColor = vec4(regions[regId].color, 0);
+        }
     }
 }

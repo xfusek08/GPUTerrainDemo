@@ -35,7 +35,7 @@ shared_ptr<VAOContainer> PlanetVT::processEntityToVaoContainer(shared_ptr<Entity
     vector<float> regionBuffer = {};
     for (auto region : regions) {
 
-        auto pos   = region->position.getGlobal();
+        auto pos   = region->position.getGlobal(planet->doWarp);
         auto color = regionToColor(region);
 
         regionBuffer.push_back(pos.x);
@@ -51,6 +51,7 @@ shared_ptr<VAOContainer> PlanetVT::processEntityToVaoContainer(shared_ptr<Entity
     auto vaoContainer = make_shared<VAOContainer>(gl);
     program->set1ui("resolution", planet->meshResolution);
     program->set1ui("showCube", planet->showCube);
+    program->set1ui("showRegionBounds", planet->showRegionBounds);
 
     program->set1ui("regionResolution", planet->getResolution());
     program->bindBuffer("regionBuffer", vaoContainer->newBuffer(regionBuffer));

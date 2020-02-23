@@ -26,27 +26,34 @@ bool ApplicationEventReceiver::processSDLEvent(SDL_Event const& event)
         case SDL_KEYDOWN:
             switch(event.key.keysym.sym) {
                 case SDLK_F1: RUN_FOR_PLANET({
-                    if (planetEntity->setVtType(vt::types::PlanetPlatesVT)) {
+                    if (planetEntity->setVtType(vt::types::PlanetElevationVT)) {
                         application->renderer->updateScene();
                         application->camera->setViewChanged();
                     }
                 });
 
                 case SDLK_F2: RUN_FOR_PLANET({
-                    if (planetEntity->setVtType(vt::types::PlanetWireFrameVT)) {
+                    if (planetEntity->setVtType(vt::types::PlanetPlatesVT)) {
                         application->renderer->updateScene();
                         application->camera->setViewChanged();
                     }
                 });
 
                 case SDLK_F3: RUN_FOR_PLANET({
-                    if (planetEntity->setVtType(vt::types::PlanetCubeMapVT)) {
+                    if (planetEntity->setVtType(vt::types::PlanetWireFrameVT)) {
                         application->renderer->updateScene();
                         application->camera->setViewChanged();
                     }
                 });
 
                 case SDLK_F4: RUN_FOR_PLANET({
+                    if (planetEntity->setVtType(vt::types::PlanetCubeMapVT)) {
+                        application->renderer->updateScene();
+                        application->camera->setViewChanged();
+                    }
+                });
+
+                case SDLK_F5: RUN_FOR_PLANET({
                     if (planetEntity->setVtType(vt::types::PlanetFaceColorVT)) {
                         application->renderer->updateScene();
                         application->camera->setViewChanged();
@@ -79,7 +86,7 @@ bool ApplicationEventReceiver::processSDLEvent(SDL_Event const& event)
                 });
 
                 case SDLK_v: RUN_FOR_PLANET({
-                    planetEntity->warpTexture = !planetEntity->warpTexture;
+                    planetEntity->doWarp = !planetEntity->doWarp;
                     application->renderer->updateScene();
                 });
             }

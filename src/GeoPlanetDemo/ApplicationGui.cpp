@@ -100,10 +100,11 @@ void ApplicationGui::draw()
         ImGui::Text("Visualization technique:");
         {
             int vtTypeInt = vtTypeToInt(planetEntity->getVtType());
-            ImGui::RadioButton("Show tectonic plates (F1)", &vtTypeInt, vtTypeToInt(vt::types::PlanetPlatesVT));
-            ImGui::RadioButton("Default Wireframe    (F2)", &vtTypeInt, vtTypeToInt(vt::types::PlanetWireFrameVT));
-            ImGui::RadioButton("Show coordinate mask (F3)", &vtTypeInt, vtTypeToInt(vt::types::PlanetCubeMapVT));
-            ImGui::RadioButton("Show face colors     (F4)", &vtTypeInt, vtTypeToInt(vt::types::PlanetFaceColorVT));
+            ImGui::RadioButton("Show elevation       (F1)", &vtTypeInt, vtTypeToInt(vt::types::PlanetElevationVT));
+            ImGui::RadioButton("Show tectonic plates (F2)", &vtTypeInt, vtTypeToInt(vt::types::PlanetPlatesVT));
+            ImGui::RadioButton("Default Wireframe    (F3)", &vtTypeInt, vtTypeToInt(vt::types::PlanetWireFrameVT));
+            ImGui::RadioButton("Show coordinate mask (F4)", &vtTypeInt, vtTypeToInt(vt::types::PlanetCubeMapVT));
+            ImGui::RadioButton("Show face colors     (F5)", &vtTypeInt, vtTypeToInt(vt::types::PlanetFaceColorVT));
             if (planetEntity->setVtType(intToVtType(vtTypeInt))) {
                 updateScene = true;
                 application->camera->setViewChanged();
@@ -114,17 +115,25 @@ void ApplicationGui::draw()
         ImGui::Text("Shared options:");
         {
             bool showCube = planetEntity->showCube;
-            ImGui::Checkbox("Show as cube (c)", &showCube);
+            ImGui::Checkbox("Show as cube       (c)", &showCube);
             if (showCube != planetEntity->showCube) {
                 planetEntity->showCube = showCube;
                 updateScene = true;
             }
         }
         {
-            bool warpTexture = planetEntity->warpTexture;
-            ImGui::Checkbox("Warp texture    (v)", &warpTexture);
-            if (warpTexture != planetEntity->warpTexture) {
-                planetEntity->warpTexture = warpTexture;
+            bool showRegionBounds = planetEntity->showRegionBounds;
+            ImGui::Checkbox("Show Region Bounds (_)", &showRegionBounds);
+            if (showRegionBounds != planetEntity->showRegionBounds) {
+                planetEntity->showRegionBounds = showRegionBounds;
+                updateScene = true;
+            }
+        }
+        {
+            bool doWarp = planetEntity->doWarp;
+            ImGui::Checkbox("Warp texture       (v)", &doWarp);
+            if (doWarp != planetEntity->doWarp) {
+                planetEntity->doWarp = doWarp;
                 updateScene = true;
             }
         }
@@ -135,9 +144,19 @@ void ApplicationGui::draw()
             // resolution
             int resolution = planetEntity->getResolution();
             ImGui::PushItemWidth(100);
-            ImGui::InputInt("Resolution (-o) (+p)", &resolution);
+            ImGui::InputInt("Resolution       (-o) (+p)", &resolution);
             if (resolution != planetEntity->getResolution()) {
                 planetEntity->setResolution(resolution);
+                updateScene = true;
+            }
+        }
+        {
+            // number of plates
+            int numberOfPlates = planetEntity->getNumberOfPlates();
+            ImGui::PushItemWidth(100);
+            ImGui::InputInt("Number of plates (-_) (+_)", &numberOfPlates);
+            if (numberOfPlates != planetEntity->getNumberOfPlates()) {
+                planetEntity->setNumberOfPlates(numberOfPlates);
                 updateScene = true;
             }
         }
@@ -145,7 +164,7 @@ void ApplicationGui::draw()
             // jitter
             float jitter = planetEntity->getJitter();
             // ImGui::PushItemWidth(100);
-            ImGui::InputFloat("Jitter     (-j) (+k)", &jitter, 0.1f);
+            ImGui::InputFloat("Jitter         (-j) (+k)", &jitter, 0.1f);
             if (jitter != planetEntity->getJitter()) {
                 planetEntity->setJitter(jitter);
                 updateScene = true;

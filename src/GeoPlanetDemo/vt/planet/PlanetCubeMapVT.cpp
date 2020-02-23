@@ -26,18 +26,18 @@ shared_ptr<VAOContainer> PlanetCubeMapVT::processEntityToVaoContainer(shared_ptr
     planet = dynamic_pointer_cast<PlanetEntity>(entity);
 
     if (texture == nullptr || textureWarped == nullptr) {
-        bool isWarpPrev = planet->warpTexture;
+        bool isWarpPrev = planet->doWarp;
 
-        planet->warpTexture = true;
+        planet->doWarp = true;
         textureWarped = loadTextureFromPlanet();
 
-        planet->warpTexture = false;
+        planet->doWarp = false;
         texture = loadTextureFromPlanet();
 
-        planet->warpTexture = isWarpPrev;
+        planet->doWarp = isWarpPrev;
     };
 
-    if (planet->warpTexture) {
+    if (planet->doWarp) {
         textureWarped->bind(0);
     } else {
         texture->bind(0);

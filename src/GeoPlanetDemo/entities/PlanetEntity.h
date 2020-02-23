@@ -9,12 +9,13 @@ namespace gpd
 {
     namespace entities
     {
-        class PlanetEntity : public entities::Entity
+        class PlanetEntity : public Entity
         {
         public:
             // properties
             bool showCube = false;
-            bool warpTexture = true;
+            bool doWarp = true;
+            bool showRegionBounds = false;
             unsigned int meshResolution = 10;
 
             // methods
@@ -24,17 +25,17 @@ namespace gpd
             virtual std::vector<unsigned> getIndieces()  const override { return {}; }
             virtual std::vector<float>    getColors()    const override { return {}; }
 
-            inline unsigned int getResolution() const { return surface->getResolution(); }
-            bool getShowFaceColor() const;
-            bool getStepPlates() const;
-            float getJitter() const;
-
+            inline unsigned int   getResolution()     const { return surface->getResolution(); }
+            unsigned int          getNumberOfPlates() const;
+            bool                  getShowFaceColor()  const;
+            bool                  getStepPlates()     const;
+            float                 getJitter()         const;
+            const gp::RegionList& getRegions()        const { return surface->getRegions(); }
 
             void setResolution(unsigned int value);
+            void setNumberOfPlates(unsigned int value);
             void setJitter(float value);
             void setStepPlates(bool value);
-
-            const gp::RegionList& getRegions() const { return surface->getRegions(); }
 
             void stepPlateExpansion();
 
