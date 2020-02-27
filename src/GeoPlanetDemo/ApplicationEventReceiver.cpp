@@ -70,18 +70,33 @@ bool ApplicationEventReceiver::processSDLEvent(SDL_Event const& event)
                     application->renderer->updateScene();
                 });
 
-                case SDLK_k: RUN_FOR_PLANET({
+                case SDLK_l: RUN_FOR_PLANET({
                     planetEntity->setJitter(planetEntity->getJitter() + 0.1f);
                     application->renderer->updateScene();
                 });
 
-                case SDLK_j: RUN_FOR_PLANET({
+                case SDLK_k: RUN_FOR_PLANET({
                     planetEntity->setJitter(planetEntity->getJitter() - 0.1f);
+                    application->renderer->updateScene();
+                });
+
+                case SDLK_m: RUN_FOR_PLANET({
+                    planetEntity->setNumberOfPlates(planetEntity->getNumberOfPlates() + 1);
+                    application->renderer->updateScene();
+                });
+
+                case SDLK_n: RUN_FOR_PLANET({
+                    planetEntity->setNumberOfPlates(planetEntity->getNumberOfPlates() - 1);
                     application->renderer->updateScene();
                 });
 
                 case SDLK_c: RUN_FOR_PLANET({
                     planetEntity->showCube = !planetEntity->showCube;
+                    application->renderer->updateScene();
+                });
+
+                case SDLK_b: RUN_FOR_PLANET({
+                    planetEntity->showRegionBounds = !planetEntity->showRegionBounds;
                     application->renderer->updateScene();
                 });
 

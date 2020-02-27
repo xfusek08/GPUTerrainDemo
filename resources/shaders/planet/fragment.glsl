@@ -5,6 +5,8 @@ in vec3 direction;
 
 uniform uint regionResolution;
 uniform uint showRegionBounds;
+uniform uint showCube;
+uniform uint isWarp;
 
 struct Region {
     vec3 position;
@@ -14,8 +16,8 @@ struct Region {
 layout (std430) buffer regionBuffer { Region regions[]; };
 
 bool dthrown = false;
-#define THROW_COLOR(c) dthrown = true; fColor = c
-#define IS_ERROR       (dthrown == true)
+#define IS_ERROR       (dthrown)
+#define THROW_COLOR(c) { if (!dthrown) { dthrown = true; fColor = c; } }
 #define ASSERTC(e,c)   if (!(e)) THROW_COLOR(c)
 #define ASSERT(e)      if (!(e)) THROW_COLOR(vec4(1,1,1,0))
 
@@ -32,12 +34,29 @@ bool dthrown = false;
 #define FACE_SOUTH   5
 #define FACE_INVALID 99
 
+#define NEARLY_ONE       0.99999
+#define BORDER_THICKNESS 0.00001
+#define BORDER_THRESHOLD (1.0 - 0.01)
+
 #define MAGIC_ANGLE 0.868734829276 // radians
 float tan_warp_theta;
 
 /* Unwarp to go sphere -> cube */
 vec2 unwarp(vec2 x) {
+    if (isWarp == 0) {
+        return x;
+    }
     return atan(x * tan_warp_theta) / MAGIC_ANGLE;
+}
+
+/**
+ * Just used to visualize distance from spherical Voronoi cell edges.
+ * From: https://www.shadertoy.com/view/MtBGRD
+ */
+float bisectorDistance(vec3 p, vec3 a, vec3 b) {
+    vec3 n1 = cross(a,b);
+    vec3 n2 = normalize(cross(n1, 0.5*(normalize(a)+normalize(b))));
+    return abs(dot(p, n2));
 }
 
 vec3 normalizeToCube(vec3 pos)
@@ -53,21 +72,21 @@ vec3 sphereLocalToCubeLocal(vec3 coords)
     return vec3(unwarp(p.xy), p.z);
 }
 
-FACE_ID faceIdFromPos(in vec3 sphereGlobal3dCoords)
+FACE_ID faceIdFromPos(in vec3 gPos)
 {
-    vec3 pos = normalizeToCube(sphereGlobal3dCoords);
+    vec3 pos = normalizeToCube(gPos);
 
-    if (pos.z > 0.9999) {
+    if (pos.z > NEARLY_ONE) {
         return FACE_FRONT;
-    } else if (pos.z < -0.99999) {
+    } else if (pos.z < -NEARLY_ONE) {
         return FACE_BACK;
-    } else if (pos.x >  0.99999) {
+    } else if (pos.x >  NEARLY_ONE) {
         return FACE_RIGHT;
-    } else if (pos.x < -0.99999) {
+    } else if (pos.x < -NEARLY_ONE) {
         return FACE_LEFT;
-    } else if (pos.y >  0.99999) {
+    } else if (pos.y >  NEARLY_ONE) {
         return FACE_NORTH;
-    } else if (pos.y < -0.99999) {
+    } else if (pos.y < -NEARLY_ONE) {
         return FACE_SOUTH;
     }
 
@@ -143,52 +162,86 @@ REGION_ID regionIdFromLocal3d(in FACE_ID faceId, in vec3 cubeLocal3dCoords)
     }
 }
 
-REGION_ID getClosestRegionId(in vec3 sphereGlobal3dCoords, out float distToClosest)
+REGION_ID getClosestRegionId(in vec3 gPos, out float distToClosest, out float distToBorder)
 {
-    vec3      speheLocalPos   = sphereGlobal3dCoords;
+    // constant
+    vec3      speheLocalPos   = gPos;
     FACE_ID   faceId          = faceIdFromPos(speheLocalPos);
     REGION_ID region          = getRegionOnFace(faceId, sphereLocalToCubeLocal(speheLocalPos * ptFromFaceId(faceId)));
     REGION_ID closestRegionId = region;
-    float     closestDistance = regionDistanceToVector(closestRegionId, sphereGlobal3dCoords);
     float     gridHalfStep    = 1.0f / float(regionResolution);
     float     gridStep        = 2.0f * gridHalfStep;
     int       gridX           = int(region % regionResolution);
     int       gridY           = int(double(region % (regionResolution * regionResolution)) / double(regionResolution));
 
+    // outs
+    distToClosest = regionDistanceToVector(closestRegionId, gPos); // closest distance
+    distToBorder  = 2.0; // some arbitrary large number
+
+    // second closest
+    REGION_ID secondClosestRegionId = INVALID_REGION_ID;
+    float secondClosestDistance = 2.0;
+
     for (int y = gridY - 1; y <= gridY + 1; ++y) {
         for (int x = gridX - 1; x <= gridX + 1; ++x) {
             if (x == gridX && y == gridY)
                 continue;
+
             REGION_ID neighbor = regionIdFromLocal3d(faceId, vec3(
                 -1.0f + (gridHalfStep + gridStep * x),
                 1.0f - (gridHalfStep + gridStep * y),
                 1
             ));
+
             if (neighbor != INVALID_REGION_ID) {
-                float dist = regionDistanceToVector(neighbor, sphereGlobal3dCoords);
-                if (dist < closestDistance) {
-                    closestDistance = dist;
+                float dist = regionDistanceToVector(neighbor, gPos);
+                if (dist < distToClosest) {
+                    secondClosestRegionId = closestRegionId;
+                    secondClosestDistance = distToClosest;
                     closestRegionId = neighbor;
+                    distToClosest = dist;
+                } else if (dist < secondClosestDistance) {
+                    secondClosestRegionId = neighbor;
+                    secondClosestDistance = dist;
                 }
             }
         }
     }
 
-    distToClosest = closestDistance;
+    distToBorder = bisectorDistance(gPos, regions[closestRegionId].position, regions[secondClosestRegionId].position);
+
     return closestRegionId;
 }
 
 void main()
 {
-    tan_warp_theta = tan(MAGIC_ANGLE);
-    float distToClosest = 0.0;
-    REGION_ID regId = getClosestRegionId(direction, distToClosest);
+    float distToClosest;
+    float distToSecondClosest;
+    float distToBorder;
+    float distToCenter;
 
-    if (!IS_ERROR) {
-        if (showRegionBounds == 1) {
-            fColor = distToClosest < (1.0f / float(10*regionResolution)) ? vec4(0,0,0,0) : vec4(regions[regId].color, 0);
-        } else {
-            fColor = vec4(regions[regId].color, 0);
+    tan_warp_theta = tan(MAGIC_ANGLE); // global magic warp value
+    REGION_ID regId = getClosestRegionId(direction, distToClosest, distToBorder);
+
+
+    float borderTreshold = (1.0f / float(10*regionResolution));
+
+    if (showCube == 1) {
+        uint ones = ((abs(direction.x) >= BORDER_THRESHOLD) ? 1 : 0)
+            + ((abs(direction.y) >= BORDER_THRESHOLD) ? 1 : 0)
+            + ((abs(direction.z) >= BORDER_THRESHOLD) ? 1 : 0);
+        if (ones > 1) {
+            THROW_COLOR(vec4(0, 0, 0.1, 0));
         }
     }
+
+    if (showRegionBounds == 1 && (
+        distToClosest < borderTreshold
+        ||
+        distToBorder < (borderTreshold / 3)
+    )) {
+        THROW_COLOR(vec4(0, 0, 0, 0));
+    }
+
+    THROW_COLOR(vec4(regions[regId].color, 0));
 }

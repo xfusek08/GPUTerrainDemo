@@ -52,6 +52,7 @@ shared_ptr<VAOContainer> PlanetVT::processEntityToVaoContainer(shared_ptr<Entity
     program->set1ui("resolution", planet->meshResolution);
     program->set1ui("showCube", planet->showCube);
     program->set1ui("showRegionBounds", planet->showRegionBounds);
+    program->set1ui("isWarp", planet->doWarp);
 
     program->set1ui("regionResolution", planet->getResolution());
     program->bindBuffer("regionBuffer", vaoContainer->newBuffer(regionBuffer));

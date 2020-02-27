@@ -15,7 +15,7 @@
 
 #include <GeoPlanetDemo/vt/VTFactory.h>
 #include <GeoPlanetDemo/vt/ColorLinesVT.h>
-#include <GeoPlanetDemo/vt/planet/PlanetPlatesVT.h>
+#include <GeoPlanetDemo/vt/planet/PlanetElevationVT.h>
 
 #include <GeoPlanetDemo/Application.h>
 #include <GeoPlanetDemo/ApplicationEventReceiver.h>
@@ -38,7 +38,7 @@ int Application::init()
 
     // create entities
     scene->addEntity("axis",   make_shared<entities::AxisEntity>(vt::types::ColorLinesVT));
-    scene->addEntity("planet", make_shared<entities::PlanetEntity>(vt::types::PlanetPlatesVT));
+    scene->addEntity("planet", make_shared<entities::PlanetEntity>(vt::types::PlanetElevationVT));
     renderer->updateScene();
 
     // init control

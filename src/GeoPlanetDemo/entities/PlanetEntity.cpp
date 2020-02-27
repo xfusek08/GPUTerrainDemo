@@ -44,8 +44,12 @@ float PlanetEntity::getJitter() const
 
 void PlanetEntity::setJitter(float value)
 {
-    MODIFIER_INSTANCE(JitterModifier)->setJitter(value);
-    generator->applyModifier(surface, "JitterModifier");
+    auto m = MODIFIER_INSTANCE(JitterModifier);
+    auto prev = m->getJitter();
+    m->setJitter(value);
+    if (prev != m->getJitter()) {
+        generator->applyModifier(surface, m);
+    }
 }
 
 bool PlanetEntity::getStepPlates() const
@@ -55,13 +59,12 @@ bool PlanetEntity::getStepPlates() const
 
 void PlanetEntity::setStepPlates(bool value)
 {
-    MODIFIER_INSTANCE(TectonicPlateModifier)->stepMode = value;    
+    MODIFIER_INSTANCE(TectonicPlateModifier)->stepMode = value;
 }
 
 void PlanetEntity::stepPlateExpansion()
 {
-    auto mod = MODIFIER_INSTANCE(TectonicPlateModifier);    
-    mod->stepExpandPlates(surface);
+    MODIFIER_INSTANCE(TectonicPlateModifier)->stepExpandPlates(surface);
     generator->applyModifier(surface, "ElevationModifier");
 }
 
@@ -72,8 +75,11 @@ unsigned int PlanetEntity::getNumberOfPlates() const
 
 void PlanetEntity::setNumberOfPlates(unsigned int value)
 {
-    MODIFIER_INSTANCE(TectonicPlateModifier)->numberOfPlates = value;
-    generateFresh(getResolution());
+    auto m = MODIFIER_INSTANCE(TectonicPlateModifier);
+    if (value != m->numberOfPlates) {
+        m->numberOfPlates = value;
+        generateFresh(getResolution());
+    }
 }
 
 unique_ptr<unsigned char[]> PlanetEntity::getTextureDataForFace(unsigned int faceId, unsigned int face_width, unsigned int face_height) const

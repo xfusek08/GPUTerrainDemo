@@ -123,7 +123,7 @@ void ApplicationGui::draw()
         }
         {
             bool showRegionBounds = planetEntity->showRegionBounds;
-            ImGui::Checkbox("Show Region Bounds (_)", &showRegionBounds);
+            ImGui::Checkbox("Show Region Bounds (b)", &showRegionBounds);
             if (showRegionBounds != planetEntity->showRegionBounds) {
                 planetEntity->showRegionBounds = showRegionBounds;
                 updateScene = true;
@@ -139,24 +139,14 @@ void ApplicationGui::draw()
         }
         ImGui::Separator();
 
-        ImGui::Text("Region generator setting:");
+        ImGui::Text("Generator setting:");
         {
             // resolution
             int resolution = planetEntity->getResolution();
             ImGui::PushItemWidth(100);
-            ImGui::InputInt("Resolution       (-o) (+p)", &resolution);
+            ImGui::InputInt("Resolution -(o) +(p)", &resolution);
             if (resolution != planetEntity->getResolution()) {
                 planetEntity->setResolution(resolution);
-                updateScene = true;
-            }
-        }
-        {
-            // number of plates
-            int numberOfPlates = planetEntity->getNumberOfPlates();
-            ImGui::PushItemWidth(100);
-            ImGui::InputInt("Number of plates (-_) (+_)", &numberOfPlates);
-            if (numberOfPlates != planetEntity->getNumberOfPlates()) {
-                planetEntity->setNumberOfPlates(numberOfPlates);
                 updateScene = true;
             }
         }
@@ -164,9 +154,19 @@ void ApplicationGui::draw()
             // jitter
             float jitter = planetEntity->getJitter();
             // ImGui::PushItemWidth(100);
-            ImGui::InputFloat("Jitter         (-j) (+k)", &jitter, 0.1f);
+            ImGui::InputFloat("Jitter     -(k) +(l)", &jitter, 0.1f);
             if (jitter != planetEntity->getJitter()) {
                 planetEntity->setJitter(jitter);
+                updateScene = true;
+            }
+        }
+        {
+            // number of plates
+            int numberOfPlates = planetEntity->getNumberOfPlates();
+            ImGui::PushItemWidth(100);
+            ImGui::InputInt("Plates     -(n) +(m)", &numberOfPlates);
+            if (numberOfPlates != planetEntity->getNumberOfPlates()) {
+                planetEntity->setNumberOfPlates(numberOfPlates);
                 updateScene = true;
             }
         }
