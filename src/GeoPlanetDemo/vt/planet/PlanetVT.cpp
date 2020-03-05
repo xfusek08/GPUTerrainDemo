@@ -30,7 +30,7 @@ void PlanetVT::processScene(std::shared_ptr<core::Scene> scene)
 
 shared_ptr<VAOContainer> PlanetVT::processEntityToVaoContainer(shared_ptr<Entity> entity)
 {
-    planet = dynamic_pointer_cast<PlanetEntity>(entity);
+    auto planet = dynamic_pointer_cast<PlanetEntity>(entity);
     auto regions = planet->getRegions();
     vector<float> regionBuffer = {};
     for (auto region : regions) {
@@ -57,6 +57,8 @@ shared_ptr<VAOContainer> PlanetVT::processEntityToVaoContainer(shared_ptr<Entity
     program->set1ui("regionResolution", planet->getResolution());
     program->bindBuffer("regionBuffer", vaoContainer->newBuffer(regionBuffer));
 
+    numberOfVerticies = 6 * 6 * planet->meshResolution * planet->meshResolution;
+
     GPD_LOG_DEBUG("resolution: " << planet->meshResolution);
     GPD_LOG_DEBUG("regionResolution: " << planet->getResolution());
     GPD_LOG_DEBUG("regionBufferSize: " << regionBuffer.size());
@@ -68,6 +70,6 @@ void PlanetVT::drawInternal(shared_ptr<core::Camera> camera)
     for (auto pair: vaoContainerMap) {
         auto elem = pair.second;
         elem->vao->bind();
-        gl->glDrawArrays(GL_TRIANGLES, 0, 6 * 6 * planet->meshResolution * planet->meshResolution);
+        gl->glDrawArrays(GL_TRIANGLES, 0, numberOfVerticies);
     }
 }

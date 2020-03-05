@@ -33,7 +33,7 @@ namespace gpd
 
         protected:
             // properties
-            std::shared_ptr<entities::PlanetEntity> planet = nullptr;
+            unsigned int numberOfVerticies = 0;
 
             // methods
             virtual void initGlProgram() override;

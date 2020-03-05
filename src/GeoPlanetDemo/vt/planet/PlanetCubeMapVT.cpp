@@ -2,8 +2,6 @@
 #include <geGL/geGL.h>
 #include <geUtil/Text.h>
 
-#include <GeoPlanetDemo/entities/PlanetEntity.h>
-
 #include <GeoPlanetDemo/vt/VAOContainer.h>
 #include <GeoPlanetDemo/vt/planet/PlanetCubeMapVT.h>
 
@@ -23,16 +21,16 @@ void PlanetCubeMapVT::initGlProgram()
 shared_ptr<VAOContainer> PlanetCubeMapVT::processEntityToVaoContainer(shared_ptr<Entity> entity)
 {
     auto vaoContainer = make_shared<VAOContainer>(gl);
-    planet = dynamic_pointer_cast<PlanetEntity>(entity);
+    auto planet = dynamic_pointer_cast<PlanetEntity>(entity);
 
     if (texture == nullptr || textureWarped == nullptr) {
         bool isWarpPrev = planet->doWarp;
 
         planet->doWarp = true;
-        textureWarped = loadTextureFromPlanet();
+        textureWarped = loadTextureFromPlanet(planet);
 
         planet->doWarp = false;
-        texture = loadTextureFromPlanet();
+        texture = loadTextureFromPlanet(planet);
 
         planet->doWarp = isWarpPrev;
     };
@@ -49,7 +47,7 @@ shared_ptr<VAOContainer> PlanetCubeMapVT::processEntityToVaoContainer(shared_ptr
     return vaoContainer;
 }
 
-shared_ptr<ge::gl::Texture> PlanetCubeMapVT::loadTextureFromPlanet()
+shared_ptr<ge::gl::Texture> PlanetCubeMapVT::loadTextureFromPlanet(shared_ptr<PlanetEntity> planet)
 {
     unsigned int w = 1000;
     unsigned int h = 1000;

@@ -78,10 +78,6 @@ namespace gpd
                 }
                 return result;
             }
-
-        private:
-            // preperties
-            // static std::map<std::string, VTFactorySpecific*> getMap();
         };
     } // namespace vt
 } // namespace gpd

@@ -24,7 +24,10 @@ namespace gpd
     namespace sdl
     {
         /**
-         * TODO: make an implementation of MainLoopInterface with GPD_EVENT and EventReceiverInterface instead of SDL ones
+         * @todo description of class
+         * @todo make an implementation of MainLoopInterface with GPD_EVENT and EventReceiverInterface instead of SDL ones
+         * @todo get windows is unnecessary, use set new window size method intead
+         * @todo width and height getters
          */
         class SDLGlMainLoop
         {
@@ -41,7 +44,6 @@ namespace gpd
             virtual void init();
             virtual void run();
             virtual void addEventReceiver(std::shared_ptr<sdl::SDLEventReceiverInterface>);
-            virtual void setEventHandler(std::function<bool(SDL_Event const&)> const& handler);
             virtual void setDrawCallback(std::function<void()> const& callback);
 
             inline void stop() { mainLoop->stop(); }
@@ -62,6 +64,7 @@ namespace gpd
             std::shared_ptr<ge::gl::Context>      gl = nullptr;
 
             // methods
+            virtual void setEventHandler(std::function<bool(SDL_Event const&)> const& handler);
             virtual bool update(SDL_Event const& event);
             virtual void draw();
         };

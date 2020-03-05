@@ -1,6 +1,7 @@
 #pragma once
 
 #include <GeoPlanetDemo/vt/planet/PlanetVT.h>
+#include <GeoPlanetDemo/entities/PlanetEntity.h>
 
 namespace ge
 {
@@ -36,7 +37,7 @@ namespace gpd
             virtual void initGlProgram() override;
             virtual std::shared_ptr<VAOContainer> processEntityToVaoContainer(std::shared_ptr<entities::Entity> entity) override;
 
-            std::shared_ptr<ge::gl::Texture> loadTextureFromPlanet();
+            std::shared_ptr<ge::gl::Texture> loadTextureFromPlanet(std::shared_ptr<entities::PlanetEntity> planet);
         };
     } // namespace vt
 } // namespace gpd

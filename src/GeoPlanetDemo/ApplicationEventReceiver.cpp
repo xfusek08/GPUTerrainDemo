@@ -40,20 +40,13 @@ bool ApplicationEventReceiver::processSDLEvent(SDL_Event const& event)
                 });
 
                 case SDLK_F3: RUN_FOR_PLANET({
-                    if (planetEntity->setVtType(vt::types::PlanetWireFrameVT)) {
-                        application->renderer->updateScene();
-                        application->camera->setViewChanged();
-                    }
-                });
-
-                case SDLK_F4: RUN_FOR_PLANET({
                     if (planetEntity->setVtType(vt::types::PlanetCubeMapVT)) {
                         application->renderer->updateScene();
                         application->camera->setViewChanged();
                     }
                 });
 
-                case SDLK_F5: RUN_FOR_PLANET({
+                case SDLK_F4: RUN_FOR_PLANET({
                     if (planetEntity->setVtType(vt::types::PlanetFaceColorVT)) {
                         application->renderer->updateScene();
                         application->camera->setViewChanged();

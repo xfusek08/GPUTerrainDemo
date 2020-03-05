@@ -88,8 +88,7 @@ set(SRC_GEO_PLANET_DEMO_VT_PLANET
     src/${APP_NAME}/vt/planet/PlanetVT.h             src/${APP_NAME}/vt/planet/PlanetVT.cpp
     src/${APP_NAME}/vt/planet/PlanetPlatesVT.h       src/${APP_NAME}/vt/planet/PlanetPlatesVT.cpp
     src/${APP_NAME}/vt/planet/PlanetElevationVT.h    src/${APP_NAME}/vt/planet/PlanetElevationVT.cpp
-    src/${APP_NAME}/vt/planet/PlanetCubeMapVT.h      src/${APP_NAME}/vt/planet/PlanetCubeMapVT.cpp
-    src/${APP_NAME}/vt/planet/PlanetWireFrameVT.h    src/${APP_NAME}/vt/planet/PlanetWireFrameVT.cpp
+    src/${APP_NAME}/vt/planet/PlanetCubeMapVT.h      src/${APP_NAME}/vt/planet/PlanetCubeMapVT.cpp    
     src/${APP_NAME}/vt/planet/PlanetFaceColorVT.h    src/${APP_NAME}/vt/planet/PlanetFaceColorVT.cpp
 )
 

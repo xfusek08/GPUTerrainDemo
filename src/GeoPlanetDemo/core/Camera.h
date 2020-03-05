@@ -24,7 +24,7 @@ namespace gpd
                 float viewWidth,
                 float viewHeight,
                 glm::vec3 position = glm::vec3{ 0, 0, 0 },
-                float fov = 30.f, //90.f, //45.f,
+                float fov = 30.f,
                 float nearPlaneDistance = 0.1f,
                 float farPlaneDistace = 1000.f
             );
