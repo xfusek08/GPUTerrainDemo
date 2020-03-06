@@ -1,13 +1,11 @@
 
-#include <GeoPlanetDemo/entities/AxisEntity.h>
-#include <GeoPlanetDemo/vt/VAOContainer.h>
-#include <geGL/geGL.h>
+#include <GeoPlanetDemo/scene/entities/AxisEntity.h>
 
 using namespace std;
 using namespace gpd;
-using namespace gpd::entities;
+using namespace gpd::scene::entities;
 
-vector<float> AxisEntity::getVerticies() const
+const vector<float> AxisEntity::getVerticies() const
 {
     return {
         -2.f,  0.f,  0.f,
@@ -19,7 +17,7 @@ vector<float> AxisEntity::getVerticies() const
     };
 }
 
-vector<unsigned> AxisEntity::getIndieces() const
+const vector<unsigned> AxisEntity::getIndieces() const
 {
     return {
         0,1,
@@ -28,11 +26,11 @@ vector<unsigned> AxisEntity::getIndieces() const
     };
 }
 
-vector<float> AxisEntity::getColors() const
+const vector<float> AxisEntity::getColors() const
 {
     return {
         0.6f, 0.2f, 0.2f, // negative x - dark red
-        1.f, 0.f, 0.f,      // positive x - red
+        1.f, 0.f, 0.f,    // positive x - red
         0.2f, 0.6f, 0.2f, // negative y - dark green
         0.f, 1.f, 0.f,    // negative y - green
         0.f, 0.f, 1.f,    // negative z - dark blue

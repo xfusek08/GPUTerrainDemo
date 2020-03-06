@@ -8,7 +8,8 @@
 using namespace std;
 using namespace gpd;
 using namespace gpd::vt;
-using namespace gpd::entities;
+using namespace gpd::scene;
+using namespace gpd::scene::entities;
 
 void PlanetCubeMapVT::initGlProgram()
 {

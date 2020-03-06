@@ -22,10 +22,10 @@ namespace gpd
     namespace core
     {
         class Camera;
-        class Scene;
     }
 
-    namespace entities {
+    namespace scene {
+        class Scene;
         class Entity;
     }
 
@@ -49,7 +49,7 @@ namespace gpd
             virtual void clean();
             virtual void drawSetUp();
             virtual void draw(std::shared_ptr<core::Camera> camera);
-            virtual void processScene(std::shared_ptr<core::Scene> scene);
+            virtual void processScene(std::shared_ptr<scene::Scene> scene);
 
         protected:
             // properties
@@ -57,7 +57,7 @@ namespace gpd
             bool isInitialized = false;
             std::shared_ptr<ge::gl::Context> gl;
             std::shared_ptr<ge::gl::Program> program;
-            std::unordered_map<entities::Entity*, std::shared_ptr<VAOContainer>> vaoContainerMap;
+            std::unordered_map<scene::Entity*, std::shared_ptr<VAOContainer>> vaoContainerMap;
 
             // methods
             virtual void initGl();
@@ -67,7 +67,7 @@ namespace gpd
             virtual void drawInternal(std::shared_ptr<core::Camera> camera);
             virtual void afterDraw(std::shared_ptr<core::Camera> camera);
 
-            virtual std::shared_ptr<VAOContainer> processEntityToVaoContainer(std::shared_ptr<entities::Entity> entity);
+            virtual std::shared_ptr<VAOContainer> processEntityToVaoContainer(std::shared_ptr<scene::Entity> entity);
         };
     } // namespace vt
 } // namespace gpd

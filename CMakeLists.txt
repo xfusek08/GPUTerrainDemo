@@ -58,14 +58,17 @@ set(SRC_GEO_PLANET_DEMO_CORE
     src/${APP_NAME}/core/Camera.h                    src/${APP_NAME}/core/Camera.cpp
     src/${APP_NAME}/core/OrbitCameraController.h     src/${APP_NAME}/core/OrbitCameraController.cpp
     src/${APP_NAME}/core/SceneRenderer.h             src/${APP_NAME}/core/SceneRenderer.cpp
-    src/${APP_NAME}/core/Scene.h                     src/${APP_NAME}/core/Scene.cpp
     src/${APP_NAME}/core/Utils.h
 )
 
-set(SRC_GEO_PLANET_DEMO_ENTITIES
-    src/${APP_NAME}/entities/Entity.h                src/${APP_NAME}/entities/Entity.cpp
-    src/${APP_NAME}/entities/AxisEntity.h            src/${APP_NAME}/entities/AxisEntity.cpp
-    src/${APP_NAME}/entities/PlanetEntity.h          src/${APP_NAME}/entities/PlanetEntity.cpp
+set(SRC_GEO_PLANET_DEMO_SCENE
+    src/${APP_NAME}/scene/Scene.h                    src/${APP_NAME}/scene/Scene.cpp
+    src/${APP_NAME}/scene/Entity.h                   src/${APP_NAME}/scene/Entity.cpp
+)
+
+set(SRC_GEO_PLANET_DEMO_SCENE_ENTITIES
+    src/${APP_NAME}/scene/entities/AxisEntity.h      src/${APP_NAME}/scene/entities/AxisEntity.cpp
+    src/${APP_NAME}/scene/entities/PlanetEntity.h    src/${APP_NAME}/scene/entities/PlanetEntity.cpp
 )
 
 set(SRC_GEO_PLANET_DEMO_SDL
@@ -88,8 +91,9 @@ set(SRC_GEO_PLANET_DEMO_VT_PLANET
     src/${APP_NAME}/vt/planet/PlanetVT.h             src/${APP_NAME}/vt/planet/PlanetVT.cpp
     src/${APP_NAME}/vt/planet/PlanetPlatesVT.h       src/${APP_NAME}/vt/planet/PlanetPlatesVT.cpp
     src/${APP_NAME}/vt/planet/PlanetElevationVT.h    src/${APP_NAME}/vt/planet/PlanetElevationVT.cpp
-    src/${APP_NAME}/vt/planet/PlanetCubeMapVT.h      src/${APP_NAME}/vt/planet/PlanetCubeMapVT.cpp    
+    src/${APP_NAME}/vt/planet/PlanetCubeMapVT.h      src/${APP_NAME}/vt/planet/PlanetCubeMapVT.cpp
     src/${APP_NAME}/vt/planet/PlanetFaceColorVT.h    src/${APP_NAME}/vt/planet/PlanetFaceColorVT.cpp
+    src/${APP_NAME}/vt/planet/PlanetVectorsVT.h      src/${APP_NAME}/vt/planet/PlanetVectorsVT.cpp
 )
 
 set(SRC_GEO_PLANET_DEMO_INTERFACES
@@ -119,13 +123,14 @@ set(SRC_VENDOR_IAMGUI
     src/vendor/imgui/imstb_truetype.h
 )
 
-source_group("GeoPlanetDemo"             FILES ${SRC_GEO_PLANET_DEMO})
-source_group("GeoPlanetDemo\\core"       FILES ${SRC_GEO_PLANET_DEMO_CORE})
-source_group("GeoPlanetDemo\\entities"   FILES ${SRC_GEO_PLANET_DEMO_ENTITIES})
-source_group("GeoPlanetDemo\\vt"         FILES ${SRC_GEO_PLANET_DEMO_VT})
-source_group("GeoPlanetDemo\\vt\\planet" FILES ${SRC_GEO_PLANET_DEMO_VT_PLANET})
-source_group("GeoPlanetDemo\\sdl"        FILES ${SRC_GEO_PLANET_DEMO_SDL})
-source_group("GeoPlanetDemo\\interfaces" FILES ${SRC_GEO_PLANET_DEMO_INTERFACES})
+source_group("GeoPlanetDemo"                  FILES ${SRC_GEO_PLANET_DEMO})
+source_group("GeoPlanetDemo\\core"            FILES ${SRC_GEO_PLANET_DEMO_CORE})
+source_group("GeoPlanetDemo\\scene"           FILES ${SRC_GEO_PLANET_DEMO_SCENE})
+source_group("GeoPlanetDemo\\scene\\entities" FILES ${SRC_GEO_PLANET_DEMO_SCENE_ENTITIES})
+source_group("GeoPlanetDemo\\vt"              FILES ${SRC_GEO_PLANET_DEMO_VT})
+source_group("GeoPlanetDemo\\vt\\planet"      FILES ${SRC_GEO_PLANET_DEMO_VT_PLANET})
+source_group("GeoPlanetDemo\\sdl"             FILES ${SRC_GEO_PLANET_DEMO_SDL})
+source_group("GeoPlanetDemo\\interfaces"      FILES ${SRC_GEO_PLANET_DEMO_INTERFACES})
 
 source_group("vendor\\stb"               FILES ${SRC_VENDOR_STB})
 source_group("vendor\\imgui"             FILES ${SRC_VENDOR_IAMGUI})
@@ -161,7 +166,8 @@ add_executable(${APP_NAME}
     src/main.cpp
     ${SRC_GEO_PLANET_DEMO}
     ${SRC_GEO_PLANET_DEMO_CORE}
-    ${SRC_GEO_PLANET_DEMO_ENTITIES}
+    ${SRC_GEO_PLANET_DEMO_SCENE}
+    ${SRC_GEO_PLANET_DEMO_SCENE_ENTITIES}
     ${SRC_GEO_PLANET_DEMO_VT}
     ${SRC_GEO_PLANET_DEMO_VT_PLANET}
     ${SRC_GEO_PLANET_DEMO_SDL}

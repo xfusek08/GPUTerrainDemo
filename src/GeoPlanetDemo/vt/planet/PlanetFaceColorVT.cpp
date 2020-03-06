@@ -1,11 +1,12 @@
 
-#include <GeoPlanetDemo/entities/PlanetEntity.h>
+#include <GeoPlanetDemo/scene/entities/PlanetEntity.h>
 
 #include <GeoPlanetDemo/vt/planet/PlanetFaceColorVT.h>
 
 using namespace std;
 using namespace gpd;
-using namespace gpd::entities;
+using namespace gpd::scene;
+using namespace gpd::scene::entities;
 using namespace gpd::vt;
 using namespace gp;
 using namespace glm;

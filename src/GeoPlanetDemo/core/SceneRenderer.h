@@ -16,6 +16,11 @@ namespace ge
 
 namespace gpd
 {
+    namespace scene
+    {
+        class Scene;
+    }
+
     namespace vt
     {
         class VisualizationTechnique;
@@ -24,18 +29,17 @@ namespace gpd
     namespace core
     {
         class Camera;
-        class Scene;
 
         class SceneRenderer : public interfaces::RendererInterface
         {
         public:
-            SceneRenderer(std::shared_ptr<ge::gl::Context> context, std::shared_ptr<Scene> scene);
+            SceneRenderer(std::shared_ptr<ge::gl::Context> context, std::shared_ptr<scene::Scene> scene);
 
             virtual void updateScene() override;
-            virtual void draw(std::shared_ptr<Camera>) const override;
+            virtual void draw(std::shared_ptr<core::Camera>) const override;
 
         protected:
-            std::shared_ptr<Scene> scene;
+            std::shared_ptr<scene::Scene> scene;
             std::shared_ptr<ge::gl::Context> gl;
             std::unordered_map<vt::VTType, std::shared_ptr<vt::VisualizationTechnique>> vts;
         };

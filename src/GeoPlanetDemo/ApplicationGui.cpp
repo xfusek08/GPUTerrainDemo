@@ -9,13 +9,13 @@
 #include <vendor/imgui/imgui_impl_opengl3.h>
 
 #include <GeoPlanetDemo/core/Camera.h>
-#include <GeoPlanetDemo/core/Scene.h>
 #include <GeoPlanetDemo/core/Utils.h>
 
 #include <GeoPlanetDemo/sdl/SDLGlMainLoop.h>
 #include <GeoPlanetDemo/sdl/SDLPerformance.h>
 
-#include <GeoPlanetDemo/entities/PlanetEntity.h>
+#include <GeoPlanetDemo/scene/Scene.h>
+#include <GeoPlanetDemo/scene/entities/PlanetEntity.h>
 
 #include <GeoPlanetDemo/vt/planet/vts.h>
 
@@ -23,6 +23,7 @@
 
 using namespace std;
 using namespace gpd;
+using namespace gpd::scene::entities;
 
 ApplicationGui::ApplicationGui(Application* application) : application(application)
 {
@@ -70,7 +71,8 @@ void ApplicationGui::draw()
     drawPrepare();
     // create gui
 
-    auto planetEntity = dynamic_pointer_cast<entities::PlanetEntity>(application->scene->getEntity("planet"));
+    auto planetSceneElement = application->scene->getElement("planet");
+    auto planetEntity = dynamic_pointer_cast<PlanetEntity>(planetSceneElement.entity);
     bool updateScene = false;
 
     // build main invisible window (left panel)
@@ -99,14 +101,16 @@ void ApplicationGui::draw()
     if (planetEntity != nullptr && ImGui::CollapsingHeader("Menu")) {
         ImGui::Text("Visualization technique:");
         {
-            int vtTypeInt = vtTypeToInt(planetEntity->getVtType());
+            int vtTypeInt = vtTypeToInt(planetSceneElement.vtType);
             ImGui::RadioButton("Show elevation       (F1)", &vtTypeInt, vtTypeToInt(vt::types::PlanetElevationVT));
-            ImGui::RadioButton("Show tectonic plates (F2)", &vtTypeInt, vtTypeToInt(vt::types::PlanetPlatesVT));            
+            ImGui::RadioButton("Show tectonic plates (F2)", &vtTypeInt, vtTypeToInt(vt::types::PlanetPlatesVT));
             ImGui::RadioButton("Show coordinate mask (F3)", &vtTypeInt, vtTypeToInt(vt::types::PlanetCubeMapVT));
             ImGui::RadioButton("Show face colors     (F4)", &vtTypeInt, vtTypeToInt(vt::types::PlanetFaceColorVT));
-            if (planetEntity->setVtType(intToVtType(vtTypeInt))) {
-                updateScene = true;
+            if (planetSceneElement.vtType != intToVtType(vtTypeInt)) {
+                planetSceneElement.vtType = intToVtType(vtTypeInt);
+                application->scene->setElement("planet", planetSceneElement);
                 application->camera->setViewChanged();
+                updateScene = true;
             }
         }
         ImGui::Separator();

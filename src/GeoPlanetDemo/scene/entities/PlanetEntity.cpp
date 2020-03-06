@@ -1,25 +1,23 @@
 
 #include <geGL/geGL.h>
 
+#define STB_IMAGE_IMPLEMENTATION
+#include <vendor/stb/stb_image.h>
+
 #include <GeoPlanetLib/modifiers/modifiers.h>
 
 #include <GeoPlanetDemo/core/Utils.h>
 
-#include <GeoPlanetDemo/entities/PlanetEntity.h>
-
-#include <GeoPlanetDemo/vt/VAOContainer.h>
-
-#define STB_IMAGE_IMPLEMENTATION
-#include <vendor/stb/stb_image.h>
+#include <GeoPlanetDemo/scene/entities/PlanetEntity.h>
 
 using namespace std;
 using namespace glm;
 using namespace gpd;
-using namespace gpd::entities;
+using namespace gpd::scene::entities;
 
 #define MODIFIER_INSTANCE(type) dynamic_pointer_cast<gp::modifiers::type>(generator->getModifier(#type).modifier)
 
-PlanetEntity::PlanetEntity(vt::VTType vtType) : Entity(vtType)
+PlanetEntity::PlanetEntity() : Entity()
 {
     generator = make_shared<gp::SurfaceGenerator>(initializer_list<string>{
         "JitterModifier",

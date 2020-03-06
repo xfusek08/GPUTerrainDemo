@@ -3,13 +3,15 @@
 #include <geGL/geGL.h>
 
 #include <GeoPlanetDemo/core/SceneRenderer.h>
-#include <GeoPlanetDemo/core/Scene.h>
 #include <GeoPlanetDemo/core/Camera.h>
 #include <GeoPlanetDemo/core/Utils.h>
+
+#include <GeoPlanetDemo/scene/Scene.h>
 
 #include <GeoPlanetDemo/vt/VTFactory.h>
 
 using namespace gpd::core;
+using namespace gpd::scene;
 using namespace gpd::vt;
 using namespace std;
 
@@ -19,7 +21,7 @@ SceneRenderer::SceneRenderer(std::shared_ptr<ge::gl::Context> context, std::shar
 {
     gl->glClearColor(0, 0, 0, 0); // TODO: some kind of prepare method
 
-    // gl->glClearColor(255, 255, 255, 0); 
+    // gl->glClearColor(255, 255, 255, 0);
 
     updateScene();
 }
@@ -27,13 +29,13 @@ SceneRenderer::SceneRenderer(std::shared_ptr<ge::gl::Context> context, std::shar
 void SceneRenderer::updateScene()
 {
     GPD_LOG_DEBUG("updateScene");
-    for (auto entity : scene->getEntities()) {
+    for (auto element : scene->getElements()) {
         // vt type is not present
-        if (vts.find(entity->getVtType()) == vts.end()) {
-            auto vt = VTFactory::create(entity->getVtType(), gl);
+        if (element.isValid() && element.enabled && vts.find(element.vtType) == vts.end()) {
+            auto vt = VTFactory::create(element.vtType, gl);
             GPD_ASSERT(vt != nullptr, "vt was not successfully created");
             if (vt != nullptr) {
-                vts.emplace(entity->getVtType(), vt);
+                vts.emplace(element.vtType, vt);
             }
         }
     }

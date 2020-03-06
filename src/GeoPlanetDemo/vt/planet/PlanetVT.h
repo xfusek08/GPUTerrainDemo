@@ -13,8 +13,8 @@ namespace gpd
         class Camera;
     }
 
-    namespace entities {
-        class PlanetEntity;
+    namespace scene {
+        class Entity;
     }
 
     namespace vt
@@ -27,7 +27,7 @@ namespace gpd
 
             inline GLenum getDrawMode() const override { return GL_TRIANGLES; }
 
-            virtual void processScene(std::shared_ptr<core::Scene> scene) override;
+            virtual void processScene(std::shared_ptr<scene::Scene> scene) override;
 
             virtual glm::uvec4 regionToColor(std::shared_ptr<gp::Region> region) = 0;
 
@@ -37,7 +37,7 @@ namespace gpd
 
             // methods
             virtual void initGlProgram() override;
-            virtual std::shared_ptr<VAOContainer> processEntityToVaoContainer(std::shared_ptr<entities::Entity> entity) override;
+            virtual std::shared_ptr<VAOContainer> processEntityToVaoContainer(std::shared_ptr<scene::Entity> entity) override;
             virtual void drawInternal(std::shared_ptr<core::Camera> camera) override;
         };
     } // namespace vt

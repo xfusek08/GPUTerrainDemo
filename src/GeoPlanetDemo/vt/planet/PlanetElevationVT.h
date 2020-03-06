@@ -6,10 +6,6 @@
 
 namespace gpd
 {
-    namespace entities {
-        class PlanetEntity;
-    }
-
     namespace vt
     {
         class PlanetElevationVT : public PlanetVT

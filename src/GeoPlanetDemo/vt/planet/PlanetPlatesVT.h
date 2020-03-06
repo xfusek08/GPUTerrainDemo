@@ -16,10 +16,6 @@ namespace gpd
         class Camera;
     }
 
-    namespace entities {
-        class PlanetEntity;
-    }
-
     namespace vt
     {
         class PlanetPlatesVT : public PlanetVT

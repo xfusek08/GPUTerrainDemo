@@ -1,7 +1,6 @@
 
 #include <GeoPlanetDemo/core/Camera.h>
-#include <GeoPlanetDemo/core/Scene.h>
-#include <GeoPlanetDemo/entities/Entity.h>
+#include <GeoPlanetDemo/scene/Scene.h>
 
 #include <GeoPlanetDemo/vt/VisualizationTechnique.h>
 #include <GeoPlanetDemo/vt/VAOContainer.h>
@@ -56,20 +55,20 @@ void VisualizationTechnique::clean()
     vaoContainerMap.clear();
 }
 
-void VisualizationTechnique::processScene(shared_ptr<core::Scene> scene)
+void VisualizationTechnique::processScene(shared_ptr<scene::Scene> scene)
 {
     if (!isInitialized) {
         init();
     }
 
-    for (auto entity : scene->getEntities()) {
-        if (entity->getVtType() == getType()) {
-            vaoContainerMap[entity.get()] = processEntityToVaoContainer(entity);
+    for (auto element : scene->getElements()) {
+        if (element.vtType == getType()) {
+            vaoContainerMap[element.entity.get()] = processEntityToVaoContainer(element.entity);
         }
     }
 }
 
-shared_ptr<VAOContainer> VisualizationTechnique::processEntityToVaoContainer(shared_ptr<entities::Entity> entity)
+shared_ptr<VAOContainer> VisualizationTechnique::processEntityToVaoContainer(shared_ptr<scene::Entity> entity)
 {
     auto vaoContainer = make_shared<VAOContainer>(gl);
     vaoContainer->vao->bind();

@@ -8,9 +8,14 @@ namespace gpd
 {
     namespace core
     {
-        class Scene;
         class Camera;
     }
+
+    namespace scene
+    {
+        class Scene;
+    }
+
     namespace sdl
     {
         class SDLGlMainLoop;
@@ -29,7 +34,7 @@ namespace gpd
         std::shared_ptr<sdl::SDLGlMainLoop>            mainLoop = nullptr;
         std::shared_ptr<interfaces::RendererInterface> renderer = nullptr;
         std::shared_ptr<core::Camera>                  camera = nullptr;
-        std::shared_ptr<core::Scene>                   scene = nullptr;
+        std::shared_ptr<scene::Scene>                  scene = nullptr;
         std::shared_ptr<ApplicationGui>                gui = nullptr;
 
         // methods

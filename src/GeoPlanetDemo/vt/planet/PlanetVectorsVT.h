@@ -6,13 +6,11 @@ namespace gpd
 {
     namespace vt
     {
-        class ColorLinesVT : public VisualizationTechnique
+        class PlanetVectorsVT : public VisualizationTechnique
         {
         public:
             // methods
-            ColorLinesVT(VTType type, std::shared_ptr<ge::gl::Context> gl) : VisualizationTechnique(type, gl) {}
-
-            inline GLenum getDrawMode() const { return GL_LINES; }
+            PlanetVectorsVT(VTType type, std::shared_ptr<ge::gl::Context> gl) : VisualizationTechnique(type, gl) {}
 
         protected:
             void initGlProgram() override;
@@ -21,4 +19,4 @@ namespace gpd
     } // namespace vt
 } // namespace gpd
 
-REGISTER_VT_TYPE(ColorLinesVT)
+REGISTER_VT_TYPE(PlanetVectorsVT)

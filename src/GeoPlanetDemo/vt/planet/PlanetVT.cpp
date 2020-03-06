@@ -5,7 +5,7 @@
 #include <GeoPlanetDemo/core/Utils.h>
 #include <GeoPlanetDemo/core/Camera.h>
 
-#include <GeoPlanetDemo/entities/PlanetEntity.h>
+#include <GeoPlanetDemo/scene/entities/PlanetEntity.h>
 
 #include <GeoPlanetDemo/vt/VAOContainer.h>
 #include <GeoPlanetDemo/vt/planet/PlanetVT.h>
@@ -13,7 +13,8 @@
 using namespace std;
 using namespace gpd;
 using namespace gpd::vt;
-using namespace gpd::entities;
+using namespace gpd::scene;
+using namespace gpd::scene::entities;
 
 void PlanetVT::initGlProgram()
 {
@@ -23,7 +24,7 @@ void PlanetVT::initGlProgram()
     );
 }
 
-void PlanetVT::processScene(std::shared_ptr<core::Scene> scene)
+void PlanetVT::processScene(shared_ptr<Scene> scene)
 {
     VisualizationTechnique::processScene(scene);
 }
@@ -31,7 +32,7 @@ void PlanetVT::processScene(std::shared_ptr<core::Scene> scene)
 shared_ptr<VAOContainer> PlanetVT::processEntityToVaoContainer(shared_ptr<Entity> entity)
 {
     auto planet = dynamic_pointer_cast<PlanetEntity>(entity);
-    auto regions = planet->getRegions();
+    auto regions = planet->getSurface()->getRegions();
     vector<float> regionBuffer = {};
     for (auto region : regions) {
 

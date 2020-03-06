@@ -4,10 +4,6 @@
 
 namespace gpd
 {
-    namespace entities {
-        class PlanetEntity;
-    }
-
     namespace vt
     {
         class PlanetFaceColorVT : public PlanetVT
@@ -18,7 +14,7 @@ namespace gpd
 
             virtual glm::uvec4 regionToColor(std::shared_ptr<gp::Region> region) override;
 
-            virtual std::shared_ptr<VAOContainer> processEntityToVaoContainer(std::shared_ptr<entities::Entity> entity) override;
+            virtual std::shared_ptr<VAOContainer> processEntityToVaoContainer(std::shared_ptr<scene::Entity> entity) override;
 
         private:
             unsigned int resolutionPerFace;
