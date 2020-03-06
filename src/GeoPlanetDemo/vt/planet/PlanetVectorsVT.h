@@ -2,6 +2,8 @@
 
 #include <GeoPlanetDemo/vt/VTFactory.h>
 
+#include <GeoPlanetDemo/vt/planet/helper/PlateColorizer.h>
+
 namespace gpd
 {
     namespace vt
@@ -10,9 +12,17 @@ namespace gpd
         {
         public:
             // methods
-            PlanetVectorsVT(VTType type, std::shared_ptr<ge::gl::Context> gl) : VisualizationTechnique(type, gl) {}
+            PlanetVectorsVT(VTType type, std::shared_ptr<ge::gl::Context> gl) :
+                plateColorizer(std::make_shared<helper::PlateColorizer>()),
+                VisualizationTechnique(type, gl) {}
+
+            inline GLenum getDrawMode() const { return GL_LINES; }
 
         protected:
+            // properties
+            std::shared_ptr<helper::PlateColorizer> plateColorizer;
+
+            // methods
             void initGlProgram() override;
             std::shared_ptr<VAOContainer> processEntityToVaoContainer(std::shared_ptr<scene::Entity> entity) override;
         };

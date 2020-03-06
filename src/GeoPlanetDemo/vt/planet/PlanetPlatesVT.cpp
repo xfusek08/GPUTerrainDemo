@@ -17,24 +17,7 @@ uvec4 PlanetPlatesVT::regionToColor(shared_ptr<Region> region)
     }
 
     auto plate = TectonicPlate::getPlateOfRegion(region);
-
-    if (plate == nullptr) {
-        return glm::uvec4(255, 255, 255, 0);
-    }
-
-    glm::uvec4 plateColor;
-    auto plate_it = plateColorMap.find(plate);
-    if (plate_it != plateColorMap.end()) {
-        plateColor = plate_it->second;
-    } else {
-        plateColor = glm::uvec4(
-            rand() % 255,
-            rand() % 255,
-            rand() % 255,
-            0
-        );
-        plateColorMap[plate] = plateColor;
-    }
+    auto plateColor = plateColorizer->plateColor(plate);
 
     for (auto plateRegion : plate->getMemberRegions()) {
         regionColorMap[plateRegion->getID()] = glm::mix(plateColor, glm::uvec4(255,255,255, 0), 0.5);
