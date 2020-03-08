@@ -231,7 +231,7 @@ void main()
             + ((abs(direction.y) >= BORDER_THRESHOLD) ? 1 : 0)
             + ((abs(direction.z) >= BORDER_THRESHOLD) ? 1 : 0);
         if (ones > 1) {
-            THROW_COLOR(vec4(0, 0, 0.1, 0));
+            THROW_COLOR(vec4(0, 0, 0.1, 1));
         }
     }
 
@@ -240,8 +240,8 @@ void main()
         ||
         distToBorder < (borderTreshold / 3)
     )) {
-        THROW_COLOR(vec4(0, 0, 0, 0));
+        THROW_COLOR(vec4(0, 0, 0, 1));
     }
 
-    THROW_COLOR(vec4(regions[regId].color, 0));
+    THROW_COLOR(vec4(regions[regId].color, 1));
 }

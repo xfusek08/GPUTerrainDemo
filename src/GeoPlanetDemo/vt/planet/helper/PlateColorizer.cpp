@@ -1,5 +1,6 @@
 
 #include <GeoPlanetDemo/vt/planet/helper/PlateColorizer.h>
+#include <GeoPlanetDemo/vt/planet/helper/PlateColorizer.h>
 
 using namespace gpd::vt::helper;
 using namespace gp;

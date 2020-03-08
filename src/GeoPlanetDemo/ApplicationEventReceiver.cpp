@@ -12,9 +12,7 @@ using namespace gpd::scene::entities;
 
 #define RUN_FOR_ELEMENT(_ident, _code) {\
     auto element = application->scene->getElement(_ident);\
-    if (element.isValid()) {\
-        _code\
-    }\
+    _code\
 }\
 return false
 
@@ -28,11 +26,11 @@ return false
         }\
     })
 
-#define RUN_SET_PLANET_VT(vt)\
-    RUN_FOR_ELEMENT("planet", {\
+#define RUN_SET_ELEMENT_VT(elem, vt)\
+    RUN_FOR_ELEMENT(elem, {\
         if (element.vtType != vt) {\
             element.vtType = vt;\
-            application->scene->setElement("planet", element);\
+            application->scene->setElement(elem, element);\
             application->renderer->updateScene();\
             application->camera->setViewChanged();\
         }\
@@ -44,11 +42,13 @@ bool ApplicationEventReceiver::processSDLEvent(SDL_Event const& event)
     switch(event.type) {
         case SDL_KEYDOWN:
             switch(event.key.keysym.sym) {
-                case SDLK_F1: RUN_SET_PLANET_VT(vt::types::PlanetElevationVT);
-                case SDLK_F2: RUN_SET_PLANET_VT(vt::types::PlanetPlatesVT);
-                case SDLK_F3: RUN_SET_PLANET_VT(vt::types::PlanetCubeMapVT);
-                case SDLK_F4: RUN_SET_PLANET_VT(vt::types::PlanetFaceColorVT);
-                case SDLK_F5: RUN_SET_PLANET_VT(vt::types::PlanetVectorsVT);
+                case SDLK_F1: RUN_SET_ELEMENT_VT("planet", vt::types::PlanetElevationVT);
+                case SDLK_F2: RUN_SET_ELEMENT_VT("planet", vt::types::PlanetPlatesVT);
+                case SDLK_F3: RUN_SET_ELEMENT_VT("planet", vt::types::PlanetCubeMapVT);
+                case SDLK_F4: RUN_SET_ELEMENT_VT("planet", vt::types::PlanetFaceColorVT);
+
+                case SDLK_0: RUN_SET_ELEMENT_VT("planet_data", vt::types::UndefinedVT);
+                case SDLK_1: RUN_SET_ELEMENT_VT("planet_data", vt::types::PlanetVectorsVT);
 
                 case SDLK_p: RUN_FOR_PLANET({
                     planetEntity->setResolution(planetEntity->getResolution() + 1);

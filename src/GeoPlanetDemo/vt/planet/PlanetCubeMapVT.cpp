@@ -15,6 +15,7 @@ void PlanetCubeMapVT::initGlProgram()
 {
     program = make_shared<ge::gl::Program>(
         make_shared<ge::gl::Shader>(GL_VERTEX_SHADER, ge::util::loadTextFile(SHADER_PLANET_VERTEX)),
+        make_shared<ge::gl::Shader>(GL_VERTEX_SHADER, ge::util::loadTextFile(SHADER_PLANET_CALCULATESPHEREVERTEX)),
         make_shared<ge::gl::Shader>(GL_FRAGMENT_SHADER, ge::util::loadTextFile(SHADER_PLANET_FRAGMENT_CUBE_MAP))
     );
 }

@@ -99,7 +99,7 @@ void ApplicationGui::draw()
     }
 
     if (planetEntity != nullptr && ImGui::CollapsingHeader("Menu")) {
-        ImGui::Text("Visualization technique:");
+        ImGui::Text("Base layer visualization technique:");
         {
             int vtTypeInt = vtTypeToInt(planetSceneElement.vtType);
             ImGui::RadioButton("Show elevation       (F1)", &vtTypeInt, vtTypeToInt(vt::types::PlanetElevationVT));
@@ -114,6 +114,22 @@ void ApplicationGui::draw()
             }
         }
         ImGui::Separator();
+
+        ImGui::Text("Surface data visualization:");
+        {
+            auto plateDataElement = application->scene->getElement("planet_data");
+            int vtTypeInt = vtTypeToInt(plateDataElement.vtType);
+            ImGui::RadioButton("Disabled       (0)", &vtTypeInt, vtTypeToInt(vt::types::UndefinedVT));
+            ImGui::RadioButton("Plate movement (1)", &vtTypeInt, vtTypeToInt(vt::types::PlanetVectorsVT));
+            if (plateDataElement.vtType != intToVtType(vtTypeInt)) {
+                plateDataElement.vtType = intToVtType(vtTypeInt);
+                application->scene->setElement("planet_data", plateDataElement);
+                application->camera->setViewChanged();
+                updateScene = true;
+            }
+        }
+        ImGui::Separator();
+
 
         ImGui::Text("Shared options:");
         {
@@ -237,6 +253,9 @@ vt::VTType ApplicationGui::intToVtType(int val) const
 
 int ApplicationGui::vtTypeToInt(vt::VTType val) const
 {
+    if (val == vt::types::UndefinedVT) {
+        return -1;
+    }
     size_t index = 0;
     for (auto type : vt::VTFactory::list()) {
         if (type == val) {

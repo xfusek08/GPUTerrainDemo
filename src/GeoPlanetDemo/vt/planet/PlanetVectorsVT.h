@@ -16,13 +16,12 @@ namespace gpd
                 plateColorizer(std::make_shared<helper::PlateColorizer>()),
                 VisualizationTechnique(type, gl) {}
 
-            inline GLenum getDrawMode() const { return GL_LINES; }
-
         protected:
             // properties
             std::shared_ptr<helper::PlateColorizer> plateColorizer;
 
             // methods
+            void initGl() override;
             void initGlProgram() override;
             std::shared_ptr<VAOContainer> processEntityToVaoContainer(std::shared_ptr<scene::Entity> entity) override;
         };

@@ -20,13 +20,9 @@ void PlanetVT::initGlProgram()
 {
     program = make_shared<ge::gl::Program>(
         make_shared<ge::gl::Shader>(GL_VERTEX_SHADER, ge::util::loadTextFile(SHADER_PLANET_VERTEX)),
+        make_shared<ge::gl::Shader>(GL_VERTEX_SHADER, ge::util::loadTextFile(SHADER_PLANET_CALCULATESPHEREVERTEX)),
         make_shared<ge::gl::Shader>(GL_FRAGMENT_SHADER, ge::util::loadTextFile(SHADER_PLANET_FRAGMENT))
     );
-}
-
-void PlanetVT::processScene(shared_ptr<Scene> scene)
-{
-    VisualizationTechnique::processScene(scene);
 }
 
 shared_ptr<VAOContainer> PlanetVT::processEntityToVaoContainer(shared_ptr<Entity> entity)

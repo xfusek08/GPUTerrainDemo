@@ -27,8 +27,6 @@ namespace gpd
 
             inline GLenum getDrawMode() const override { return GL_TRIANGLES; }
 
-            virtual void processScene(std::shared_ptr<scene::Scene> scene) override;
-
             virtual glm::uvec4 regionToColor(std::shared_ptr<gp::Region> region) = 0;
 
         protected:

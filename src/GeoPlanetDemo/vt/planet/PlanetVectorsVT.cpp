@@ -21,46 +21,78 @@ void PlanetVectorsVT::initGlProgram()
     );
 }
 
+void PlanetVectorsVT::initGl()
+{
+    VisualizationTechnique::initGl();
+    gl->glDisable(GL_CULL_FACE);
+}
+
 shared_ptr<VAOContainer> PlanetVectorsVT::processEntityToVaoContainer(shared_ptr<scene::Entity> entity)
 {
     auto planet = dynamic_pointer_cast<PlanetEntity>(entity);
 
-    vector<float> verticies;
-    vector<float> colors;
+    vector<glm::vec3> verticies;
+    vector<glm::vec3> colors;
     vector<unsigned int> indices;
 
     // for now only plate centers
-    auto indexCnt = planet->getSurface()->plates.size() * 2;
+    auto indexCnt = 3 * (
+        planet->getSurface()->plates.size()
+        + planet->getSurface()->getRegions().size()
+    );
 
-    verticies.reserve(indexCnt * 3);
-    verticies.reserve(indexCnt * 3);
+    verticies.reserve(indexCnt);
+    colors.reserve(indexCnt);
     indices.reserve(indexCnt);
 
     unsigned int index = 0;
     for (auto plate : planet->getSurface()->plates) {
-        // origin
-        verticies.push_back(0);
-        verticies.push_back(0);
-        verticies.push_back(0);
 
-        colors.push_back(0);
-        colors.push_back(0);
-        colors.push_back(0);
+        auto origin             = plate->getCenter();
+        auto direction          = plate->shiftVector * 0.1f;
+        auto destination        = origin + direction;
+        auto trinagleBaseOffset = glm::normalize(glm::cross(origin, destination)) * 0.01f;
+        auto uColor             = plateColorizer->plateColor(plate.get());
 
+        auto color  = glm::vec3(
+            float(uColor.x) / 255.0,
+            float(uColor.y) / 255.0,
+            float(uColor.z) / 255.0
+        );
+        auto darkercolor = glm::mix(color, glm::vec3(0, 0, 0), 0.2);
+
+        // draw general plate vector
+        verticies.push_back(origin + trinagleBaseOffset);
+        colors.push_back(darkercolor);
+        indices.push_back(index++);
+        verticies.push_back(origin - trinagleBaseOffset);
+        colors.push_back(darkercolor);
         indices.push_back(index++);
 
-        // plate center
-        verticies.push_back(plate->center.x);
-        verticies.push_back(plate->center.y);
-        verticies.push_back(plate->center.z);
-
-        // plate colors
-        auto color = plateColorizer->plateColor(plate.get());
-        colors.push_back(float(color.x) / 255.0f);
-        colors.push_back(float(color.y) / 255.0f);
-        colors.push_back(float(color.z) / 255.0f);
-
+        verticies.push_back(destination);
+        colors.push_back(color);
         indices.push_back(index++);
+
+        // draw vector for each region
+        trinagleBaseOffset *= 0.4f;
+        direction          *= 0.4f;
+        color              = glm::mix(color, glm::vec3(1, 1, 1), 0.2);
+        darkercolor        = glm::mix(color, glm::vec3(1, 1, 1), 0.2);
+        for (auto region : plate->getMemberRegions()) {
+            origin = region->position.getGlobal();
+            destination = glm::normalize(origin + direction);
+
+            verticies.push_back(origin + trinagleBaseOffset);
+            colors.push_back(darkercolor);
+            indices.push_back(index++);
+            verticies.push_back(origin - trinagleBaseOffset);
+            colors.push_back(darkercolor);
+            indices.push_back(index++);
+
+            verticies.push_back(destination);
+            colors.push_back(color);
+            indices.push_back(index++);
+        }
     }
 
     auto vaoContainer = make_shared<VAOContainer>(gl);
@@ -68,7 +100,7 @@ shared_ptr<VAOContainer> PlanetVectorsVT::processEntityToVaoContainer(shared_ptr
     vaoContainer->vao->addElementBuffer(vaoContainer->newBuffer(indices));
     vaoContainer->vao->addAttrib(vaoContainer->newBuffer(verticies), 0, 3, GL_FLOAT);
     vaoContainer->vao->addAttrib(vaoContainer->newBuffer(colors), 1, 3, GL_FLOAT);
-    vaoContainer->indexSize = indices.size();
+    vaoContainer->indexSize = indexCnt;
     vaoContainer->vao->unbind();
     return vaoContainer;
 }

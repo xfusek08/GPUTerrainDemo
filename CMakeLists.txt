@@ -39,11 +39,15 @@ set(DEFAULT_RESOERCES_PATH "${CMAKE_CURRENT_LIST_DIR}/resources")
 set(${APP_NAME}_RESOURCES  "${DEFAULT_RESOERCES_PATH}" CACHE PATH "Relative or absolute path to Application resources.")
 
 set(SHADER_FILES
-    # vertex                    # fragment
-    basic/vertex.glsl           basic/fragment.glsl
-    vert_color/vertex.glsl      vert_color/fragment.glsl
-    planet_vectors/vertex.glsl  planet_vectors/fragment.glsl
-    planet/vertex.glsl          planet/fragment.glsl        planet/fragment_lines.glsl  planet/fragment_cube_map.glsl
+    # vertex                          # fragment
+    # demostartion triangle
+    basic/vertex.glsl                 basic/fragment.glsl
+    # color (axis)
+    vert_color/vertex.glsl            vert_color/fragment.glsl
+    # planet
+    planet/calculateSphereVertex.glsl
+    planet_vectors/vertex.glsl        planet_vectors/fragment.glsl
+    planet/vertex.glsl                planet/fragment.glsl planet/fragment_lines.glsl  planet/fragment_cube_map.glsl
 )
 
 # source files

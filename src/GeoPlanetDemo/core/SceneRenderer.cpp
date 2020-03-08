@@ -31,7 +31,7 @@ void SceneRenderer::updateScene()
     GPD_LOG_DEBUG("updateScene");
     for (auto element : scene->getElements()) {
         // vt type is not present
-        if (element.isValid() && element.enabled && vts.find(element.vtType) == vts.end()) {
+        if (element.isValid() && vts.find(element.vtType) == vts.end()) {
             auto vt = VTFactory::create(element.vtType, gl);
             GPD_ASSERT(vt != nullptr, "vt was not successfully created");
             if (vt != nullptr) {

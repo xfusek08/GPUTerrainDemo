@@ -17,7 +17,6 @@ namespace gpd
         {
             vt::VTType vtType = vt::types::UndefinedVT;
             std::shared_ptr<Entity> entity = nullptr;
-            bool enabled = true;
 
             bool isValid()
             {
