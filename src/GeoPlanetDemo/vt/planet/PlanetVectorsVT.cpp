@@ -80,7 +80,7 @@ shared_ptr<VAOContainer> PlanetVectorsVT::processEntityToVaoContainer(shared_ptr
         darkercolor        = glm::mix(color, glm::vec3(1, 1, 1), 0.2);
         for (auto region : plate->getMemberRegions()) {
             origin = region->position.getGlobal();
-            destination = glm::normalize(origin + direction);
+            destination = glm::normalize(origin + glm::normalize(direction) * glm::length(plate->shiftVector) * 0.04f);
 
             verticies.push_back(origin + trinagleBaseOffset);
             colors.push_back(darkercolor);

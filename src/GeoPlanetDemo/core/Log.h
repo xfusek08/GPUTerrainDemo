@@ -1,7 +1,7 @@
 #pragma once
 
 /**
- * @Brief       Logging mechanism header
+ * Logging mechanism header
  * @Description Static Log class keeping providing single instance of LoggerInterface interface
  *              LoggerInterface interface is implemented by BasicLogger class and passed as default
  *              argument for log initiation.
@@ -22,7 +22,7 @@ namespace gpd
     namespace core
     {
         /**
-         * @brief Basic default logger for writing on standard error output
+         * Basic default logger for writing on standard error output
          */
         class BasicLogger : public gpd::interfaces::LoggerInterface
         {
@@ -34,7 +34,7 @@ namespace gpd
         };
 
         /**
-         * @brief static class providing logger instance
+         * static class providing logger instance
          */
         class Log
         {

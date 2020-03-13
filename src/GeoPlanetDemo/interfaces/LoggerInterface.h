@@ -8,7 +8,7 @@ namespace gpd
     namespace interfaces
     {
         /**
-         * @brief Logger interface
+         * Logger interface
          */
         class LoggerInterface
         {

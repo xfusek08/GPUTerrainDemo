@@ -21,9 +21,9 @@ PlanetEntity::PlanetEntity() : Entity()
 {
     generator = make_shared<gp::SurfaceGenerator>(initializer_list<string>{
         "JitterModifier",
-        "TectonicPlateModifier",
-        "ElevationModifier",
+        "TectonicPlateModifier"
     });
+    generator->addModifier("ElevationModifier", "ElevationModifier");
     generateFresh();
 }
 

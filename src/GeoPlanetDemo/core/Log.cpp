@@ -1,5 +1,5 @@
 /**
- * @Brief       Logging mechanism body
+ * Logging mechanism body
  * @Author      Petr Fusek
  * @Project     TerrainLibDemo
  * @File        Logger.h
