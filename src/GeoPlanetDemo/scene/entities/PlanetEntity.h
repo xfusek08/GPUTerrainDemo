@@ -15,6 +15,8 @@ namespace gpd
             {
             public:
                 // properties
+                std::shared_ptr<gp::SurfaceGenerator> generator;
+                std::shared_ptr<gp::Surface> surface;
                 bool showCube = false;
                 bool doWarp = true;
                 bool showRegionBounds = false;
@@ -40,12 +42,6 @@ namespace gpd
 
                 std::unique_ptr<unsigned char[]> getTextureDataForFace(unsigned int faceId, unsigned int face_width, unsigned int face_height) const;
 
-            private:
-                // properties
-                std::shared_ptr<gp::SurfaceGenerator> generator;
-                std::shared_ptr<gp::Surface> surface;
-
-                // methods
                 void generateFresh(unsigned int value = 0);
             };
 

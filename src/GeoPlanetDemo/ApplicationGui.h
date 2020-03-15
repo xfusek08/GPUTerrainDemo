@@ -5,6 +5,11 @@
 
 #include <GeoPlanetDemo/vt/VTType.h>
 
+namespace gp
+{
+    struct ModifierListItem;
+}
+
 namespace gpd
 {
     class ApplicationGui : public sdl::SDLEventReceiverInterface
@@ -15,6 +20,7 @@ namespace gpd
         bool processSDLEvent(SDL_Event const&) override;
         void onFrameUpdate() override;
         void draw();
+        bool renderModifierItem(gp::ModifierListItem modifier, std::shared_ptr<gp::SurfaceGenerator> generator);
 
     private:
         Application* application;

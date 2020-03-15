@@ -8,6 +8,9 @@
 #include <vendor/imgui/imgui_impl_sdl.h>
 #include <vendor/imgui/imgui_impl_opengl3.h>
 
+#include <GeoPlanetLib/SurfaceGenerator.h>
+#include <GeoPlanetLib/modifiers/modifiers.h>
+
 #include <GeoPlanetDemo/core/Camera.h>
 #include <GeoPlanetDemo/core/Utils.h>
 
@@ -188,6 +191,19 @@ void ApplicationGui::draw()
                 planetEntity->setNumberOfPlates(numberOfPlates);
                 updateScene = true;
             }
+
+            if (ImGui::CollapsingHeader("Modifiers:")) {
+                bool changed = false;
+                for (auto modifierItem : planetEntity->generator->getModifiers()) {
+                    if (renderModifierItem(modifierItem, planetEntity->generator)) {
+                        changed = true;
+                    }
+                }
+                if (changed) {
+                    updateScene = true;
+                    planetEntity->generateFresh(planetEntity->getResolution());
+                }
+            }
         }
         ImGui::Separator();
 
@@ -225,6 +241,67 @@ void ApplicationGui::draw()
     ImGui::PopStyleColor();
     ImGui::PopStyleColor();
     drawTearDown();
+}
+
+bool ApplicationGui::renderModifierItem(gp::ModifierListItem modifierItem, std::shared_ptr<gp::SurfaceGenerator> generator)
+{
+    bool change = false;
+    if (ImGui::CollapsingHeader(modifierItem.ident.c_str())) {
+        // enabled
+        {
+            bool enabled = modifierItem.enabled;
+            ImGui::Checkbox("Enabled:", &enabled);
+            if (enabled != modifierItem.enabled) {
+                if (modifierItem.enabled) {
+                    generator->disableModifier(modifierItem.ident);
+                } else {
+                    generator->enableModifier(modifierItem.ident);
+                }
+                change = true;
+            }
+        }
+        // variables:
+        for (auto pair : modifierItem.modifier->variables) {
+            auto variable = pair.second;
+            switch (pair.second.type)
+            {
+                case gp::ModifierVariableType::Bool:
+                    {
+                        bool val = variable.value.boolval;
+                        ImGui::Checkbox(variable.description.c_str(), &val);
+                        if (variable.value.boolval != val) {
+                            variable.value.boolval = val;
+                            modifierItem.modifier->variables[pair.first] = variable;
+                            change = true;
+                        }
+                    }
+                    break;
+                case gp::ModifierVariableType::Integer:
+                    {
+                        int val = variable.value.intVal;
+                        ImGui::InputInt(variable.description.c_str(), &val);
+                        if (variable.value.intVal != val) {
+                            variable.value.intVal = val;
+                            modifierItem.modifier->variables[pair.first] = variable;
+                            change = true;
+                        }
+                    }
+                    break;
+                case gp::ModifierVariableType::Float:
+                    {
+                        float val = variable.value.floatVal;
+                        ImGui::InputFloat(variable.description.c_str(), &val, 0.1f);
+                        if (variable.value.floatVal != val) {
+                            variable.value.floatVal = val;
+                            modifierItem.modifier->variables[pair.first] = variable;
+                            change = true;
+                        }
+                    }
+                    break;
+            }
+        }
+    }
+    return change;
 }
 
 // private supportive functions
