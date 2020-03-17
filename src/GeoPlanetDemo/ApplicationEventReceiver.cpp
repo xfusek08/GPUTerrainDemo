@@ -58,22 +58,6 @@ bool ApplicationEventReceiver::processSDLEvent(SDL_Event const& event)
                     planetEntity->setResolution(planetEntity->getResolution() - 1);
                 });
 
-                case SDLK_l: RUN_FOR_PLANET({
-                    planetEntity->setJitter(planetEntity->getJitter() + 0.1f);
-                });
-
-                case SDLK_k: RUN_FOR_PLANET({
-                    planetEntity->setJitter(planetEntity->getJitter() - 0.1f);
-                });
-
-                case SDLK_m: RUN_FOR_PLANET({
-                    planetEntity->setNumberOfPlates(planetEntity->getNumberOfPlates() + 1);
-                });
-
-                case SDLK_n: RUN_FOR_PLANET({
-                    planetEntity->setNumberOfPlates(planetEntity->getNumberOfPlates() - 1);
-                });
-
                 case SDLK_c: RUN_FOR_PLANET({
                     planetEntity->showCube = !planetEntity->showCube;
                 });

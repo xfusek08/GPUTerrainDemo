@@ -28,14 +28,10 @@ namespace gpd
                 inline unsigned int                 getResolution() const { return surface->getResolution(); }
                 inline std::shared_ptr<gp::Surface> getSurface()    const { return surface; }
 
-                unsigned int getNumberOfPlates() const;
                 bool         getShowFaceColor()  const;
                 bool         getStepPlates()     const;
-                float        getJitter()         const;
 
                 void setResolution(unsigned int value);
-                void setNumberOfPlates(unsigned int value);
-                void setJitter(float value);
                 void setStepPlates(bool value);
 
                 void stepPlateExpansion();

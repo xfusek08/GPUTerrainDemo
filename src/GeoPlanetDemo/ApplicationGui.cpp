@@ -85,8 +85,7 @@ void ApplicationGui::draw()
     ImGui::PushStyleColor(ImGuiCol_WindowBg, {0, 0, 0, 0.9});
 
     ImGui::Begin("general", nullptr,
-        ImGuiWindowFlags_NoResize
-        | ImGuiWindowFlags_NoTitleBar
+        ImGuiWindowFlags_NoTitleBar
         | ImGuiWindowFlags_NoMove
         // | ImGuiWindowFlags_NoBackground
     );
@@ -103,6 +102,7 @@ void ApplicationGui::draw()
 
     if (planetEntity != nullptr && ImGui::CollapsingHeader("Menu")) {
         ImGui::Text("Base layer visualization technique:");
+        ImGui::Indent();
         {
             int vtTypeInt = vtTypeToInt(planetSceneElement.vtType);
             ImGui::RadioButton("Show elevation       (F1)", &vtTypeInt, vtTypeToInt(vt::types::PlanetElevationVT));
@@ -116,9 +116,11 @@ void ApplicationGui::draw()
                 updateScene = true;
             }
         }
+        ImGui::Unindent();
         ImGui::Separator();
 
         ImGui::Text("Surface data visualization:");
+        ImGui::Indent();
         {
             auto plateDataElement = application->scene->getElement("planet_data");
             int vtTypeInt = vtTypeToInt(plateDataElement.vtType);
@@ -131,10 +133,11 @@ void ApplicationGui::draw()
                 updateScene = true;
             }
         }
+        ImGui::Unindent();
         ImGui::Separator();
 
-
         ImGui::Text("Shared options:");
+        ImGui::Indent();
         {
             bool showCube = planetEntity->showCube;
             ImGui::Checkbox("Show as cube       (c)", &showCube);
@@ -159,9 +162,11 @@ void ApplicationGui::draw()
                 updateScene = true;
             }
         }
+        ImGui::Unindent();
         ImGui::Separator();
 
-        ImGui::Text("Generator setting:");
+        ImGui::Text("Generator:");
+        ImGui::Indent();
         {
             // resolution
             int resolution = planetEntity->getResolution();
@@ -172,58 +177,35 @@ void ApplicationGui::draw()
                 updateScene = true;
             }
         }
+        ImGui::Spacing();
+        ImGui::Text("Modifiers:");
+        ImGui::Indent();
+        drawGeneratorGui(planetEntity->generator);
+        ImGui::Unindent();
+        ImGui::Spacing();
         {
-            // jitter
-            float jitter = planetEntity->getJitter();
-            // ImGui::PushItemWidth(100);
-            ImGui::InputFloat("Jitter     -(k) +(l)", &jitter, 0.1f);
-            if (jitter != planetEntity->getJitter()) {
-                planetEntity->setJitter(jitter);
-                updateScene = true;
-            }
-        }
-        {
-            // number of plates
-            int numberOfPlates = planetEntity->getNumberOfPlates();
-            ImGui::PushItemWidth(100);
-            ImGui::InputInt("Plates     -(n) +(m)", &numberOfPlates);
-            if (numberOfPlates != planetEntity->getNumberOfPlates()) {
-                planetEntity->setNumberOfPlates(numberOfPlates);
-                updateScene = true;
-            }
 
-            if (ImGui::CollapsingHeader("Modifiers:")) {
-                bool changed = false;
-                for (auto modifierItem : planetEntity->generator->getModifiers()) {
-                    if (renderModifierItem(modifierItem, planetEntity->generator)) {
-                        changed = true;
-                    }
-                }
-                if (changed) {
-                    updateScene = true;
-                    planetEntity->generateFresh(planetEntity->getResolution());
-                }
-            }
-        }
-        ImGui::Separator();
-
-        // plate expand step
-        ImGui::Text("Debug control:");
-        {
-            bool stepPlates = planetEntity->getStepPlates();
-            ImGui::Checkbox("", &stepPlates);
-            if (stepPlates != planetEntity->getStepPlates()) {
-                planetEntity->setStepPlates(stepPlates);
-            }
+            checkbox("Enable plate steps", planetEntity->getStepPlates(), [&](bool val){
+                planetEntity->setStepPlates(val);
+            });
             ImGui::SameLine();
             if (ImGui::Button("Step")) {
                 planetEntity->stepPlateExpansion();
                 updateScene = true;
             }
+
+            ImGui::Spacing();
+
+            if (ImGui::Button("Generate")) {
+                planetEntity->generateFresh();
+                updateScene = true;
+            }
         }
+        ImGui::Unindent();
         ImGui::Separator();
 
         ImGui::Text("Controls:");
+        ImGui::Indent();
         ImGui::Text("Zoom in:      (w)");
         ImGui::Text("Zoom out:     (s)");
         ImGui::Text("");
@@ -231,6 +213,7 @@ void ApplicationGui::draw()
         ImGui::Text("Rotate down:  (down)");
         ImGui::Text("Rotate left:  (left)");
         ImGui::Text("Rotate right: (right)");
+        ImGui::Unindent();
 
         if (updateScene) {
             application->renderer->updateScene();
@@ -241,67 +224,6 @@ void ApplicationGui::draw()
     ImGui::PopStyleColor();
     ImGui::PopStyleColor();
     drawTearDown();
-}
-
-bool ApplicationGui::renderModifierItem(gp::ModifierListItem modifierItem, std::shared_ptr<gp::SurfaceGenerator> generator)
-{
-    bool change = false;
-    if (ImGui::CollapsingHeader(modifierItem.ident.c_str())) {
-        // enabled
-        {
-            bool enabled = modifierItem.enabled;
-            ImGui::Checkbox("Enabled:", &enabled);
-            if (enabled != modifierItem.enabled) {
-                if (modifierItem.enabled) {
-                    generator->disableModifier(modifierItem.ident);
-                } else {
-                    generator->enableModifier(modifierItem.ident);
-                }
-                change = true;
-            }
-        }
-        // variables:
-        for (auto pair : modifierItem.modifier->variables) {
-            auto variable = pair.second;
-            switch (pair.second.type)
-            {
-                case gp::ModifierVariableType::Bool:
-                    {
-                        bool val = variable.value.boolval;
-                        ImGui::Checkbox(variable.description.c_str(), &val);
-                        if (variable.value.boolval != val) {
-                            variable.value.boolval = val;
-                            modifierItem.modifier->variables[pair.first] = variable;
-                            change = true;
-                        }
-                    }
-                    break;
-                case gp::ModifierVariableType::Integer:
-                    {
-                        int val = variable.value.intVal;
-                        ImGui::InputInt(variable.description.c_str(), &val);
-                        if (variable.value.intVal != val) {
-                            variable.value.intVal = val;
-                            modifierItem.modifier->variables[pair.first] = variable;
-                            change = true;
-                        }
-                    }
-                    break;
-                case gp::ModifierVariableType::Float:
-                    {
-                        float val = variable.value.floatVal;
-                        ImGui::InputFloat(variable.description.c_str(), &val, 0.1f);
-                        if (variable.value.floatVal != val) {
-                            variable.value.floatVal = val;
-                            modifierItem.modifier->variables[pair.first] = variable;
-                            change = true;
-                        }
-                    }
-                    break;
-            }
-        }
-    }
-    return change;
 }
 
 // private supportive functions
@@ -342,4 +264,115 @@ int ApplicationGui::vtTypeToInt(vt::VTType val) const
     }
     GPD_ASSERT(false, "ApplicationGui::vtTypeToInt(" << val << "): not found.");
     return -1;
+}
+
+void ApplicationGui::checkbox(const char* label, bool val, function<void(bool)> onChangeCallback)
+{
+    bool valLocal = val;
+    ImGui::Checkbox(label, &valLocal);
+    if (valLocal != val) {
+        onChangeCallback(valLocal);
+    }
+}
+
+void ApplicationGui::window(string label, function<void(void)> drawCallback)
+{
+    bool open;
+    if (!ImGui::Begin(label.c_str(), &open, ImGuiWindowFlags_NoResize)) {
+        ImGui::End();
+        return;
+    }
+    if (!open) {
+        openWindows[label] = false;
+    } else {
+        drawCallback();
+    }
+    ImGui::End();
+}
+
+void ApplicationGui::drawGeneratorGui(shared_ptr<gp::SurfaceGenerator> generator)
+{
+    ImGui::Columns(2, nullptr, false);
+    ImGui::SetColumnWidth(0, ImGui::GetWindowSize().x - ImGui::GetItemRectSize().x - 25.f);
+    for (auto modifierItem : generator->getModifiers()) {
+        checkbox(modifierItem.ident.c_str(), modifierItem.enabled, [&](bool newVal) {
+           if (newVal) {
+               generator->enableModifier(modifierItem.ident);
+            } else {
+               generator->disableModifier(modifierItem.ident);
+            }
+        });
+        ImGui::NextColumn();
+        ImGui::PushItemWidth(10);
+        if (ImGui::Button(("edit##"+modifierItem.ident).c_str())) {
+            openWindows[modifierItem.ident] = !openWindows[modifierItem.ident];
+        }
+        if (openWindows[modifierItem.ident]) {
+            showModifierEditorWindow(modifierItem.ident, modifierItem.modifier);
+        }
+        ImGui::PopItemWidth();
+        ImGui::NextColumn();
+    }
+    ImGui::Columns(1);
+}
+
+void ApplicationGui::showModifierEditorWindow(string label, shared_ptr<gp::SurfaceModifier> modifier)
+{
+    float textColumWidth = 0.f;
+    for (auto pair : modifier->variables) {
+        auto actSize = ImGui::CalcTextSize(pair.second.description.c_str());
+        if (actSize.x > textColumWidth) {
+            textColumWidth = actSize.x;
+        }
+    }
+
+    textColumWidth += 20.f;
+
+    ImGui::SetNextWindowSize({textColumWidth + 150.f, 0}, ImGuiCond_Always);
+    window(label, [&](){
+        ImGui::Columns(2, nullptr, false);
+        ImGui::SetColumnWidth(0,textColumWidth);
+        for (auto pair : modifier->variables) {
+            auto variable = pair.second;;
+            auto id = "##" + variable.description;
+            id.erase(std::remove_if(id.begin(), id.end(), ::isspace), id.end());
+            ImGui::PushItemWidth(textColumWidth);
+            ImGui::Text((variable.description+":").c_str());
+            ImGui::PopItemWidth();
+            ImGui::NextColumn();
+            ImGui::PushItemWidth(-1);
+            switch (variable.type)
+            {
+                case gp::ModifierVariableType::Bool:
+                    checkbox(id.c_str(), variable.value.boolval, [&](bool newVal) {
+                        variable.value.boolval = newVal;
+                        modifier->variables[pair.first] = variable;
+                    });
+                    break;
+                case gp::ModifierVariableType::Integer:
+                    {
+                        int val = variable.value.intVal;
+                        ImGui::InputInt(id.c_str(), &val);
+                        if (variable.value.intVal != val) {
+                            variable.value.intVal = val;
+                            modifier->variables[pair.first] = variable;
+                        }
+                    }
+                    break;
+                case gp::ModifierVariableType::Float:
+                    {
+                        float val = variable.value.floatVal;
+                        ImGui::InputFloat(id.c_str(), &val, 0.1f);
+                        if (variable.value.floatVal != val) {
+                            variable.value.floatVal = val;
+                            modifier->variables[pair.first] = variable;
+                        }
+                    }
+                    break;
+            }
+            ImGui::PopItemWidth();
+            ImGui::NextColumn();
+            ImGui::Separator();
+        }
+    });
 }

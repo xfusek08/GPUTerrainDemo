@@ -21,9 +21,9 @@ PlanetEntity::PlanetEntity() : Entity()
 {
     generator = make_shared<gp::SurfaceGenerator>(initializer_list<string>{
         "JitterModifier",
-        "TectonicPlateModifier"
+        "TectonicPlateModifier",
+        "ElevationModifier"
     });
-    generator->addModifier("ElevationModifier", "ElevationModifier");
     generateFresh();
 }
 
@@ -35,48 +35,20 @@ void PlanetEntity::setResolution(unsigned int value)
     generateFresh(value);
 }
 
-float PlanetEntity::getJitter() const
-{
-    return MODIFIER_INSTANCE(JitterModifier)->getJitter();
-}
-
-void PlanetEntity::setJitter(float value)
-{
-    auto m = MODIFIER_INSTANCE(JitterModifier);
-    auto prev = m->getJitter();
-    m->setJitter(value);
-    if (prev != m->getJitter()) {
-        generator->applyModifier(surface, m);
-    }
-}
-
 bool PlanetEntity::getStepPlates() const
 {
-    return MODIFIER_INSTANCE(TectonicPlateModifier)->stepMode;
+    return MODIFIER_INSTANCE(TectonicPlateModifier)->getBoolVariable("stepMode");
 }
 
 void PlanetEntity::setStepPlates(bool value)
 {
-    MODIFIER_INSTANCE(TectonicPlateModifier)->stepMode = value;
+    MODIFIER_INSTANCE(TectonicPlateModifier)->setBoolVariable("stepMode", value);
 }
 
 void PlanetEntity::stepPlateExpansion()
 {
-    MODIFIER_INSTANCE(TectonicPlateModifier)->stepExpandPlates(surface);
-    generator->applyModifier(surface, "ElevationModifier");
-}
-
-unsigned int PlanetEntity::getNumberOfPlates() const
-{
-    return MODIFIER_INSTANCE(TectonicPlateModifier)->numberOfPlates;
-}
-
-void PlanetEntity::setNumberOfPlates(unsigned int value)
-{
-    auto m = MODIFIER_INSTANCE(TectonicPlateModifier);
-    if (value != m->numberOfPlates) {
-        m->numberOfPlates = value;
-        generateFresh(getResolution());
+    if (!MODIFIER_INSTANCE(TectonicPlateModifier)->stepExpansion(surface)) {
+        generator->applyModifier(surface, "ElevationModifier");
     }
 }
 
@@ -131,5 +103,4 @@ void PlanetEntity::generateFresh(unsigned int value)
     auto steps = getStepPlates();
     surface = generator->generate(value);
     setStepPlates(steps);
-    MODIFIER_INSTANCE(TectonicPlateModifier)->expansionFinished = false;
 }
