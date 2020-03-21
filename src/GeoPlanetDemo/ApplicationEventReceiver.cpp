@@ -20,8 +20,11 @@ return false
     RUN_FOR_ELEMENT("planet", {\
         auto planetEntity = dynamic_pointer_cast<PlanetEntity>(element.entity);\
         if (planetEntity != nullptr) {\
-            _code\
-            application->renderer->updateScene();\
+            bool updateScene = true;\
+            {_code}\
+            if (updateScene) {\
+                application->renderer->updateScene();\
+            }\
             return true;\
         }\
     })
@@ -60,6 +63,14 @@ bool ApplicationEventReceiver::processSDLEvent(SDL_Event const& event)
 
                 case SDLK_c: RUN_FOR_PLANET({
                     planetEntity->showCube = !planetEntity->showCube;
+                });
+
+                case SDLK_l: RUN_FOR_PLANET({
+                    updateScene = planetEntity->setJitter(planetEntity->getJitter() + 0.1f);
+                });
+
+                case SDLK_k: RUN_FOR_PLANET({
+                    updateScene = planetEntity->setJitter(planetEntity->getJitter() - 0.1f);
                 });
 
                 case SDLK_b: RUN_FOR_PLANET({

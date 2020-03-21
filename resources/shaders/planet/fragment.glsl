@@ -35,28 +35,44 @@ bool dthrown = false;
 #define FACE_INVALID 99
 
 #define NEARLY_ONE       0.99999
-#define BORDER_THICKNESS 0.00001
-#define BORDER_THRESHOLD (1.0 - 0.01)
 
 #define MAGIC_ANGLE 0.868734829276 // radians
 float tan_warp_theta;
 
 /* Unwarp to go sphere -> cube */
-vec2 unwarp(vec2 x) {
+vec2 unwarp(vec2 x)
+{
     if (isWarp == 0) {
         return x;
     }
     return atan(x * tan_warp_theta) / MAGIC_ANGLE;
 }
 
+vec3 toCubeFace(vec3 direction)
+{
+    vec3 absPos = abs(direction);
+    return direction /= max(max(absPos.x, absPos.y), absPos.z);
+}
+
 /**
  * Just used to visualize distance from spherical Voronoi cell edges.
  * From: https://www.shadertoy.com/view/MtBGRD
  */
-float bisectorDistance(vec3 p, vec3 a, vec3 b) {
-    vec3 n1 = cross(a,b);
-    vec3 n2 = normalize(cross(n1, 0.5*(normalize(a)+normalize(b))));
-    return abs(dot(p, n2));
+float bisectorDistance(vec3 p, vec3 a, vec3 b)
+{
+    if (showCube == 0) {
+        vec3 n1 = cross(a,b);
+        vec3 n2 = normalize(cross(n1, 0.5*(normalize(a)+normalize(b))));
+        return abs(dot(p, n2));
+    } else {
+        p = toCubeFace(p);
+        a = toCubeFace(a);
+        b = toCubeFace(b);
+        vec3 N = a - b;
+        vec3 V = b + (N / 2);
+        vec3 u = p - V;
+        return abs(dot(u, normalize(N)));
+    }
 }
 
 vec3 normalizeToCube(vec3 pos)
@@ -140,7 +156,11 @@ REGION_ID getRegionOnFace(in FACE_ID faceId, in vec3 cubeLocal3dCoords)
 
 float regionDistanceToVector(in REGION_ID region, in vec3 position)
 {
-    return distance(normalize(position), normalize(regions[region].position));
+    if (showCube == 0) {
+        return distance(normalize(position), normalize(regions[region].position));
+    } else {
+        return distance(toCubeFace(position), toCubeFace(regions[region].position));
+    }
 }
 
 REGION_ID regionIdFromLocal3d(in FACE_ID faceId, in vec3 cubeLocal3dCoords)
@@ -224,14 +244,16 @@ void main()
     REGION_ID regId = getClosestRegionId(direction, distToClosest, distToBorder);
 
 
-    float borderTreshold = (1.0f / float(10*regionResolution));
+    float borderTreshold = (1.0f / float(10 * regionResolution));
 
     if (showCube == 1) {
-        uint ones = ((abs(direction.x) >= BORDER_THRESHOLD) ? 1 : 0)
-            + ((abs(direction.y) >= BORDER_THRESHOLD) ? 1 : 0)
-            + ((abs(direction.z) >= BORDER_THRESHOLD) ? 1 : 0);
+        float cubeTreshold = (1.0f - (borderTreshold*0.5));
+        uint ones = ((abs(direction.x) >= cubeTreshold) ? 1 : 0)
+            + ((abs(direction.y) >= cubeTreshold) ? 1 : 0)
+            + ((abs(direction.z) >= cubeTreshold) ? 1 : 0);
         if (ones > 1) {
-            THROW_COLOR(vec4(0, 0, 0.1, 1));
+            THROW_COLOR(vec4(0.1, 0.1, 0.2, 1));
+            return;
         }
     }
 
@@ -241,6 +263,7 @@ void main()
         distToBorder < (borderTreshold / 3)
     )) {
         THROW_COLOR(vec4(0, 0, 0, 1));
+        return;
     }
 
     THROW_COLOR(vec4(regions[regId].color, 1));

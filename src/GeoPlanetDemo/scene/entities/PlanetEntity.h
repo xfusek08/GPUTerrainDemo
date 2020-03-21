@@ -30,9 +30,11 @@ namespace gpd
 
                 bool         getShowFaceColor()  const;
                 bool         getStepPlates()     const;
+                float        getJitter()         const;
 
                 void setResolution(unsigned int value);
                 void setStepPlates(bool value);
+                bool setJitter(float value);
 
                 void stepPlateExpansion();
 

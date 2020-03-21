@@ -176,6 +176,15 @@ void ApplicationGui::draw()
                 planetEntity->setResolution(resolution);
                 updateScene = true;
             }
+            // jitter
+            float jitter = planetEntity->getJitter();
+            // ImGui::PushItemWidth(100);
+            ImGui::InputFloat("Jitter     -(k) +(l)", &jitter, 0.1f);
+            if (jitter != planetEntity->getJitter()) {
+                if (planetEntity->setJitter(jitter)) {
+                    updateScene = true;
+                }
+            }
         }
         ImGui::Spacing();
         ImGui::Text("Modifiers:");
@@ -184,7 +193,6 @@ void ApplicationGui::draw()
         ImGui::Unindent();
         ImGui::Spacing();
         {
-
             checkbox("Enable plate steps", planetEntity->getStepPlates(), [&](bool val){
                 planetEntity->setStepPlates(val);
             });
@@ -197,7 +205,7 @@ void ApplicationGui::draw()
             ImGui::Spacing();
 
             if (ImGui::Button("Generate")) {
-                planetEntity->generateFresh();
+                planetEntity->generateFresh(planetEntity->getResolution());
                 updateScene = true;
             }
         }

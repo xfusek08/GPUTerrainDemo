@@ -24,5 +24,5 @@ uvec4 PlanetElevationVT::regionToColor(shared_ptr<Region> region)
         }
         return mix(baseColor, uvec4(0,0,0,0), elevation / 4);
     }
-    return uvec4(255, 0, 0, 0);
+    return uvec4(255, 255, 255, 0);
 }
