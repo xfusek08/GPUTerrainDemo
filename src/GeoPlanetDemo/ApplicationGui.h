@@ -42,6 +42,6 @@ namespace gpd
 
         // specific gui parts
         void drawGeneratorGui(std::shared_ptr<gp::SurfaceGenerator> generator);
-        void showModifierEditorWindow(std::string label, std::shared_ptr<gp::SurfaceModifier> modifier);
+        void showModifierEditorWindow(std::string label, std::shared_ptr<gp::modifiers::SurfaceModifier> modifier);
     };
 } // namespace gpd

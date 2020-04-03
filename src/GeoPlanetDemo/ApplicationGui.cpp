@@ -324,7 +324,7 @@ void ApplicationGui::drawGeneratorGui(shared_ptr<gp::SurfaceGenerator> generator
     ImGui::Columns(1);
 }
 
-void ApplicationGui::showModifierEditorWindow(string label, shared_ptr<gp::SurfaceModifier> modifier)
+void ApplicationGui::showModifierEditorWindow(string label, shared_ptr<gp::modifiers::SurfaceModifier> modifier)
 {
     float textColumWidth = 0.f;
     for (auto pair : modifier->variables) {
@@ -351,13 +351,13 @@ void ApplicationGui::showModifierEditorWindow(string label, shared_ptr<gp::Surfa
             ImGui::PushItemWidth(-1);
             switch (variable.type)
             {
-                case gp::ModifierVariableType::Bool:
+                case gp::modifiers::ModifierVariableType::Bool:
                     checkbox(id.c_str(), variable.value.boolval, [&](bool newVal) {
                         variable.value.boolval = newVal;
                         modifier->variables[pair.first] = variable;
                     });
                     break;
-                case gp::ModifierVariableType::Integer:
+                case gp::modifiers::ModifierVariableType::Integer:
                     {
                         int val = variable.value.intVal;
                         ImGui::InputInt(id.c_str(), &val);
@@ -367,7 +367,7 @@ void ApplicationGui::showModifierEditorWindow(string label, shared_ptr<gp::Surfa
                         }
                     }
                     break;
-                case gp::ModifierVariableType::Float:
+                case gp::modifiers::ModifierVariableType::Float:
                     {
                         float val = variable.value.floatVal;
                         ImGui::InputFloat(id.c_str(), &val, 0.1f);

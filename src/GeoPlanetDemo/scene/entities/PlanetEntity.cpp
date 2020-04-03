@@ -14,15 +14,17 @@ using namespace std;
 using namespace glm;
 using namespace gpd;
 using namespace gpd::scene::entities;
+using namespace gp::modifiers::types;
 
-#define MODIFIER_INSTANCE(type) dynamic_pointer_cast<gp::modifiers::type>(generator->getModifier(#type).modifier)
+
+#define MODIFIER_INSTANCE(type) generator->getModifier(type).modifier
 
 PlanetEntity::PlanetEntity() : Entity()
 {
     generator = make_shared<gp::SurfaceGenerator>(initializer_list<string>{
-        "JitterModifier",
-        "TectonicPlateModifier",
-        "ElevationModifier"
+        JitterModifier,
+        TectonicPlateModifier,
+        ElevationModifier
     });
     generateFresh();
 }
@@ -63,8 +65,9 @@ void PlanetEntity::setStepPlates(bool value)
 
 void PlanetEntity::stepPlateExpansion()
 {
-    if (!MODIFIER_INSTANCE(TectonicPlateModifier)->stepExpansion(surface)) {
-        generator->applyModifier(surface, "ElevationModifier");
+    auto m = dynamic_pointer_cast<gp::modifiers::TectonicPlateModifier>(MODIFIER_INSTANCE(TectonicPlateModifier));
+    if (!m->stepExpansion(surface)) {
+        generator->applyModifier(surface, ElevationModifier);
     }
 }
 
