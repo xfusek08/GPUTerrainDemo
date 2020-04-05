@@ -28,7 +28,7 @@ void PlanetVT::initGlProgram()
 shared_ptr<VAOContainer> PlanetVT::processEntityToVaoContainer(shared_ptr<Entity> entity)
 {
     auto planet = dynamic_pointer_cast<PlanetEntity>(entity);
-    auto regions = planet->getSurface()->getRegions();
+    auto regions = planet->surface->getRegions();
     vector<float> regionBuffer = {};
     for (auto region : regions) {
 

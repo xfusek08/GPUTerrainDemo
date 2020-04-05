@@ -37,8 +37,8 @@ shared_ptr<VAOContainer> PlanetVectorsVT::processEntityToVaoContainer(shared_ptr
 
     // for now only plate centers
     auto indexCnt = 3 * (
-        planet->getSurface()->plates.size()
-        + planet->getSurface()->getRegions().size()
+        planet->surface->plates.size()
+        + planet->surface->getRegions().size()
     );
 
     verticies.reserve(indexCnt);
@@ -46,7 +46,7 @@ shared_ptr<VAOContainer> PlanetVectorsVT::processEntityToVaoContainer(shared_ptr
     indices.reserve(indexCnt);
 
     unsigned int index = 0;
-    for (auto plate : planet->getSurface()->plates) {
+    for (auto plate : planet->surface->plates) {
 
         auto origin             = plate->getCenter();
         auto direction          = plate->shiftVector * 0.1f;

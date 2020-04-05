@@ -25,12 +25,10 @@ namespace gpd
                 // methods
                 PlanetEntity();
 
-                inline unsigned int                 getResolution() const { return surface->getResolution(); }
-                inline std::shared_ptr<gp::Surface> getSurface()    const { return surface; }
+                inline unsigned int getResolution() const { return surface->getResolution(); }
 
-                bool         getShowFaceColor()  const;
-                bool         getStepPlates()     const;
-                float        getJitter()         const;
+                bool  getStepPlates() const;
+                float getJitter()     const;
 
                 void setResolution(unsigned int value);
                 void setStepPlates(bool value);
