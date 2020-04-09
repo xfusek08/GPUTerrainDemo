@@ -20,7 +20,7 @@ namespace gpd
                 bool showCube = false;
                 bool doWarp = true;
                 bool showRegionBounds = false;
-                unsigned int meshResolution = 10;
+                unsigned int meshResolution = 2;
 
                 // methods
                 PlanetEntity();

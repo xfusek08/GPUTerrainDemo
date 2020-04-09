@@ -99,6 +99,7 @@ set(SRC_GEO_PLANET_DEMO_VT_PLANET
     src/${APP_NAME}/vt/planet/PlanetCubeMapVT.h       src/${APP_NAME}/vt/planet/PlanetCubeMapVT.cpp
     src/${APP_NAME}/vt/planet/PlanetFaceColorVT.h     src/${APP_NAME}/vt/planet/PlanetFaceColorVT.cpp
     src/${APP_NAME}/vt/planet/PlanetVectorsVT.h       src/${APP_NAME}/vt/planet/PlanetVectorsVT.cpp
+    src/${APP_NAME}/vt/planet/PlanetWireFrameVT.h     src/${APP_NAME}/vt/planet/PlanetWireFrameVT.cpp
 )
 
 set(SRC_GEO_PLANET_DEMO_VT_PLANET_HELPER

@@ -21,7 +21,8 @@ SceneRenderer::SceneRenderer(std::shared_ptr<ge::gl::Context> context, std::shar
 {
     // gl->glClearColor(0, 0, 0, 0); // TODO: some kind of prepare method
 
-    gl->glClearColor(0, 0, 255, 1);
+    // gl->glClearColor(0, 0, 255, 1);
+    gl->glClearColor(255, 255, 255, 1);
 
     updateScene();
 }

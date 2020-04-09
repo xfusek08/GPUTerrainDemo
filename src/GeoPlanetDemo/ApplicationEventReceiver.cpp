@@ -47,8 +47,10 @@ bool ApplicationEventReceiver::processSDLEvent(SDL_Event const& event)
             switch(event.key.keysym.sym) {
                 case SDLK_F1: RUN_SET_ELEMENT_VT("planet", vt::types::PlanetElevationVT);
                 case SDLK_F2: RUN_SET_ELEMENT_VT("planet", vt::types::PlanetPlatesVT);
-                case SDLK_F3: RUN_SET_ELEMENT_VT("planet", vt::types::PlanetCubeMapVT);
-                case SDLK_F4: RUN_SET_ELEMENT_VT("planet", vt::types::PlanetFaceColorVT);
+                case SDLK_F3: RUN_SET_ELEMENT_VT("planet", vt::types::PlanetFaceColorVT);
+                case SDLK_F4: RUN_SET_ELEMENT_VT("planet", vt::types::PlanetWireFrameVT);
+                case SDLK_F5: RUN_SET_ELEMENT_VT("planet", vt::types::PlanetCubeMapVT);
+
 
                 case SDLK_1: RUN_SET_ELEMENT_VT("planet_data", vt::types::UndefinedVT);
                 case SDLK_2: RUN_SET_ELEMENT_VT("planet_data", vt::types::PlanetVectorsVT);
