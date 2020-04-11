@@ -328,7 +328,7 @@ void ApplicationGui::drawGeneratorGui(shared_ptr<gp::SurfaceGenerator> generator
 void ApplicationGui::showModifierEditorWindow(string label, shared_ptr<gp::modifiers::SurfaceModifier> modifier)
 {
     float textColumWidth = 0.f;
-    for (auto pair : modifier->variables) {
+    for (auto pair : modifier->getVariables()) {
         auto actSize = ImGui::CalcTextSize(pair.second.description.c_str());
         if (actSize.x > textColumWidth) {
             textColumWidth = actSize.x;
@@ -341,7 +341,7 @@ void ApplicationGui::showModifierEditorWindow(string label, shared_ptr<gp::modif
     window(label, [&](){
         ImGui::Columns(2, nullptr, false);
         ImGui::SetColumnWidth(0,textColumWidth);
-        for (auto pair : modifier->variables) {
+        for (auto pair : modifier->getVariables()) {
             auto variable = pair.second;;
             auto id = "##" + variable.description;
             id.erase(std::remove_if(id.begin(), id.end(), ::isspace), id.end());
@@ -355,7 +355,7 @@ void ApplicationGui::showModifierEditorWindow(string label, shared_ptr<gp::modif
                 case gp::modifiers::ModifierVariableType::Bool:
                     checkbox(id.c_str(), variable.value.boolval, [&](bool newVal) {
                         variable.value.boolval = newVal;
-                        modifier->variables[pair.first] = variable;
+                        modifier->setVariable(pair.first, variable.value);
                     });
                     break;
                 case gp::modifiers::ModifierVariableType::Integer:
@@ -364,7 +364,7 @@ void ApplicationGui::showModifierEditorWindow(string label, shared_ptr<gp::modif
                         ImGui::InputInt(id.c_str(), &val);
                         if (variable.value.intVal != val) {
                             variable.value.intVal = val;
-                            modifier->variables[pair.first] = variable;
+                            modifier->setVariable(pair.first, variable.value);
                         }
                     }
                     break;
@@ -374,7 +374,7 @@ void ApplicationGui::showModifierEditorWindow(string label, shared_ptr<gp::modif
                         ImGui::InputFloat(id.c_str(), &val, 0.1f);
                         if (variable.value.floatVal != val) {
                             variable.value.floatVal = val;
-                            modifier->variables[pair.first] = variable;
+                            modifier->setVariable(pair.first, variable.value);
                         }
                     }
                     break;
