@@ -39,14 +39,14 @@ void PlanetEntity::setResolution(unsigned int value)
 
 float PlanetEntity::getJitter() const
 {
-    return MODIFIER_INSTANCE(JitterModifier)->getFloatVariable("jitter");
+    return MODIFIER_INSTANCE(JitterModifier)->getFloat("jitter");
 }
 
 bool PlanetEntity::setJitter(float value)
 {
     auto m = MODIFIER_INSTANCE(JitterModifier);
-    if (m->getFloatVariable("jitter") != value) {
-        m->setFloatVariable("jitter", value);
+    if (m->getFloat("jitter") != value) {
+        m->setFloat("jitter", value);
         generator->applyModifier(surface, m);
         return true;
     }
@@ -55,12 +55,12 @@ bool PlanetEntity::setJitter(float value)
 
 bool PlanetEntity::getStepPlates() const
 {
-    return MODIFIER_INSTANCE(TectonicPlateModifier)->getBoolVariable("stepMode");
+    return MODIFIER_INSTANCE(TectonicPlateModifier)->getBool("stepMode");
 }
 
 void PlanetEntity::setStepPlates(bool value)
 {
-    MODIFIER_INSTANCE(TectonicPlateModifier)->setBoolVariable("stepMode", value);
+    MODIFIER_INSTANCE(TectonicPlateModifier)->setBool("stepMode", value);
 }
 
 void PlanetEntity::stepPlateExpansion()

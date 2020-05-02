@@ -329,7 +329,7 @@ void ApplicationGui::showModifierEditorWindow(string label, shared_ptr<gp::modif
 {
     float textColumWidth = 0.f;
     for (auto pair : modifier->getVariables()) {
-        auto actSize = ImGui::CalcTextSize(pair.second.description.c_str());
+        auto actSize = ImGui::CalcTextSize(pair.second.getDescription().c_str());
         if (actSize.x > textColumWidth) {
             textColumWidth = actSize.x;
         }
@@ -343,38 +343,35 @@ void ApplicationGui::showModifierEditorWindow(string label, shared_ptr<gp::modif
         ImGui::SetColumnWidth(0,textColumWidth);
         for (auto pair : modifier->getVariables()) {
             auto variable = pair.second;;
-            auto id = "##" + variable.description;
+            auto id = "##" + variable.getDescription();
             id.erase(std::remove_if(id.begin(), id.end(), ::isspace), id.end());
             ImGui::PushItemWidth(textColumWidth);
-            ImGui::Text((variable.description+":").c_str());
+            ImGui::Text((variable.getDescription() +":").c_str());
             ImGui::PopItemWidth();
             ImGui::NextColumn();
             ImGui::PushItemWidth(-1);
-            switch (variable.type)
+            switch (variable.getType())
             {
                 case gp::modifiers::ModifierVariableType::Bool:
-                    checkbox(id.c_str(), variable.value.boolval, [&](bool newVal) {
-                        variable.value.boolval = newVal;
-                        modifier->setVariable(pair.first, variable.value);
+                    checkbox(id.c_str(), variable.getBool(), [&](bool newVal) {
+                        modifier->setBool(pair.first, newVal);
                     });
                     break;
                 case gp::modifiers::ModifierVariableType::Integer:
                     {
-                        int val = variable.value.intVal;
+                        int val = variable.getInt();
                         ImGui::InputInt(id.c_str(), &val);
-                        if (variable.value.intVal != val) {
-                            variable.value.intVal = val;
-                            modifier->setVariable(pair.first, variable.value);
+                        if (variable.getInt() != val) {
+                            modifier->setInt(pair.first, val);
                         }
                     }
                     break;
                 case gp::modifiers::ModifierVariableType::Float:
                     {
-                        float val = variable.value.floatVal;
+                        float val = variable.getFloat();
                         ImGui::InputFloat(id.c_str(), &val, 0.1f);
-                        if (variable.value.floatVal != val) {
-                            variable.value.floatVal = val;
-                            modifier->setVariable(pair.first, variable.value);
+                        if (variable.getFloat() != val) {
+                            modifier->setFloat(pair.first, val);
                         }
                     }
                     break;
