@@ -51,10 +51,6 @@ bool ApplicationEventReceiver::processSDLEvent(SDL_Event const& event)
                 case SDLK_F4: RUN_SET_ELEMENT_VT("planet", vt::types::PlanetWireFrameVT);
                 case SDLK_F5: RUN_SET_ELEMENT_VT("planet", vt::types::PlanetCubeMapVT);
 
-
-                case SDLK_1: RUN_SET_ELEMENT_VT("planet_data", vt::types::UndefinedVT);
-                case SDLK_2: RUN_SET_ELEMENT_VT("planet_data", vt::types::PlanetVectorsVT);
-
                 case SDLK_p: RUN_FOR_PLANET({
                     planetEntity->setResolution(planetEntity->getResolution() + 1);
                 });
@@ -83,6 +79,7 @@ bool ApplicationEventReceiver::processSDLEvent(SDL_Event const& event)
                     planetEntity->doWarp = !planetEntity->doWarp;
                 });
             }
+            break;
         default: break;
     }
     return false;

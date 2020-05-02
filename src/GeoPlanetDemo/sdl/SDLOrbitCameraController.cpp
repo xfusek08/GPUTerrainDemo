@@ -16,6 +16,19 @@ SDLOrbitCameraController::SDLOrbitCameraController(shared_ptr<Camera> camera) :
 
 bool SDLOrbitCameraController::processSDLEvent(SDL_Event const& event)
 {
+    switch (event.type) {
+        case SDL_MOUSEMOTION:
+            if (event.motion.state & SDL_BUTTON_LEFT) {
+                lookXY({event.motion.xrel, event.motion.yrel});
+                return true;
+            }
+            break;
+        case SDL_MOUSEWHEEL:
+                zoom(-event.wheel.y);
+                return true;
+            break;
+        default: break;
+    }
     return false;
 }
 

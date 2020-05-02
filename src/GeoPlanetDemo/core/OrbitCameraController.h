@@ -13,13 +13,14 @@ namespace gpd
 
             inline std::shared_ptr<core::Camera> getCamera() { return camera; }
 
-            void up();
-            void down();
-            void left();
-            void right();
+            void up(float degree = 0);
+            void down(float degree = 0);
+            void left(float degree = 0);
+            void right(float degree = 0);
 
             void zoomIn();
             void zoomOut();
+            void zoom(float amount);
 
             void lookXY(glm::vec2 delta);
         protected:

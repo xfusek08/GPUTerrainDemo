@@ -25,34 +25,34 @@ OrbitCameraController::OrbitCameraController(shared_ptr<Camera> camera) :
     performRotation();
 }
 
-void OrbitCameraController::up()
+void OrbitCameraController::up(float degree)
 {
     performRotation(
-        speed,
+        (degree ? degree : speed),
         glm::normalize(glm::cross(camera->getCameraDirection(), glm::vec3{ 0.f,1.f,0.f }))
     );
 }
 
-void OrbitCameraController::down()
+void OrbitCameraController::down(float degree)
 {
     performRotation(
-        -speed,
+        -(degree ? degree : speed),
         glm::normalize(glm::cross(camera->getCameraDirection(), glm::vec3{ 0.f,1.f,0.f }))
     );
 }
 
-void OrbitCameraController::left()
+void OrbitCameraController::left(float degree)
 {
     performRotation(
-        -speed,
+        -(degree ? degree : speed),
         glm::vec3(0.f, 1.f, 0.f)
     );
 }
 
-void OrbitCameraController::right()
+void OrbitCameraController::right(float degree)
 {
     performRotation(
-        speed,
+        (degree ? degree : speed),
         glm::vec3(0.f, 1.f, 0.f)
     );
 }
@@ -69,8 +69,18 @@ void OrbitCameraController::zoomOut()
     performRotation();
 }
 
+void OrbitCameraController::zoom(float amount)
+{
+    radius += amount / 10;
+    GPD_LOG_INFO("zoom radius: " << radius);
+    performRotation();
+}
+
 void OrbitCameraController::lookXY(glm::vec2 delta)
 {
+    GPD_LOG_INFO("dragging: relx: " << delta.x <<" rely: " << delta.y);
+    down(radius * (delta.y / 2000));
+    right(radius * (delta.x / 2000));
 }
 
 void OrbitCameraController::performRotation(float angleIncrement, glm::vec3 axis)
