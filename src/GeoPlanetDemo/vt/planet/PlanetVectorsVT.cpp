@@ -47,11 +47,13 @@ shared_ptr<VAOContainer> PlanetVectorsVT::processEntityToVaoContainer(shared_ptr
 
     unsigned int index = 0;
     for (auto plate : planet->surface->plates) {
+        float vectorSize = 0.1f;
+        float childScale = 0.6f;
 
         auto origin             = plate->getCenter();
-        auto direction          = plate->shiftVector * 0.1f;
+        auto direction          = plate->shiftVector * vectorSize;
         auto destination        = origin + direction;
-        auto trinagleBaseOffset = glm::normalize(glm::cross(origin, destination)) * 0.01f;
+        auto trinagleBaseOffset = glm::normalize(glm::cross(origin, destination)) * vectorSize  * 0.1f;
         auto uColor             = plateColorizer->plateColor(plate.get());
 
         auto color  = glm::vec3(
@@ -74,13 +76,14 @@ shared_ptr<VAOContainer> PlanetVectorsVT::processEntityToVaoContainer(shared_ptr
         indices.push_back(index++);
 
         // draw vector for each region
-        trinagleBaseOffset *= 0.4f;
-        direction          *= 0.4f;
+        trinagleBaseOffset *= childScale;
+        direction          *= childScale;
+        vectorSize         *= childScale;
         color              = glm::mix(color, glm::vec3(1, 1, 1), 0.2);
         darkercolor        = glm::mix(color, glm::vec3(1, 1, 1), 0.2);
         for (auto region : plate->getMemberRegions()) {
             origin = region->position.getGlobal();
-            destination = glm::normalize(origin + glm::normalize(direction) * glm::length(plate->shiftVector) * 0.04f);
+            destination = glm::normalize(origin + glm::normalize(direction) * glm::length(plate->shiftVector) * vectorSize);
 
             verticies.push_back(origin + trinagleBaseOffset);
             colors.push_back(darkercolor);

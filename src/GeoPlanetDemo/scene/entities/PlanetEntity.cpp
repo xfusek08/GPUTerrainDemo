@@ -120,6 +120,9 @@ unique_ptr<unsigned char[]> PlanetEntity::getTextureDataForFace(unsigned int fac
 void PlanetEntity::generateFresh(unsigned int value)
 {
     auto steps = getStepPlates();
+    if (surface != nullptr) {
+        surface->clear();
+    }
     surface = generator->generate(value);
     setStepPlates(steps);
 }
