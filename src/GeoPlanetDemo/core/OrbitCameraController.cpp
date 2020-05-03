@@ -7,12 +7,6 @@
 
 #include <GeoPlanetDemo/core/OrbitCameraController.h>
 
-#ifdef GPD_DEBUG
-#define GLM_ENABLE_EXPERIMENTAL
-#include <glm/gtx/string_cast.hpp>
-#include <GeoPlanetDemo/core/Utils.h>
-#endif
-
 using namespace std;
 using namespace gpd::core;
 
@@ -71,14 +65,12 @@ void OrbitCameraController::zoomOut()
 
 void OrbitCameraController::zoom(float amount)
 {
-    radius += amount / 10;
-    GPD_LOG_INFO("zoom radius: " << radius);
+    radius += amount / 10;    
     performRotation();
 }
 
 void OrbitCameraController::lookXY(glm::vec2 delta)
-{
-    GPD_LOG_INFO("dragging: relx: " << delta.x <<" rely: " << delta.y);
+{    
     down(radius * (delta.y / 2000));
     right(radius * (delta.x / 2000));
 }

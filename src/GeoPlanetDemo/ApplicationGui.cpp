@@ -125,8 +125,8 @@ void ApplicationGui::draw()
         {
             auto plateDataElement = application->scene->getElement("planet_data");
             int vtTypeInt = vtTypeToInt(plateDataElement.vtType);
-            ImGui::RadioButton("Disabled       (1)", &vtTypeInt, vtTypeToInt(vt::types::UndefinedVT));
-            ImGui::RadioButton("Plate movement (2)", &vtTypeInt, vtTypeToInt(vt::types::PlanetVectorsVT));
+            ImGui::RadioButton("Disabled", &vtTypeInt, vtTypeToInt(vt::types::UndefinedVT));
+            ImGui::RadioButton("Plate movement", &vtTypeInt, vtTypeToInt(vt::types::PlanetVectorsVT));
             if (plateDataElement.vtType != intToVtType(vtTypeInt)) {
                 plateDataElement.vtType = intToVtType(vtTypeInt);
                 application->scene->setElement("planet_data", plateDataElement);

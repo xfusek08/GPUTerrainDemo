@@ -54,7 +54,6 @@ shared_ptr<ge::gl::Texture> PlanetCubeMapVT::loadTextureFromPlanet(shared_ptr<Pl
     unsigned int w = 1000;
     unsigned int h = 1000;
 
-    // move to VAO container or get working texture object
     auto tex = make_shared<ge::gl::Texture>(GL_TEXTURE_CUBE_MAP, GL_RGBA, 0, w, h);
     for (int i = 0; i < 6; ++i) {
         unique_ptr<unsigned char[]> data = planet->getTextureDataForFace(i, w, h);
