@@ -30,6 +30,8 @@ namespace gpd
 
             float speed;
             float radius;
+
+            void setRadius(float radius);
         };
     }
 }

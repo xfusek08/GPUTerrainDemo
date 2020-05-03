@@ -51,11 +51,12 @@ set(SHADER_FILES
 )
 
 # source files
-        # HEADERS #                                         $ SOURCES $
+        # HEADERS #                                         # SOURCES #
 set(SRC_GEO_PLANET_DEMO
     src/${APP_NAME}/Application.h                     src/${APP_NAME}/Application.cpp
     src/${APP_NAME}/ApplicationEventReceiver.h        src/${APP_NAME}/ApplicationEventReceiver.cpp
     src/${APP_NAME}/ApplicationGui.h                  src/${APP_NAME}/ApplicationGui.cpp
+    src/${APP_NAME}/ModifierPropertyWidowGui.h        src/${APP_NAME}/ModifierPropertyWidowGui.cpp
 )
 
 set(SRC_GEO_PLANET_DEMO_CORE

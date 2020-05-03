@@ -53,24 +53,35 @@ void OrbitCameraController::right(float degree)
 
 void OrbitCameraController::zoomIn()
 {
-    radius *= 0.99f;
+    setRadius(radius * 0.99f);
     performRotation();
 }
 
 void OrbitCameraController::zoomOut()
 {
-    radius *= 1.01f;
+    setRadius(radius * 1.01f);
     performRotation();
 }
 
 void OrbitCameraController::zoom(float amount)
 {
-    radius += amount / 10;    
+    setRadius(radius + amount / 7);
     performRotation();
 }
 
+void OrbitCameraController::setRadius(float radius)
+{
+    if (radius > 10) {
+        this->radius = 10;
+    } else if (radius < 1.3f) {
+        this->radius = 1.3f;
+    } else {
+        this->radius = radius;
+    }
+}
+
 void OrbitCameraController::lookXY(glm::vec2 delta)
-{    
+{
     down(radius * (delta.y / 2000));
     right(radius * (delta.x / 2000));
 }

@@ -284,21 +284,6 @@ void ApplicationGui::checkbox(const char* label, bool val, function<void(bool)> 
     }
 }
 
-void ApplicationGui::window(string label, function<void(void)> drawCallback)
-{
-    bool open;
-    if (!ImGui::Begin(label.c_str(), &open, ImGuiWindowFlags_NoResize)) {
-        ImGui::End();
-        return;
-    }
-    if (!open) {
-        openWindows[label] = false;
-    } else {
-        drawCallback();
-    }
-    ImGui::End();
-}
-
 void ApplicationGui::drawGeneratorGui(shared_ptr<gp::SurfaceGenerator> generator)
 {
     ImGui::Columns(2, nullptr, false);
@@ -313,72 +298,51 @@ void ApplicationGui::drawGeneratorGui(shared_ptr<gp::SurfaceGenerator> generator
         });
         ImGui::NextColumn();
         ImGui::PushItemWidth(10);
+
+        auto it = modifierWindows.find(modifierItem.ident);
+        if (it == modifierWindows.end()) {
+            modifierWindows[modifierItem.ident] = make_shared<ModifierPropertyWidowGui>(modifierItem.ident, modifierItem.modifier.get());
+            it = modifierWindows.find(modifierItem.ident);
+        }
+
         if (ImGui::Button(("edit##"+modifierItem.ident).c_str())) {
-            openWindows[modifierItem.ident] = !openWindows[modifierItem.ident];
+            it->second->toggle();
+            positionModifierPropertiesWindows();
         }
-        if (openWindows[modifierItem.ident]) {
-            showModifierEditorWindow(modifierItem.ident, modifierItem.modifier);
-        }
+        it->second->draw();
+
         ImGui::PopItemWidth();
         ImGui::NextColumn();
     }
     ImGui::Columns(1);
 }
 
-void ApplicationGui::showModifierEditorWindow(string label, shared_ptr<gp::modifiers::SurfaceModifier> modifier)
+void ApplicationGui::positionModifierPropertiesWindows()
 {
-    float textColumWidth = 0.f;
-    for (auto pair : modifier->getVariables()) {
-        auto actSize = ImGui::CalcTextSize(pair.second.getDescription().c_str());
-        if (actSize.x > textColumWidth) {
-            textColumWidth = actSize.x;
+    vector<std::shared_ptr<ModifierPropertyWidowGui>> placeFirst;
+    vector<std::shared_ptr<ModifierPropertyWidowGui>> placeBehind;
+    for (auto pair : modifierWindows) {
+        auto window = pair.second;
+        if (window->getIsOpen() && window->isPlaced()) {
+            placeFirst.push_back(window);
+        } else if (window->getIsOpen() && !window->isPlaced()) {
+            placeBehind.push_back(window);
         }
     }
 
-    textColumWidth += 20.f;
-
-    ImGui::SetNextWindowSize({textColumWidth + 150.f, 0}, ImGuiCond_Always);
-    window(label, [&](){
-        ImGui::Columns(2, nullptr, false);
-        ImGui::SetColumnWidth(0,textColumWidth);
-        for (auto pair : modifier->getVariables()) {
-            auto variable = pair.second;;
-            auto id = "##" + variable.getDescription();
-            id.erase(std::remove_if(id.begin(), id.end(), ::isspace), id.end());
-            ImGui::PushItemWidth(textColumWidth);
-            ImGui::Text((variable.getDescription() +":").c_str());
-            ImGui::PopItemWidth();
-            ImGui::NextColumn();
-            ImGui::PushItemWidth(-1);
-            switch (variable.getType())
-            {
-                case gp::modifiers::ModifierVariableType::Bool:
-                    checkbox(id.c_str(), variable.getBool(), [&](bool newVal) {
-                        modifier->setBool(pair.first, newVal);
-                    });
-                    break;
-                case gp::modifiers::ModifierVariableType::Integer:
-                    {
-                        int val = variable.getInt();
-                        ImGui::InputInt(id.c_str(), &val);
-                        if (variable.getInt() != val) {
-                            modifier->setInt(pair.first, val);
-                        }
-                    }
-                    break;
-                case gp::modifiers::ModifierVariableType::Float:
-                    {
-                        float val = variable.getFloat();
-                        ImGui::InputFloat(id.c_str(), &val, 0.1f);
-                        if (variable.getFloat() != val) {
-                            modifier->setFloat(pair.first, val);
-                        }
-                    }
-                    break;
-            }
-            ImGui::PopItemWidth();
-            ImGui::NextColumn();
-            ImGui::Separator();
+    sort(placeFirst.begin(), placeFirst.end(), 
+        [](const std::shared_ptr<ModifierPropertyWidowGui>& a, const std::shared_ptr<ModifierPropertyWidowGui>& b) {
+            return a->position.y < b->position.y;
         }
-    });
+    );
+
+    float top = 0.f;
+    for (auto window : placeFirst) {
+        window->position = { 310.f, top};
+        top += 10.f + window->getHeight();
+    }
+    for (auto window : placeBehind) {
+        window->position = { 310.f, top};
+        top += 10.f + window->getHeight();
+    }
 }

@@ -1,9 +1,11 @@
 #pragma once
 
-#include <GeoPlanetDemo/Application.h>
 #include <GeoPlanetDemo/sdl/SDLEventReceiverInterface.h>
 
 #include <GeoPlanetDemo/vt/VTType.h>
+
+#include <GeoPlanetDemo/Application.h>
+#include <GeoPlanetDemo/ModifierPropertyWidowGui.h>
 
 namespace gp
 {
@@ -27,7 +29,7 @@ namespace gpd
     private:
         // properties
         Application* application;
-        std::unordered_map<std::string, bool> openWindows;
+        std::unordered_map<std::string, std::shared_ptr<ModifierPropertyWidowGui>> modifierWindows;
 
         // methods
         void drawPrepare();
@@ -38,10 +40,9 @@ namespace gpd
 
         // general api simplifications
         void checkbox(const char* label, bool val, std::function<void(bool)> onChangeCallback);
-        void window(std::string label, std::function<void(void)> drawCallback);
 
         // specific gui parts
         void drawGeneratorGui(std::shared_ptr<gp::SurfaceGenerator> generator);
-        void showModifierEditorWindow(std::string label, std::shared_ptr<gp::modifiers::SurfaceModifier> modifier);
+        void positionModifierPropertiesWindows();
     };
 } // namespace gpd

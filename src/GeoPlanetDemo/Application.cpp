@@ -49,9 +49,9 @@ int Application::init()
     renderer->updateScene();
 
     // init control
-    mainLoop->addEventReceiver(make_shared<sdl::SDLOrbitCameraController>(camera)); // keyboard input
-    mainLoop->addEventReceiver(make_shared<ApplicationEventReceiver>(this));        // gui input
-    mainLoop->addEventReceiver(gui);
+    mainLoop->addEventReceiver(make_shared<sdl::SDLOrbitCameraController>(camera)); // comera control    
+    mainLoop->addEventReceiver(make_shared<ApplicationEventReceiver>(this)); // keyboard input
+    mainLoop->addEventReceiver(gui); // gui input    
 
     // bind main loop draw to
     mainLoop->setDrawCallback(bind(&Application::draw, this));
