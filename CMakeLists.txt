@@ -1,14 +1,16 @@
 
-cmake_minimum_required(VERSION 3.12.4)
+cmake_minimum_required(VERSION 3.15)
 
 project(
-    GeoPlanetProject-Demo
+    GeoPlanetDemo
     VERSION 0.0.0
 )
 
-set(APP_NAME "GeoPlanetDemo")
-
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
+SET(CMAKE_DEBUG_POSTFIX          "d"  CACHE STRING "add a postfix, usually d on windows"    )
+SET(CMAKE_RELEASE_POSTFIX        ""   CACHE STRING "add a postfix, usually empty on windows")
+SET(CMAKE_RELWITHDEBINFO_POSTFIX "rd" CACHE STRING "add a postfix, usually empty on windows")
+SET(CMAKE_MINSIZEREL_POSTFIX     "s"  CACHE STRING "add a postfix, usually empty on windows")
 
 # find GPUengine library
 if(NOT TARGET GPUEngine)
@@ -36,7 +38,7 @@ endif()
 # resources
 
 set(DEFAULT_RESOERCES_PATH "${CMAKE_CURRENT_LIST_DIR}/resources")
-set(${APP_NAME}_RESOURCES  "${DEFAULT_RESOERCES_PATH}" CACHE PATH "Relative or absolute path to Application resources.")
+set(${PROJECT_NAME}_RESOURCES  "${DEFAULT_RESOERCES_PATH}" CACHE PATH "Relative or absolute path to Application resources.")
 
 set(SHADER_FILES
     # vertex                          # fragment
@@ -53,64 +55,64 @@ set(SHADER_FILES
 # source files
         # HEADERS #                                         # SOURCES #
 set(SRC_GEO_PLANET_DEMO
-    src/${APP_NAME}/Application.h                     src/${APP_NAME}/Application.cpp
-    src/${APP_NAME}/ApplicationEventReceiver.h        src/${APP_NAME}/ApplicationEventReceiver.cpp
-    src/${APP_NAME}/ApplicationGui.h                  src/${APP_NAME}/ApplicationGui.cpp
-    src/${APP_NAME}/ModifierPropertyWidowGui.h        src/${APP_NAME}/ModifierPropertyWidowGui.cpp
+    src/${PROJECT_NAME}/Application.h                     src/${PROJECT_NAME}/Application.cpp
+    src/${PROJECT_NAME}/ApplicationEventReceiver.h        src/${PROJECT_NAME}/ApplicationEventReceiver.cpp
+    src/${PROJECT_NAME}/ApplicationGui.h                  src/${PROJECT_NAME}/ApplicationGui.cpp
+    src/${PROJECT_NAME}/ModifierPropertyWidowGui.h        src/${PROJECT_NAME}/ModifierPropertyWidowGui.cpp
 )
 
 set(SRC_GEO_PLANET_DEMO_CORE
-    src/${APP_NAME}/core/Utils.h
-    src/${APP_NAME}/core/Log.h                        src/${APP_NAME}/core/Log.cpp
-    src/${APP_NAME}/core/Camera.h                     src/${APP_NAME}/core/Camera.cpp
-    src/${APP_NAME}/core/OrbitCameraController.h      src/${APP_NAME}/core/OrbitCameraController.cpp
-    src/${APP_NAME}/core/SceneRenderer.h              src/${APP_NAME}/core/SceneRenderer.cpp
+    src/${PROJECT_NAME}/core/Utils.h
+    src/${PROJECT_NAME}/core/Log.h                        src/${PROJECT_NAME}/core/Log.cpp
+    src/${PROJECT_NAME}/core/Camera.h                     src/${PROJECT_NAME}/core/Camera.cpp
+    src/${PROJECT_NAME}/core/OrbitCameraController.h      src/${PROJECT_NAME}/core/OrbitCameraController.cpp
+    src/${PROJECT_NAME}/core/SceneRenderer.h              src/${PROJECT_NAME}/core/SceneRenderer.cpp
 )
 
 set(SRC_GEO_PLANET_DEMO_SCENE
-    src/${APP_NAME}/scene/Scene.h                     src/${APP_NAME}/scene/Scene.cpp
-    src/${APP_NAME}/scene/Entity.h                    src/${APP_NAME}/scene/Entity.cpp
+    src/${PROJECT_NAME}/scene/Scene.h                     src/${PROJECT_NAME}/scene/Scene.cpp
+    src/${PROJECT_NAME}/scene/Entity.h                    src/${PROJECT_NAME}/scene/Entity.cpp
 )
 
 set(SRC_GEO_PLANET_DEMO_SCENE_ENTITIES
-    src/${APP_NAME}/scene/entities/AxisEntity.h       src/${APP_NAME}/scene/entities/AxisEntity.cpp
-    src/${APP_NAME}/scene/entities/PlanetEntity.h     src/${APP_NAME}/scene/entities/PlanetEntity.cpp
+    src/${PROJECT_NAME}/scene/entities/AxisEntity.h       src/${PROJECT_NAME}/scene/entities/AxisEntity.cpp
+    src/${PROJECT_NAME}/scene/entities/PlanetEntity.h     src/${PROJECT_NAME}/scene/entities/PlanetEntity.cpp
 )
 
 set(SRC_GEO_PLANET_DEMO_SDL
-    src/${APP_NAME}/sdl/SDLEventReceiverInterface.h
-    src/${APP_NAME}/sdl/SDLGlMainLoop.h               src/${APP_NAME}/SDL/SDLGlMainLoop.cpp
-    src/${APP_NAME}/sdl/SDLOrbitCameraController.h    src/${APP_NAME}/sdl/SDLOrbitCameraController.cpp
-    src/${APP_NAME}/sdl/SDLPerformance.h              src/${APP_NAME}/sdl/SDLPerformance.cpp
+    src/${PROJECT_NAME}/sdl/SDLEventReceiverInterface.h
+    src/${PROJECT_NAME}/sdl/SDLGlMainLoop.h               src/${PROJECT_NAME}/SDL/SDLGlMainLoop.cpp
+    src/${PROJECT_NAME}/sdl/SDLOrbitCameraController.h    src/${PROJECT_NAME}/sdl/SDLOrbitCameraController.cpp
+    src/${PROJECT_NAME}/sdl/SDLPerformance.h              src/${PROJECT_NAME}/sdl/SDLPerformance.cpp
 )
 
 set(SRC_GEO_PLANET_DEMO_VT
-    src/${APP_NAME}/vt/VTType.h
-    src/${APP_NAME}/vt/VTFactory.h
-    src/${APP_NAME}/vt/VAOContainer.h                 src/${APP_NAME}/vt/VAOContainer.cpp
-    src/${APP_NAME}/vt/VisualizationTechnique.h       src/${APP_NAME}/vt/VisualizationTechnique.cpp
-    src/${APP_NAME}/vt/ColorLinesVT.h                 src/${APP_NAME}/vt/ColorLinesVT.cpp
+    src/${PROJECT_NAME}/vt/VTType.h
+    src/${PROJECT_NAME}/vt/VTFactory.h
+    src/${PROJECT_NAME}/vt/VAOContainer.h                 src/${PROJECT_NAME}/vt/VAOContainer.cpp
+    src/${PROJECT_NAME}/vt/VisualizationTechnique.h       src/${PROJECT_NAME}/vt/VisualizationTechnique.cpp
+    src/${PROJECT_NAME}/vt/ColorLinesVT.h                 src/${PROJECT_NAME}/vt/ColorLinesVT.cpp
 )
 
 set(SRC_GEO_PLANET_DEMO_VT_PLANET
-    src/${APP_NAME}/vt/planet/vts.h
-    src/${APP_NAME}/vt/planet/PlanetVT.h              src/${APP_NAME}/vt/planet/PlanetVT.cpp
-    src/${APP_NAME}/vt/planet/PlanetPlatesVT.h        src/${APP_NAME}/vt/planet/PlanetPlatesVT.cpp
-    src/${APP_NAME}/vt/planet/PlanetElevationVT.h     src/${APP_NAME}/vt/planet/PlanetElevationVT.cpp
-    src/${APP_NAME}/vt/planet/PlanetCubeMapVT.h       src/${APP_NAME}/vt/planet/PlanetCubeMapVT.cpp
-    src/${APP_NAME}/vt/planet/PlanetFaceColorVT.h     src/${APP_NAME}/vt/planet/PlanetFaceColorVT.cpp
-    src/${APP_NAME}/vt/planet/PlanetVectorsVT.h       src/${APP_NAME}/vt/planet/PlanetVectorsVT.cpp
-    src/${APP_NAME}/vt/planet/PlanetWireFrameVT.h     src/${APP_NAME}/vt/planet/PlanetWireFrameVT.cpp
+    src/${PROJECT_NAME}/vt/planet/vts.h
+    src/${PROJECT_NAME}/vt/planet/PlanetVT.h              src/${PROJECT_NAME}/vt/planet/PlanetVT.cpp
+    src/${PROJECT_NAME}/vt/planet/PlanetPlatesVT.h        src/${PROJECT_NAME}/vt/planet/PlanetPlatesVT.cpp
+    src/${PROJECT_NAME}/vt/planet/PlanetElevationVT.h     src/${PROJECT_NAME}/vt/planet/PlanetElevationVT.cpp
+    src/${PROJECT_NAME}/vt/planet/PlanetCubeMapVT.h       src/${PROJECT_NAME}/vt/planet/PlanetCubeMapVT.cpp
+    src/${PROJECT_NAME}/vt/planet/PlanetFaceColorVT.h     src/${PROJECT_NAME}/vt/planet/PlanetFaceColorVT.cpp
+    src/${PROJECT_NAME}/vt/planet/PlanetVectorsVT.h       src/${PROJECT_NAME}/vt/planet/PlanetVectorsVT.cpp
+    src/${PROJECT_NAME}/vt/planet/PlanetWireFrameVT.h     src/${PROJECT_NAME}/vt/planet/PlanetWireFrameVT.cpp
 )
 
 set(SRC_GEO_PLANET_DEMO_VT_PLANET_HELPER
-    src/${APP_NAME}/vt/planet/helper/PlateColorizer.h src/${APP_NAME}/vt/planet/helper/PlateColorizer.cpp
+    src/${PROJECT_NAME}/vt/planet/helper/PlateColorizer.h src/${PROJECT_NAME}/vt/planet/helper/PlateColorizer.cpp
 )
 
 set(SRC_GEO_PLANET_DEMO_INTERFACES
-    src/${APP_NAME}/interfaces/LoggerInterface.h
-    src/${APP_NAME}/interfaces/MainLoopInterface.h
-    src/${APP_NAME}/interfaces/RendererInterface.h
+    src/${PROJECT_NAME}/interfaces/LoggerInterface.h
+    src/${PROJECT_NAME}/interfaces/MainLoopInterface.h
+    src/${PROJECT_NAME}/interfaces/RendererInterface.h
 )
 
 set(SRC_VENDOR_STB
@@ -144,8 +146,8 @@ source_group("GeoPlanetDemo\\vt\\planet\\helper" FILES ${SRC_GEO_PLANET_DEMO_VT_
 source_group("GeoPlanetDemo\\sdl"                FILES ${SRC_GEO_PLANET_DEMO_SDL})
 source_group("GeoPlanetDemo\\interfaces"         FILES ${SRC_GEO_PLANET_DEMO_INTERFACES})
 
-source_group("vendor\\stb"               FILES ${SRC_VENDOR_STB})
-source_group("vendor\\imgui"             FILES ${SRC_VENDOR_IAMGUI})
+source_group("vendor\\stb"   FILES ${SRC_VENDOR_STB})
+source_group("vendor\\imgui" FILES ${SRC_VENDOR_IAMGUI})
 
 # generate shader definitions from SHADER_FILES based on their location
 set(SHADER_COMPILE_DEFINITIONS )
@@ -156,7 +158,7 @@ foreach(FILE_RELATIVE_NAME ${SHADER_FILES})
     # find full name of shader
     find_file(shader_file
         ${FILE_RELATIVE_NAME}
-        HINTS ${${APP_NAME}_RESOURCES}/shaders
+        HINTS ${${PROJECT_NAME}_RESOURCES}/shaders
     )
 
     # create shader definition string
@@ -178,7 +180,7 @@ foreach(FILE_RELATIVE_NAME ${SHADER_FILES})
     list(APPEND SHADER_COMPILE_DEFINITIONS ${shader_definition})
 endforeach()
 
-add_executable(${APP_NAME}
+add_executable(${PROJECT_NAME}
     src/main.cpp
     ${SRC_GEO_PLANET_DEMO}
     ${SRC_GEO_PLANET_DEMO_CORE}
@@ -193,7 +195,7 @@ add_executable(${APP_NAME}
     ${SRC_VENDOR_IAMGUI}
 )
 
-target_link_libraries(${APP_NAME}
+target_link_libraries(${PROJECT_NAME}
     geGL
     geUtil
     SDL2CPP::SDL2CPP
@@ -201,21 +203,26 @@ target_link_libraries(${APP_NAME}
     glm
 )
 
-target_include_directories(${APP_NAME}
+target_include_directories(${PROJECT_NAME}
     PRIVATE src
 )
 
 # texture files
 find_file(coordCubeMapImage
     coords_cube_map.png
-    HINTS ${${APP_NAME}_RESOURCES}/textures
+    HINTS ${${PROJECT_NAME}_RESOURCES}/textures
 )
 
 message("COORDS_CUBE_MAP=\"${coordCubeMapImage}\"")
 
 # add macra definitions to code
-target_compile_definitions(${APP_NAME} PUBLIC
+target_compile_definitions(${PROJECT_NAME} PUBLIC
     ${SHADER_COMPILE_DEFINITIONS}
     $<$<CONFIG:DEBUG>: "GPD_DEBUG" "GPD_ENABLE_ASSERTS" >
     "COORDS_CUBE_MAP=\"${coordCubeMapImage}\""
 )
+
+include(CMakeCopyDlls.cmake)
+
+install(DIRECTORY ${OUTPUT_BINDIR}/Release/ DESTINATION bin )
+include(InstallRequiredSystemLibraries)
