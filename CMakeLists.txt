@@ -35,6 +35,12 @@ if(NOT TARGET glm)
   find_package(glm REQUIRED)
 endif()
 
+
+if (NOT DEFINED OUTPUT_BINDIR)
+    set(OUTPUT_BINDIR ${CMAKE_CURRENT_BINARY_DIR})
+endif()
+
+
 # resources
 
 set(DEFAULT_RESOERCES_PATH "${CMAKE_CURRENT_LIST_DIR}/resources")
@@ -150,34 +156,42 @@ source_group("vendor\\stb"   FILES ${SRC_VENDOR_STB})
 source_group("vendor\\imgui" FILES ${SRC_VENDOR_IAMGUI})
 
 # generate shader definitions from SHADER_FILES based on their location
-set(SHADER_COMPILE_DEFINITIONS )
-foreach(FILE_RELATIVE_NAME ${SHADER_FILES})
+set(SHADER_DEBUG_COMPILE_DEFINITIONS )
+set(SHADER_RELEASE_COMPILE_DEFINITIONS )
+foreach(relative_file_name ${SHADER_FILES})
 
    unset(shader_file CACHE)
 
     # find full name of shader
     find_file(shader_file
-        ${FILE_RELATIVE_NAME}
+        ${relative_file_name}
         HINTS ${${PROJECT_NAME}_RESOURCES}/shaders
     )
 
     # create shader definition string
-    string(REPLACE "/" "_" definition_name ${FILE_RELATIVE_NAME})
+    string(REPLACE "/" "_" definition_name ${relative_file_name})
     string(REPLACE "\\" "_" definition_name ${definition_name})
     string(REGEX REPLACE "\\..*" "" definition_name ${definition_name})
     string(TOUPPER ${definition_name} definition_name)
+
     string(CONCAT shader_definition
         "SHADER_" ${definition_name} "=\"" ${shader_file} "\""
     )
 
-    string(CONCAT shader_definition_json
+    string(CONCAT shader_definition_release
+        "SHADER_" ${definition_name} "=\"resources/shaders/" ${relative_file_name} "\""
+    )
+
+    # json configuration print out for vs code
+    message(
         "\"SHADER_" ${definition_name} "=\\\"" ${shader_file} "\\\"\","
     )
 
-    message(${shader_definition_json})
+    # message(${shader_definition_release})
 
-    # add shader_definition to SHADER_COMPILE_DEFINITIONS list
-    list(APPEND SHADER_COMPILE_DEFINITIONS ${shader_definition})
+    # add shader_definition to SHADER_DEBUG_COMPILE_DEFINITIONS list
+    list(APPEND SHADER_DEBUG_COMPILE_DEFINITIONS ${shader_definition})
+    list(APPEND SHADER_RELEASE_COMPILE_DEFINITIONS ${shader_definition_release})
 endforeach()
 
 add_executable(${PROJECT_NAME}
@@ -213,16 +227,41 @@ find_file(coordCubeMapImage
     HINTS ${${PROJECT_NAME}_RESOURCES}/textures
 )
 
-message("COORDS_CUBE_MAP=\"${coordCubeMapImage}\"")
+set(COORDS_CUBE_MAP_DEBUG_DEFINITION "COORDS_CUBE_MAP=\"${coordCubeMapImage}\"" )
+set(COORDS_CUBE_MAP_RELEASE_DEFINITION "COORDS_CUBE_MAP=\"resources/textures/coords_cube_map.png\"" )
+message(${COORDS_CUBE_MAP_DEBUG_DEFINITION})
+message(${COORDS_CUBE_MAP_RELEASE_DEFINITION})
 
 # add macra definitions to code
 target_compile_definitions(${PROJECT_NAME} PUBLIC
-    ${SHADER_COMPILE_DEFINITIONS}
-    $<$<CONFIG:DEBUG>: "GPD_DEBUG" "GPD_ENABLE_ASSERTS" >
-    "COORDS_CUBE_MAP=\"${coordCubeMapImage}\""
+    $<$<CONFIG:DEBUG>:
+        ${SHADER_DEBUG_COMPILE_DEFINITIONS}
+        ${COORDS_CUBE_MAP_DEBUG_DEFINITION}
+        "GPD_DEBUG"
+        "GPD_ENABLE_ASSERTS"
+    >
+    $<$<CONFIG:RELEASE>:
+        ${SHADER_RELEASE_COMPILE_DEFINITIONS}
+        ${COORDS_CUBE_MAP_RELEASE_DEFINITION}
+    >
 )
 
 include(CMakeCopyDlls.cmake)
+
+# Copying resource directory after release build
+# taken from: https://stackoverflow.com/questions/1620006/post-build-step-only-for-release-build
+# seen: 14.5.2020
+set(no_copy $<NOT:$<CONFIG:RELEASE>>) # An abbreviation to make the example easier to read.
+add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E
+    # do nothing for non-Release build
+    $<${no_copy}:echo>
+    # output text to make clear that the copy command is not actually issued
+    $<${no_copy}:"copy omitted for non-release build, command would have been ">
+    # the actual copy command, which is overridden by the "echo" above
+    # in the case of a non-release build
+    copy_directory ${${PROJECT_NAME}_RESOURCES} ${OUTPUT_BINDIR}/Release/resources
+)
 
 install(DIRECTORY ${OUTPUT_BINDIR}/Release/ DESTINATION bin )
 include(InstallRequiredSystemLibraries)
