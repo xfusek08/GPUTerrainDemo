@@ -109,7 +109,7 @@ void ApplicationGui::draw()
             ImGui::RadioButton("Show tectonic plates (F2)", &vtTypeInt, vtTypeToInt(vt::types::PlanetPlatesVT));
             ImGui::RadioButton("Show face colors     (F3)", &vtTypeInt, vtTypeToInt(vt::types::PlanetFaceColorVT));
             ImGui::RadioButton("Show wireframe       (F4)", &vtTypeInt, vtTypeToInt(vt::types::PlanetWireFrameVT));
-            ImGui::RadioButton("Show coordinate mask (F5)", &vtTypeInt, vtTypeToInt(vt::types::PlanetCubeMapVT));
+            // ImGui::RadioButton("Show coordinate mask (F5)", &vtTypeInt, vtTypeToInt(vt::types::PlanetCubeMapVT));
             if (planetSceneElement.vtType != intToVtType(vtTypeInt)) {
                 planetSceneElement.vtType = intToVtType(vtTypeInt);
                 application->scene->setElement("planet", planetSceneElement);
