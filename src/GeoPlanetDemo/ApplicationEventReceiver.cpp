@@ -49,7 +49,7 @@ bool ApplicationEventReceiver::processSDLEvent(SDL_Event const& event)
                 case SDLK_F2: RUN_SET_ELEMENT_VT("planet", vt::types::PlanetPlatesVT);
                 case SDLK_F3: RUN_SET_ELEMENT_VT("planet", vt::types::PlanetFaceColorVT);
                 case SDLK_F4: RUN_SET_ELEMENT_VT("planet", vt::types::PlanetWireFrameVT);
-                case SDLK_F5: RUN_SET_ELEMENT_VT("planet", vt::types::PlanetCubeMapVT);
+                // case SDLK_F5: RUN_SET_ELEMENT_VT("planet", vt::types::PlanetCubeMapVT);
 
                 case SDLK_p: RUN_FOR_PLANET({
                     planetEntity->setResolution(planetEntity->getResolution() + 1);
