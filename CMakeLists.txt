@@ -117,7 +117,7 @@ set(SRC_GEO_PLANET_DEMO_VT_PLANET_HELPER
 
 set(SRC_GEO_PLANET_DEMO_INTERFACES
     src/${PROJECT_NAME}/interfaces/LoggerInterface.h
-    src/${PROJECT_NAME}/interfaces/MainLoopInterface.h
+    # src/${PROJECT_NAME}/interfaces/MainLoopInterface.h
     src/${PROJECT_NAME}/interfaces/RendererInterface.h
 )
 
