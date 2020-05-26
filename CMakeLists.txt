@@ -234,6 +234,7 @@ message(${COORDS_CUBE_MAP_RELEASE_DEFINITION})
 
 # add macra definitions to code
 target_compile_definitions(${PROJECT_NAME} PUBLIC
+    "PROJECT_NAME=\"${PROJECT_NAME}\""
     $<$<CONFIG:DEBUG>:
         ${SHADER_DEBUG_COMPILE_DEFINITIONS}
         ${COORDS_CUBE_MAP_DEBUG_DEFINITION}

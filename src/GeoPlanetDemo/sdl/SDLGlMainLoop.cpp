@@ -11,11 +11,12 @@ using namespace std;
 using namespace gpd::sdl;
 using namespace gpd::interfaces;
 
-SDLGlMainLoop::SDLGlMainLoop(int width, int height) :
+SDLGlMainLoop::SDLGlMainLoop(string title, int width, int height) :
     windowWidth(width),
     windowHeight(height)
 {
     init();
+    SDL_SetWindowTitle(getWindow()->getWindow(), title.c_str());
 }
 
 SDLGlMainLoop::~SDLGlMainLoop() {}

@@ -34,7 +34,7 @@ int Application::init()
     GPD_LOG_DEBUG("Application initiating ...");
 
     // init main components
-    mainLoop = make_shared<SDLGlMainLoop>(Application::DEFAULT_WINDOW_WIDTH, Application::DEFAULT_WINDOW_HEIGHT);
+    mainLoop = make_shared<SDLGlMainLoop>(PROJECT_NAME, Application::DEFAULT_WINDOW_WIDTH, Application::DEFAULT_WINDOW_HEIGHT);
     scene    = make_shared<Scene>();
     renderer = make_shared<SceneRenderer>(mainLoop->getGlContext(), scene);
     camera   = make_shared<Camera>(Application::DEFAULT_WINDOW_WIDTH, Application::DEFAULT_WINDOW_HEIGHT);
@@ -49,9 +49,9 @@ int Application::init()
     renderer->updateScene();
 
     // init control
-    mainLoop->addEventReceiver(make_shared<sdl::SDLOrbitCameraController>(camera)); // comera control    
+    mainLoop->addEventReceiver(make_shared<sdl::SDLOrbitCameraController>(camera)); // comera control
     mainLoop->addEventReceiver(make_shared<ApplicationEventReceiver>(this)); // keyboard input
-    mainLoop->addEventReceiver(gui); // gui input    
+    mainLoop->addEventReceiver(gui); // gui input
 
     // bind main loop draw to
     mainLoop->setDrawCallback(bind(&Application::draw, this));

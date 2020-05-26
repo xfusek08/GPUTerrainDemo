@@ -33,7 +33,7 @@ namespace gpd
         {
         public:
             // methods
-            SDLGlMainLoop(int width, int height);
+            SDLGlMainLoop(std::string title, int width, int height);
             ~SDLGlMainLoop();
 
             inline std::shared_ptr<ge::gl::Context> getGlContext() const { return gl; }
