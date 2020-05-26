@@ -78,6 +78,10 @@ bool ApplicationEventReceiver::processSDLEvent(SDL_Event const& event)
                 case SDLK_v: RUN_FOR_PLANET({
                     planetEntity->doWarp = !planetEntity->doWarp;
                 });
+
+                case SDLK_g: RUN_FOR_PLANET({
+                    planetEntity->generateFresh(planetEntity->getResolution());
+                });
             }
             break;
         default: break;

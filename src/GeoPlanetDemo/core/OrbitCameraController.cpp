@@ -6,6 +6,7 @@
 #include <glm/gtc/quaternion.hpp>
 
 #include <GeoPlanetDemo/core/OrbitCameraController.h>
+#include <GeoPlanetDemo/core/Utils.h>
 
 using namespace std;
 using namespace gpd::core;
@@ -19,34 +20,26 @@ OrbitCameraController::OrbitCameraController(shared_ptr<Camera> camera) :
     performRotation();
 }
 
-void OrbitCameraController::up(float degree)
-{
+void OrbitCameraController::upDown(float degree) 
+{   
+    auto zHeight = glm::normalize(camera->getCameraPosition()).y;
+    if (degree < 0 && zHeight >= 0.98) {
+        return;
+    } else if (degree > 0 && zHeight <= -0.98) {
+        return;
+    }
+
     performRotation(
-        (degree ? degree : speed),
+        degree,
         glm::normalize(glm::cross(camera->getCameraDirection(), glm::vec3{ 0.f,1.f,0.f }))
     );
+    
 }
 
-void OrbitCameraController::down(float degree)
+void OrbitCameraController::leftRight(float degree)
 {
     performRotation(
-        -(degree ? degree : speed),
-        glm::normalize(glm::cross(camera->getCameraDirection(), glm::vec3{ 0.f,1.f,0.f }))
-    );
-}
-
-void OrbitCameraController::left(float degree)
-{
-    performRotation(
-        -(degree ? degree : speed),
-        glm::vec3(0.f, 1.f, 0.f)
-    );
-}
-
-void OrbitCameraController::right(float degree)
-{
-    performRotation(
-        (degree ? degree : speed),
+        degree,
         glm::vec3(0.f, 1.f, 0.f)
     );
 }
@@ -82,8 +75,8 @@ void OrbitCameraController::setRadius(float radius)
 
 void OrbitCameraController::lookXY(glm::vec2 delta)
 {
-    down(radius * (delta.y / 2000));
-    right(radius * (delta.x / 2000));
+    up(radius * (delta.y / 2000));
+    leftRight(radius * (delta.x / 2000));
 }
 
 void OrbitCameraController::performRotation(float angleIncrement, glm::vec3 axis)
@@ -94,5 +87,6 @@ void OrbitCameraController::performRotation(float angleIncrement, glm::vec3 axis
         pos = glm::conjugate(rot) * pos * rot;
     }
     pos = glm::normalize(pos) * radius;
+    // GPD_LOG_DEBUG("Camera position: " << pos.x << " " << pos.y << " " << pos.z);
     camera->setCameraPosition(pos);
 }

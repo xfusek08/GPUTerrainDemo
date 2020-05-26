@@ -205,7 +205,7 @@ void ApplicationGui::draw()
 
             ImGui::Spacing();
 
-            if (ImGui::Button("Generate")) {
+            if (ImGui::Button("Generate (g)")) {
                 planetEntity->generateFresh(planetEntity->getResolution());
                 updateScene = true;
             }

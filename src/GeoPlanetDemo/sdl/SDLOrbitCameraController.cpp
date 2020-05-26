@@ -36,11 +36,11 @@ void SDLOrbitCameraController::onFrameUpdate()
 {
     const Uint8 *state = SDL_GetKeyboardState(NULL);
 
-    if (state[SDL_SCANCODE_UP])         down();
-    else if (state[SDL_SCANCODE_DOWN])  up();
+    if (state[SDL_SCANCODE_UP])         up();
+    else if (state[SDL_SCANCODE_DOWN])  down();
 
-    if (state[SDL_SCANCODE_LEFT])       right();
-    else if (state[SDL_SCANCODE_RIGHT]) left();
+    if (state[SDL_SCANCODE_LEFT])       left();
+    else if (state[SDL_SCANCODE_RIGHT]) right();
 
     if (state[SDL_SCANCODE_S])          zoomOut();
     else if (state[SDL_SCANCODE_W])     zoomIn();
