@@ -2,6 +2,7 @@
 # Demo application for visualization of procedurally generated planetary surfaces.
 
 ## Prerequisites
+- OpenGL 4.3 and above
 - [CMake](https://cmake.org/download/) 3.15 and above
 
 ### CMake packages:
